@@ -6,6 +6,14 @@ import { useEffect } from "react";
 
 import { useColorScheme } from "react-native";
 
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import user from "../reducers/user";
+
+const store = configureStore({
+    reducer: { user },
+});
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -27,12 +35,14 @@ export default function RootLayout() {
     }
 
     return (
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <Stack>
-                <Stack.Screen name="index" />
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-            </Stack>
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+                <Stack>
+                    <Stack.Screen name="landing" />
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" />
+                </Stack>
+            </ThemeProvider>
+        </Provider>
     );
 }
