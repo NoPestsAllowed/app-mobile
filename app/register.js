@@ -14,7 +14,7 @@ export default function register() {
         <ThemedView>
             <ThemedText type="title">register</ThemedText>
             <ThemedTextInput
-                onChangeText={(value) => setLastName(value)}
+                onChangeText={(value) => setFirstName(value)}
                 value={firstName}
                 placeholder="First Name"
                 label="First Name"
