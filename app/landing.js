@@ -10,8 +10,8 @@ export default function Page() {
                     Hello World
                 </ThemedText>
                 <ThemedText style={styles.subtitle}>This is the first page of your app.</ThemedText>
-                <Link href="(tabs)" style={styles.link}>
-                    <ThemedText type="link">Go to home screen!</ThemedText>
+                <Link href="register" style={styles.link}>
+                    <ThemedText type="link">Register</ThemedText>
                 </Link>
             </View>
         </View>
