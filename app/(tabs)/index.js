@@ -45,16 +45,18 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
+        // height: 30,
     },
     stepContainer: {
         gap: 8,
         marginBottom: 8,
     },
     noPestsAllowedLogo: {
-        height: 178,
-        width: 290,
-        bottom: 0,
-        left: 0,
+        height: 100,
+        width: 100,
+        top: 100,
+        bottom: 25,
+        left: 25,
         position: "absolute",
     },
 });
