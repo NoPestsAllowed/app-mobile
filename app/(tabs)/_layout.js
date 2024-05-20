@@ -29,7 +29,16 @@ export default function TabLayout() {
                 options={{
                     title: "Deposition",
                     tabBarIcon: ({ color, focused }) => (
-                        <TabBarIcon name={focused ? "code-slash" : "code-slash-outline"} color={color} />
+                        <TabBarIcon name={focused ? "folder" : "code-slash-outline"} color={color} />
+                    ),
+                }}
+            />
+                <Tabs.Screen
+                name="profile"
+                options={{
+                    title: "Profile",
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabBarIcon name={focused ? "star" : "code-slash-outline"} color={color} />
                     ),
                 }}
             />
