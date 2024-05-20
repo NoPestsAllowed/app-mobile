@@ -4,9 +4,19 @@ import React from "react";
 import { TabBarIcon } from "../../components/navigation/TabBarIcon";
 import { Colors } from "../../constants/Colors";
 import { useColorScheme } from "react-native";
+import { useSelector } from "react-redux";
+import { Redirect, useNavigation } from "expo-router";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
+    const user = useSelector((state) => state.user.value);
+    const navigation = useNavigation();
+
+    if (!user.token) {
+        // navigation.replace("landing");
+        console.log("no user");
+        return <Redirect href="landing" />;
+    }
 
     return (
         <Tabs
