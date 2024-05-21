@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform } from "react-native";
+import { Image, StyleSheet, Platform, Button } from "react-native";
 
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
@@ -35,6 +35,9 @@ export default function HomeTab() {
                     <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
                     <ThemedText type="defaultSemiBold">app-example</ThemedText>.
                 </ThemedText>
+            </ThemedView>
+            <ThemedView style={styles.stepContainer}>
+                <Button title="mentions legale"></Button>
             </ThemedView>
         </ParallaxScrollView>
     );

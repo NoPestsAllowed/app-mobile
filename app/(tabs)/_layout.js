@@ -12,11 +12,11 @@ export default function TabLayout() {
     const user = useSelector((state) => state.user.value);
     const navigation = useNavigation();
 
-    if (!user.token) {
+    // if (!user.token) {
         // navigation.replace("landing");
-        console.log("no user");
-        return <Redirect href="landing" />;
-    }
+    //     console.log("no user");
+    //     return <Redirect href="landing" />;
+    // }
 
     return (
         <Tabs
