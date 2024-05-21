@@ -50,17 +50,23 @@ export default function MydepositionsTab({ navigation }) {
                 <ThemedText type="title" style={styles.title}>My depositions</ThemedText>
             </ThemedView>
 
- 
-
-
-            <ThemedView style={styles.notificationContainer}>
+            <ThemedView style={styles.rowContainer}>
                 <ThemedText style={styles.table1}>Name</ThemedText>
-                <ThemedText style={styles.table2}>Address</ThemedText>
+                <ThemedText style={styles.table1}>Address</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.table1}>Ma maison</ThemedText>
-                <ThemedText style={styles.table2}>1 Ru de la Republique, Meudon</ThemedText>
+            <ThemedView style={styles.rowContainer}>
+                <ThemedText style={styles.table2}>Ma maison</ThemedText>
+                <ThemedText style={styles.table2}>1 Rue de la Republique, Meudon</ThemedText>
+            </ThemedView>
+            
+            <ThemedView style={styles.rowContainer}>
+                <ThemedText style={styles.table1}>AirBnbn Nice</ThemedText>
+                <ThemedText style={styles.table1}>35 Louis Avenue, Nice</ThemedText>
+            </ThemedView>
+            <ThemedView style={styles.rowContainer}>
+                <ThemedText style={styles.table2}>Bureau Paris</ThemedText>
+                <ThemedText style={styles.table2}>8 Av. du Mahatma Gandhi, Paris</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
@@ -96,7 +102,7 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginRight: 25,
-        fontSize: 20,
+        fontSize: 24,
         color: '#A53939',
         top: 50,
         fontWeight: "800",
@@ -159,6 +165,28 @@ const styles = StyleSheet.create({
         color: '#f5f5f5',
         fontSize: 18,
     },
+    rowContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 5,
+    },
+    table1: {
+        height:35,
+        flex: 1,
+        textAlign: 'left',
+        paddingLeft: 10,
+        lineHeight: 35,
+        left:5,
+        fontSize: 16,
+        backgroundColor: "lightgrey",
+    },
+    table2: {
+        height:35,
+        flex: 3,
+        textAlign: 'left',
+        lineHeight: 35,
+        fontSize: 16,
+    },
     notificationContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -166,15 +194,4 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         backgroundColor: "lightgrey",
     },
-    table1: {
-        top:10,
-        left:10,
-        alignItems: 'center',
-
-    },
-    table2: {
-        alignItems: 'center',
-        right:100,
-    }
-
 });
