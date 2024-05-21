@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
@@ -15,104 +16,106 @@ export default function ProfileTab({ navigation }) {
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
 
-const handleLogout = () => {
-    navigation.navigate('Home');
-};
+    const handleLogout = () => {
+        navigation.navigate('Home');
+    };
 
-const handleDeleteAccount = () => {
-    navigation.navigate('Home');
-};
+    const handleDeleteAccount = () => {
+        navigation.navigate('Home');
+    };
 
-const toggleModifyNotifications = () => {
-    setModifyNotifications(!modifyNotifications);
-};
+    const toggleModifyNotifications = () => {
+        setModifyNotifications(!modifyNotifications);
+    };
 
-const toggleAuthorizeNotifications = () => {
-    setAuthorizeNotifications(!authorizeNotifications);
-};
+    const toggleAuthorizeNotifications = () => {
+        setAuthorizeNotifications(!authorizeNotifications);
+    };
 
-return (
-    <ParallaxScrollView
-        headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-        headerImage={
-            <View style={styles.headerContainer}>
-                <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
-                <View style={styles.rightHeader}>
-                    <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                    <Image source={require("../../assets/images/avatar-2.png")} style={styles.avatar} />
+    return (
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
+            headerImage={
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                    <View style={styles.rightHeader}>
+                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
+                        <View style={styles.avatarContainer}>
+                            <Image source={require("../../assets/images/avatar2.jpg")} style={styles.avatar} />
+                        </View>
+                    </View>
                 </View>
-            </View>
-        }
-    >
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title" style={styles.title}>Profile</ThemedText>
-        </ThemedView>
+            }
+        >
+            <ThemedView style={styles.titleContainer}>
+                <ThemedText type="title" style={styles.title}>Profile</ThemedText>
+            </ThemedView>
 
-        <ThemedTextInput
-            onChangeText={(value) => setFirstName(value)}
-            value={firstName}
-            placeholder="First Name"
-            label="First Name"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput
+                onChangeText={(value) => setFirstName(value)} 
+                value={firstName}
+                placeholder="First Name"
+                label="First Name"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedTextInput
-            onChangeText={(value) => setLastName(value)}
-            value={lastName}
-            placeholder="Last Name"
-            label="Last Name"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput 
+                onChangeText={(value) => setLastName(value)} 
+                value={lastName}
+                placeholder="Last Name"
+                label="Last Name"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedTextInput
-            onChangeText={(value) => setBirthDate(value)}
-            value={birthDate}
-            placeholder="Birth Date"
-            label="Birth Date"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput 
+                onChangeText={(value) => setBirthDate(value)} 
+                value={birthDate}
+                placeholder="Birth Date"
+                label="Birth Date"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedTextInput
-            onChangeText={(value) => setPassword(value)}
-            value={password}
-            placeholder="Password"
-            label="Password"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput 
+                onChangeText={(value) => setPassword(value)} 
+                value={password}
+                placeholder="Password"
+                label="Password"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedView style={styles.notificationContainer}>
-            <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
-            <Text style={styles.notifications}>Activate</Text>
-            <TouchableOpacity onPress={toggleModifyNotifications}>
-                <Icon
-                    name={modifyNotifications ? 'bell' : 'bell-o'}
-                    size={30}
-                    color={modifyNotifications ? '#A53939' : 'grey'}
-                />
+            <ThemedView style={styles.notificationContainer}>
+                <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
+                <Text style={styles.notifications}>Activate</Text>
+                <TouchableOpacity onPress={toggleModifyNotifications}>
+                    <Icon 
+                        name={modifyNotifications ? 'bell' : 'bell-o'} 
+                        size={30} 
+                        color={modifyNotifications ? '#A53939' : 'grey'} 
+                    />
+                </TouchableOpacity>
+            </ThemedView>
+
+            <ThemedView style={styles.notificationContainer}>
+                <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
+                <Text style={styles.notifications}>Activate</Text>
+                <TouchableOpacity onPress={toggleAuthorizeNotifications}>
+                    <Icon 
+                        name='globe' 
+                        size={30} 
+                        color={authorizeNotifications ? '#A53939' : 'grey'} 
+                    />
+                </TouchableOpacity>
+            </ThemedView>
+
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Log out</Text>
             </TouchableOpacity>
-        </ThemedView>
-
-        <ThemedView style={styles.notificationContainer}>
-            <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-            <Text style={styles.notifications}>Activate</Text>
-            <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                <Icon
-                    name='globe'
-                    size={30}
-                    color={authorizeNotifications ? '#A53939' : 'grey'}
-                />
+            
+            <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
+                <Text style={styles.buttonText}>Delete account</Text>
             </TouchableOpacity>
-        </ThemedView>
-
-        <TouchableOpacity style={styles.button} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Log out</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-            <Text style={styles.buttonText}>Delete account</Text>
-        </TouchableOpacity>
-    </ParallaxScrollView>
-);
+        </ParallaxScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -125,7 +128,8 @@ const styles = StyleSheet.create({
     noPestsAllowedLogo: {
         height: 100,
         width: 100,
-        top:50,
+
+        top: 50,
     },
     rightHeader: {
         flexDirection: 'row',
@@ -133,16 +137,25 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginRight: 25,
-        fontSize: 24,
+        fontSize: 20,
         color: '#A53939',
-        top:50,
+        top: 50,
         fontWeight: "800",
+    },
+    avatarContainer: {
+        height: 104, 
+        width: 104, 
+        borderRadius: 52, 
+        borderWidth: 2, 
+        borderColor: 'silver', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 50,
     },
     avatar: {
         height: 100,
         width: 100,
-        borderRadius: 125,
-        top:50,
+        borderRadius: 50, 
     },
     titleContainer: {
         flexDirection: "row",
@@ -152,7 +165,6 @@ const styles = StyleSheet.create({
     profileInfo: {
         margin: 3,
         fontSize: 18,
-
     },
     title: {
         fontSize: 32,
