@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
@@ -7,7 +8,7 @@ import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("Joachim"); 
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -127,6 +128,7 @@ const styles = StyleSheet.create({
     noPestsAllowedLogo: {
         height: 100,
         width: 100,
+
         top: 50,
     },
     rightHeader: {
