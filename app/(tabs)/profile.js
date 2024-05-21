@@ -7,7 +7,7 @@ import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState(""); 
+    const [firstName, setFirstName] = useState("John"); // Assuming you set a default name or get it from user data
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -40,7 +40,7 @@ export default function ProfileTab({ navigation }) {
                     <View style={styles.rightHeader}>
                         <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
                         <View style={styles.avatarContainer}>
-                            <Image source={require("../../assets/images/avatar1.jpg")} style={styles.avatar} />
+                            <Image source={require("../../assets/images/avatar2.jpg")} style={styles.avatar} />
                         </View>
                     </View>
                 </View>
@@ -135,17 +135,17 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginRight: 25,
-        fontSize: 20,
+        fontSize: 24,
         color: '#A53939',
         top: 50,
         fontWeight: "800",
     },
     avatarContainer: {
-        height: 104, 
-        width: 104, 
-        borderRadius: 52, 
-        borderWidth: 2, 
-        borderColor: 'silver', 
+        height: 104, // Slightly larger to accommodate border
+        width: 104, // Slightly larger to accommodate border
+        borderRadius: 52, // Half of height and width for circular border
+        borderWidth: 2, // Thin border width
+        borderColor: 'silver', // Silverish color
         justifyContent: 'center',
         alignItems: 'center',
         top: 50,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     avatar: {
         height: 100,
         width: 100,
-        borderRadius: 50, 
+        borderRadius: 50, // Half of height and width for circular image
     },
     titleContainer: {
         flexDirection: "row",
