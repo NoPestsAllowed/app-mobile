@@ -38,6 +38,7 @@ export default function register() {
                     onChangeText={(value) => setPassword(value)}
                     value={password}
                     placeholder="Password"
+                    keyboardType="current-password"
                     label="Password"
                 />
                 <ThemedView style={styles.btnContainer}>

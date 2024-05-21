@@ -5,6 +5,8 @@ import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
 import { Collapsible } from "../../../components/Collapsible";
 import { ExternalLink } from "../../../components/ExternalLink";
+import { ThemedButton } from "../../../components/ThemedButton";
+import { router } from "expo-router";
 
 export default function DepositionTab() {
     return (
@@ -17,6 +19,7 @@ export default function DepositionTab() {
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Deposition</ThemedText>
             </ThemedView>
+            <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
 
             <ThemedText>This app includes example code to help you get started.</ThemedText>
             <Collapsible title="File-based routing">
