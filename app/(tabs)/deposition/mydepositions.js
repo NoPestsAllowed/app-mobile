@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../components/ParallaxScrollView";
-import { ThemedText } from "../../components/ThemedText";
-import { ThemedView } from "../../components/ThemedView";
-import { ThemedTextInput } from "../../components/ThemedTextInput";
+import ParallaxScrollView from "../../../components/ParallaxScrollView";
+import { ThemedText } from "../../../components/ThemedText";
+import { ThemedView } from "../../../components/ThemedView";
+import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function ProfileTab({ navigation }) {
+export default function MydepositionsTab({ navigation }) {
     const [firstName, setFirstName] = useState(""); 
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -36,83 +36,44 @@ export default function ProfileTab({ navigation }) {
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
             headerImage={
                 <View style={styles.headerContainer}>
-                    <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                    <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                     <View style={styles.rightHeader}>
                         <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
                         <View style={styles.avatarContainer}>
-                            <Image source={require("../../assets/images/avatar1.jpg")} style={styles.avatar} />
+                            <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
                         </View>
                     </View>
                 </View>
             }
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={styles.title}>Profile</ThemedText>
+                <ThemedText type="title" style={styles.title}>My depositions</ThemedText>
             </ThemedView>
 
-            <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)} 
-                value={firstName}
-                placeholder="First Name"
-                label="First Name"
-                style={[styles.profileInfo, styles.input]}
-            />
+ 
 
-            <ThemedTextInput 
-                onChangeText={(value) => setLastName(value)} 
-                value={lastName}
-                placeholder="Last Name"
-                label="Last Name"
-                style={[styles.profileInfo, styles.input]}
-            />
-
-            <ThemedTextInput 
-                onChangeText={(value) => setBirthDate(value)} 
-                value={birthDate}
-                placeholder="Birth Date"
-                label="Birth Date"
-                style={[styles.profileInfo, styles.input]}
-            />
-
-            <ThemedTextInput 
-                onChangeText={(value) => setPassword(value)} 
-                value={password}
-                placeholder="Password"
-                label="Password"
-                style={[styles.profileInfo, styles.input]}
-            />
 
             <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
-                <TouchableOpacity onPress={toggleModifyNotifications}>
-                    <Icon 
-                        name={modifyNotifications ? 'bell' : 'bell-o'} 
-                        size={30} 
-                        color={modifyNotifications ? '#A53939' : 'grey'} 
-                    />
-                </TouchableOpacity>
+                <ThemedText style={styles.table1}>Name</ThemedText>
+                <ThemedText style={styles.table2}>Address</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
+                <ThemedText style={styles.table1}>Ma maison</ThemedText>
+                <ThemedText style={styles.table2}>1 Ru de la Republique, Meudon</ThemedText>
+            </ThemedView>
+
+            <ThemedView style={styles.notificationContainer}>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                    <Icon 
-                        name='globe' 
-                        size={30} 
-                        color={authorizeNotifications ? '#A53939' : 'grey'} 
-                    />
                 </TouchableOpacity>
             </ThemedView>
+
+            <ThemedText style={styles.profileInfo}>You have --- depositions</ThemedText>
 
             <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                <Text style={styles.buttonText}>Log out</Text>
+                <Text style={styles.buttonText}>Create Deposition</Text>
             </TouchableOpacity>
             
-            <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-                <Text style={styles.buttonText}>Delete account</Text>
-            </TouchableOpacity>
         </ParallaxScrollView>
     );
 }
@@ -203,5 +164,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginVertical: 5,
+        backgroundColor: "lightgrey",
+    },
+    table1: {
+        top:10,
+        left:10,
+        alignItems: 'center',
+
+    },
+    table2: {
+        alignItems: 'center',
+        right:100,
     }
+
 });
