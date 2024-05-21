@@ -7,7 +7,7 @@ import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("");
+    const [firstName, setFirstName] = useState("Joachim"); 
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -39,7 +39,9 @@ export default function ProfileTab({ navigation }) {
                     <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                     <View style={styles.rightHeader}>
                         <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                        <Image source={require("../../assets/images/avatar2.jpg")} style={styles.avatar} />
+                        <View style={styles.avatarContainer}>
+                            <Image source={require("../../assets/images/avatar2.jpg")} style={styles.avatar} />
+                        </View>
                     </View>
                 </View>
             }
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
     noPestsAllowedLogo: {
         height: 100,
         width: 100,
-        top:50,
+        top: 50,
     },
     rightHeader: {
         flexDirection: 'row',
@@ -133,15 +135,25 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         marginRight: 25,
-        fontSize: 24,
+        fontSize: 20,
         color: '#A53939',
-        top:50,
+        top: 50,
+        fontWeight: "800",
+    },
+    avatarContainer: {
+        height: 104, 
+        width: 104, 
+        borderRadius: 52, 
+        borderWidth: 2, 
+        borderColor: 'silver', 
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 50,
     },
     avatar: {
         height: 100,
         width: 100,
-        borderRadius: 125,
-        top:50,
+        borderRadius: 50, 
     },
     titleContainer: {
         flexDirection: "row",
@@ -151,7 +163,6 @@ const styles = StyleSheet.create({
     profileInfo: {
         margin: 3,
         fontSize: 18,
-    
     },
     title: {
         fontSize: 32,
