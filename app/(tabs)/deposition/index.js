@@ -7,19 +7,33 @@ import { Collapsible } from "../../../components/Collapsible";
 import { ExternalLink } from "../../../components/ExternalLink";
 import { ThemedButton } from "../../../components/ThemedButton";
 import { router } from "expo-router";
+import MapView from "react-native-maps";
+import EmptyState from "../../../components/EmptyState";
 
 export default function DepositionTab() {
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
             headerImage={
-                <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                // <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                <MapView
+                    initialRegion={{
+                        latitude: 48.86667,
+                        longitude: 2.333333,
+                        latitudeDelta: 0.000922,
+                        longitudeDelta: 0.000421,
+                    }}
+                    style={{ flex: 1 }}
+                ></MapView>
             }
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Deposition</ThemedText>
             </ThemedView>
-            <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
+
+            <EmptyState headline="No depo" desc="Start by creating a deposition">
+                <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
+            </EmptyState>
 
             <ThemedText>This app includes example code to help you get started.</ThemedText>
             <Collapsible title="File-based routing">
