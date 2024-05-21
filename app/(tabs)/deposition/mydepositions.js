@@ -51,22 +51,22 @@ export default function MydepositionsTab({ navigation }) {
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.table1}>Name</ThemedText>
-                <ThemedText style={styles.table1}>Address</ThemedText>
+                <ThemedText style={styles.line1}>Name</ThemedText>
+                <ThemedText style={styles.line1}>Address</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.table2}>Ma maison</ThemedText>
-                <ThemedText style={styles.table2}>1 Rue de la Republique, Meudon</ThemedText>
+                <ThemedText style={styles.line2}>Ma maison</ThemedText>
+                <ThemedText style={styles.line2}>1 Rue de la Republique, Meudon</ThemedText>
             </ThemedView>
             
             <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.table1}>AirBnbn Nice</ThemedText>
-                <ThemedText style={styles.table1}>35 Louis Avenue, Nice</ThemedText>
+                <ThemedText style={styles.line1}>AirBnbn Nice</ThemedText>
+                <ThemedText style={styles.line1}>35 Louis Avenue, Nice</ThemedText>
             </ThemedView>
             <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.table2}>Bureau Paris</ThemedText>
-                <ThemedText style={styles.table2}>8 Av. du Mahatma Gandhi, Paris</ThemedText>
+                <ThemedText style={styles.line2}>Bureau Paris</ThemedText>
+                <ThemedText style={styles.line2}>8 Av. du Mahatma Gandhi, Paris</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
@@ -168,9 +168,8 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 5,
     },
-    table1: {
+    line1: {
         height:35,
         flex: 1,
         textAlign: 'left',
@@ -180,18 +179,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: "lightgrey",
     },
-    table2: {
+    line2: {
         height:35,
         flex: 3,
+        paddingLeft: 10,
         textAlign: 'left',
         lineHeight: 35,
         fontSize: 16,
+        backgroundColor: '#A429',
     },
     notificationContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginVertical: 5,
         backgroundColor: "lightgrey",
     },
 });

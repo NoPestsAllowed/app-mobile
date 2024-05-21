@@ -43,7 +43,7 @@ return (
                 <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                 <View style={styles.rightHeader}>
                     <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                    <Image source={require("../../../assets/images/icon.png")} style={styles.avatar} />
+                    <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
                 </View>
             </View>
         }
