@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 import { Platform, Animated, Image, StyleSheet, TouchableWithoutFeedback, Easing } from "react-native";
 
 import ParallaxScrollView from "../../components/ParallaxScrollView";
@@ -8,41 +8,38 @@ import { Collapsible } from "../../components/Collapsible";
 import { ExternalLink } from "../../components/ExternalLink";
 
 export default function ProfileTab() {
-   
     return (
         <ParallaxScrollView
-        headerBackgroundColor={{ light: "Neutral Grey", dark: "#1D3D47" }}
-        headerImage={
-            <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
-        }
-    >
-         <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={{ color: "#1A53939" }}>Profile</ThemedText>
+            headerBackgroundColor={{ light: "Neutral Grey", dark: "#1D3D47" }}
+            headerImage={<Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />}
+        >
+            <ThemedView style={styles.titleContainer}>
+                <ThemedText type="title" style={{ color: "#1A53939" }}>
+                    Profile
+                </ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.titleContainer}>
-           
-            {/* <ThemedText style={styles.profileInfo} 
+                {/* <ThemedText style={styles.profileInfo}
             onChangeText={(value) => setLastName(value)}
             value={firstname}
             placeHolder="First Name"
             label="First Name"
             /> */}
 
-            <ThemedText style={styles.profileInfo}>Last name</ThemedText>
+                <ThemedText style={styles.profileInfo}>Last name</ThemedText>
             </ThemedView>
             <ThemedText style={styles.profileInfo}>Birth date</ThemedText>
-            
+
             <ThemedText style={styles.profileInfo}>Change password</ThemedText>
-            
+
             <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
-            
+
             <ThemedText style={styles.profileInfo}>Authorize notifications</ThemedText>
-            
+
             <ThemedText style={styles.profileInfo}>Log out</ThemedText>
-            
-            <ThemedText style={styles.profileInfo}>Delete account</ThemedText> 
-    
+
+            <ThemedText style={styles.profileInfo}>Delete account</ThemedText>
         </ParallaxScrollView>
     );
 }
@@ -67,11 +64,9 @@ const styles = StyleSheet.create({
     },
     title: {
         color: "red",
-
     },
     profileInfo: {
         margin: 5,
         fontSize: 18,
-        
-    }
+    },
 });

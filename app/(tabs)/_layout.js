@@ -6,15 +6,13 @@ import { Colors } from "../../constants/Colors";
 import { useColorScheme } from "react-native";
 import { useSelector } from "react-redux";
 import { Redirect, useNavigation } from "expo-router";
+import { useSession } from "../../hooks/useSession";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
     const user = useSelector((state) => state.user.value);
-    const navigation = useNavigation();
 
     if (!user.token) {
-        // navigation.replace("landing");
-        console.log("no user");
         return <Redirect href="landing" />;
     }
 
@@ -43,7 +41,7 @@ export default function TabLayout() {
                     ),
                 }}
             />
-                <Tabs.Screen
+            <Tabs.Screen
                 name="profile"
                 options={{
                     title: "Profile",
