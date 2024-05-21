@@ -45,7 +45,7 @@ export default function RootLayout() {
                 {isSignedUser ? (
                     <Stack>
                         <Stack.Screen name="landing" />
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                        <Stack.Screen name="(tabs)"  component={ProfileTab}  options={{ tabBarVisible: false }} />
                         <Stack.Screen name="+not-found" />
                     </Stack>
                 ) : (

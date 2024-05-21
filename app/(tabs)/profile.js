@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
 import { ThemedView } from "../../components/ThemedView";
@@ -35,11 +35,14 @@ export default function ProfileTab({ navigation }) {
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
             headerImage={
-                <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                    <View style={styles.rightHeader}>
+                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
+                        <Image source={require("../../assets/images/avatar2.jpg")} style={styles.avatar} />
+                    </View>
+                </View>
             }
-            // <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-            //     <Text style={styles.buttonText}>Welcome, Name</Text>
-            // </TouchableOpacity>
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title" style={styles.title}>Profile</ThemedText>
@@ -113,22 +116,42 @@ export default function ProfileTab({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 16,
+    },
+    noPestsAllowedLogo: {
+        height: 100,
+        width: 100,
+        top:50,
+    },
+    rightHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    welcomeText: {
+        marginRight: 25,
+        fontSize: 24,
+        color: '#A53939',
+        top:50,
+    },
+    avatar: {
+        height: 100,
+        width: 100,
+        borderRadius: 125,
+        top:50,
+    },
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
     },
-    noPestsAllowedLogo: {
-        height: 100,
-        width: 100,
-        top: 100,
-        bottom: 25,
-        left: 25,
-        position: "absolute",
-    },
     profileInfo: {
         margin: 3,
         fontSize: 18,
+    
     },
     title: {
         fontSize: 32,
