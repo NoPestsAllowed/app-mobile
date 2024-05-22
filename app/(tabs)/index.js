@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Image, StyleSheet, Platform, Button, Text, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
@@ -56,16 +56,17 @@ export default function HomeTab() {
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
                         When
                     </ThemedText>{" "}
-                    you're ready, run{" "}
-                    <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get
-                    a fresh <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
+                    you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a
+                    fresh <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
                     <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
                     <ThemedText type="defaultSemiBold">app-example</ThemedText>.
                 </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
                 <Button title="mentions legale"></Button>
-                <ThemedButton style={styles.button} onPress={() => logout()}>Logout</ThemedButton>
+                <ThemedButton style={styles.button} onPress={() => logout()}>
+                    Logout
+                </ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -73,9 +74,9 @@ export default function HomeTab() {
 
 const styles = StyleSheet.create({
     headerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         padding: 16,
     },
     noPestsAllowedLogo: {
@@ -84,30 +85,30 @@ const styles = StyleSheet.create({
         top: 50,
     },
     rightHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
     welcomeText: {
         marginRight: 25,
         fontSize: 24,
-        color: '#A53939',
+        color: "#A53939",
         top: 50,
         fontWeight: "800",
     },
     avatarContainer: {
-        height: 104, 
-        width: 104, 
-        borderRadius: 52, 
-        borderWidth: 2, 
-        borderColor: 'silver', 
-        justifyContent: 'center',
-        alignItems: 'center',
+        height: 104,
+        width: 104,
+        borderRadius: 52,
+        borderWidth: 2,
+        borderColor: "silver",
+        justifyContent: "center",
+        alignItems: "center",
         top: 50,
     },
     avatar: {
         height: 100,
         width: 100,
-        borderRadius: 50, 
+        borderRadius: 50,
     },
     titleContainer: {
         flexDirection: "row",
@@ -130,21 +131,21 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     button: {
-        backgroundColor: '#A53939',
+        backgroundColor: "#A53939",
         padding: 10,
         margin: 5,
         borderRadius: 10,
-        alignItems: 'center',
-        shadowColor: '#888',
+        alignItems: "center",
+        shadowColor: "#888",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 7,
         elevation: 3,
     },
     buttonText: {
-        color: '#f5f5f5',
+        color: "#f5f5f5",
         fontSize: 18,
-    }, 
+    },
     stepContainerlast: {
         gap: 8,
         marginBottom: 8,
@@ -155,6 +156,6 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     firstWord: {
-        marginLeft: 25, 
+        marginLeft: 25,
     },
 });

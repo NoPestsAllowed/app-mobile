@@ -22,7 +22,7 @@ export function SessionProvider(props) {
 
     const signIn = (email, password) => {
         fetch(`${backendUrl}/login`, {
-            method: "Post",
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: email, password: password }),
         })
@@ -37,9 +37,9 @@ export function SessionProvider(props) {
             .catch((err) => console.error(err));
     };
 
-    const signOut = () => {
+    const signOut = async () => {
         fetch(`${backendUrl}/logout`, {
-            method: "Post",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${user.token}`,
