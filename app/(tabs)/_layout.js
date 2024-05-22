@@ -13,7 +13,6 @@ export default function TabLayout() {
     const colorScheme = useColorScheme();
     const user = useSelector((state) => state.user.value);
 
-
     // if (!user.token) {
     //     return <Redirect href="landing" />;
     // }
@@ -27,52 +26,57 @@ export default function TabLayout() {
                     headerShown: false,
                 }}
             >
-                    <Tabs.Screen
-                        name="index"
-                        options={{
-                            title: "Home",
-                            tabBarIcon: ({ color, focused }) => (
-                                <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="deposition/index"
-                        options={{
-                            title: "Deposition",
-                            tabBarIcon: ({ color, focused }) => (
-                                <TabBarIcon name={focused ? "folder" : "code-slash-outline"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="profile"
-                        options={{
-                            title: "Profile",
-                            tabBarIcon: ({ color, focused }) => (
-                                <TabBarIcon name={focused ? "eye" : "code-slash-outline"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="deposition/create"
-                        options={{
-                            title: "Deposition",
-                            tabBarIcon: ({ color, focused }) => (
-                                <TabBarIcon name={focused ? "star" : "code-slash-outline"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tabs.Screen
-                        name="deposition/mydepositions"
-                        options={{
-                            title: "My depositions",
-                            tabBarIcon: ({ color, focused }) => (
-                                <TabBarIcon name={focused ? "library" : "code-slash-outline"} color={color} />
-                            ),
-                        }}
-                    />
-                </Tabs>
-                 </>
-    )
+                <Tabs.Screen
+                    name="index"
+                    options={{
+                        title: "Home",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="deposition/index"
+                    options={{
+                        title: "Deposition",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "folder" : "folder-outline"} color={color} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="profile"
+                    options={{
+                        title: "Profile",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "eye" : "eye-outline"} color={color} />
+                        ),
+                    }}
+                />
+                <Tabs.Screen
+                    name="deposition/create"
+                    options={{
+                        title: "Deposition Create",
+                        href: null,
+                    }}
+                />
+                <Tabs.Screen
+                    name="deposition/detail"
+                    options={{
+                        title: "Deposition Detail",
+                        href: null,
+                    }}
+                />
+                <Tabs.Screen
+                    name="deposition/mydepositions"
+                    options={{
+                        title: "My depositions",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "library" : "library-outline"} color={color} />
+                        ),
+                    }}
+                />
+            </Tabs>
+        </>
+    );
 }
