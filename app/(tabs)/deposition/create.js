@@ -3,6 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
+import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
@@ -82,27 +83,20 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput
-                onChangeText={(value) => setOwnerEmail(value)}
-                value={ownerEmail}
-                placeholder="Email du proprietaire"
-                label="Owner email"
-                style={[styles.profileInfo, styles.input]}
-            />
+        <ThemedTextInput 
+            onChangeText={(value) => setOwnerEmail(value)} 
+            value={ownerEmail}
+            placeholder="Email du proprietaire"
+            label="Owner email"
+            style={[styles.profileInfo, styles.input]}
+        />
+        
+        <ThemedButton>Open Camera</ThemedButton>
+        <ThemedButton>Upload images from phone</ThemedButton>
+        <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
 
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Open Camera</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Upload images from phone</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.buttonSubmit}>
-                <Text style={styles.submitButton}>Submit</Text>
-            </TouchableOpacity>
-        </ParallaxScrollView>
-    );
+    </ParallaxScrollView>
+);
 }
 
 const styles = StyleSheet.create({
