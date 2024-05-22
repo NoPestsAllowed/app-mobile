@@ -12,19 +12,12 @@ export default function HomeTab() {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-            headerImage={
-                <View style={styles.headerContainer}>
-                    <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
-                    <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                        <View style={styles.avatarContainer}>
-                            <Image source={require("../../assets/images/avatar1.jpg")} style={styles.avatar} />
-                        </View>
-                    </View>
-                </View>
-            }
-        >
+        headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
+        headerImage={
+                <Image source={require("../../assets/images/map.png")} style={styles.map} />
+
+        }
+    >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Welcome!</ThemedText>
             </ThemedView>
@@ -114,7 +107,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
-        // height: 30,
     },
     stepContainer: {
         gap: 8,

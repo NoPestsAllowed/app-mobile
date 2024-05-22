@@ -5,7 +5,6 @@ import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Link } from 'expo-router';
 
 export default function MydepositionsTab({ navigation }) {
     const [firstName, setFirstName] = useState(""); 
@@ -34,12 +33,12 @@ export default function MydepositionsTab({ navigation }) {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
+            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
             headerImage={
                 <View style={styles.headerContainer}>
                     <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                     <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, John{firstName}!</Text>
+                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
                         <View style={styles.avatarContainer}>
                             <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
                         </View>
@@ -48,27 +47,18 @@ export default function MydepositionsTab({ navigation }) {
             }
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={styles.title}>My depositions</ThemedText>
+                <ThemedText type="title" style={styles.title}>Dépositions Numéro 2</ThemedText>
+               
             </ThemedView>
-            <Link href="mentions" style={styles.buttonText}>mentions legales</Link>
-            <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.line1}>Name</ThemedText>
-                <ThemedText style={styles.line1}>Address</ThemedText>
+            <ThemedView>
+            <ThemedText>Created at:22/05/2024</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.line2}>Ma maison</ThemedText>
-                <ThemedText style={styles.line2}>1 Rue de la Republique, Meudon</ThemedText>
-            </ThemedView>
-            
-            <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.line1}>AirBnbn Nice</ThemedText>
-                <ThemedText style={styles.line1}>35 Louis Avenue, Nice</ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.rowContainer}>
-                <ThemedText style={styles.line2}>Bureau Paris</ThemedText>
-                <ThemedText style={styles.line2}>8 Av. du Mahatma Gandhi, Paris</ThemedText>
-                
+            <ThemedText>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi incidunt provident aut culpa voluptate at, vero quos, voluptatem quaerat accusantium minus, itaque nostrum. Cumque impedit quisquam, sit corporis tempore sed.
+         Pariatur, dolorem fugit. Vitae tempora ipsam corrupti corporis itaque perspiciatis accusantium ab, ad repellendus a minus ducimus minima pariatur possimus incidunt fuga suscipit expedita nemo porro omnis sit exercitationem! Aliquid!
+         Sapiente aliquam voluptate quos perferendis aperiam suscipit impedit, harum neque minima fugit reiciendis quod eligendi numquam perspiciatis accusamus quia officia eaque eum, velit, sunt asperiores exercitationem iusto laudantium. Obcaecati, repudiandae.</ThemedText>
+      
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
@@ -76,10 +66,17 @@ export default function MydepositionsTab({ navigation }) {
                 </TouchableOpacity>
             </ThemedView>
 
-            <ThemedText style={styles.profileInfo}>You have --- depositions</ThemedText>
-            <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                <Text style={styles.buttonText}>Create Deposition</Text>
-            </TouchableOpacity>
+            <ThemedView style={styles.photosContainer}>
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
+                
+            </ThemedView>
+
+
             
         </ParallaxScrollView>
     );
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         marginRight: 25,
         fontSize: 24,
-        color: 'white',
+        color: '#A53939',
         top: 50,
         fontWeight: "800",
     },
@@ -169,20 +166,19 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 0, 
     },
     line1: {
-        height: 35,
+        height:35,
         flex: 1,
         textAlign: 'left',
         paddingLeft: 10,
         lineHeight: 35,
-        left: 5,
+        left:5,
         fontSize: 16,
         backgroundColor: "lightgrey",
     },
     line2: {
-        height: 35,
+        height:35,
         flex: 3,
         paddingLeft: 10,
         textAlign: 'left',
@@ -196,4 +192,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: "lightgrey",
     },
+    photos: {
+        margin: 10,
+        width:150,
+        height:150,
+    },
+    photosContainer: {
+        flex: 1,
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "center",
+    }
 });
