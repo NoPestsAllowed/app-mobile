@@ -1,18 +1,33 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Slot, Stack, router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 
 import { useColorScheme } from "react-native";
-
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import { Provider, useSelector } from "react-redux";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import * as SecureStore from "expo-secure-store";
+import createSecureStore from "redux-persist-expo-securestore";
+// import storage from "redux-persist/lib/storage";
+import { SessionProvider } from "../providers/SessionProvider";
 import user from "../reducers/user";
+import { useSession } from "../hooks/useSession";
+
+const storage = createSecureStore();
+
+const reducers = combineReducers({ user });
+
+const persistConfig = { key: "noPestsAllowed", storage };
 
 const store = configureStore({
-    reducer: { user },
+    reducer: persistReducer(persistConfig, reducers),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
+
+const persistor = persistStore(store);
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -25,9 +40,33 @@ export default function RootLayout() {
     });
 
     const [isSignedUser, setIsSignedUser] = useState(false);
-    // const getUserToken = () => {
-    //     // await localStorage.getItem('')
-    // };
+    const { session } = useSession();
+
+    const baseStacks = [
+        <Stack.Screen key="landing" name="landing" />,
+        <Stack.Screen key="register" name="register" />,
+        <Stack.Screen key="login" name="login" />,
+        <Stack.Screen key="+not-found" name="+not-found" />,
+    ];
+    const [stacks, setStacks] = useState(baseStacks);
+
+    useEffect(() => {
+        setIsSignedUser((isSigned) => {
+            return session?.email !== null;
+        });
+    }, [session]);
+
+    useEffect(() => {
+        if (loaded && isSignedUser) {
+            setStacks((stacks) => {
+                if (!stacks.some((stack) => stack.props.name === "(tabs)")) {
+                    return [<Stack.Screen key="(tabs)" name="(tabs)" options={{ headerShown: false }} />, ...stacks];
+                }
+                return stacks;
+            });
+            router.push("/(tabs)");
+        }
+    }, [isSignedUser]);
 
     useEffect(() => {
         if (loaded) {
@@ -38,24 +77,15 @@ export default function RootLayout() {
     if (!loaded) {
         return null;
     }
-    console.log("rootLayout", isSignedUser);
     return (
         <Provider store={store}>
-            <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-                {isSignedUser ? (
-                    <Stack>
-                        <Stack.Screen name="landing" />
-                        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                        <Stack.Screen name="+not-found" />
-                    </Stack>
-                ) : (
-                    <Stack>
-                        <Stack.Screen name="register" />
-                        <Stack.Screen name="landing" />
-                        <Stack.Screen name="+not-found" />
-                    </Stack>
-                )}
-            </ThemeProvider>
+            <PersistGate persistor={persistor}>
+                <SessionProvider>
+                    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+                        <Stack>{stacks}</Stack>
+                    </ThemeProvider>
+                </SessionProvider>
+            </PersistGate>
         </Provider>
     );
 }

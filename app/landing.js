@@ -1,17 +1,23 @@
 import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { ThemedText } from "../components/ThemedText";
+import { useSelector } from "react-redux";
 
-export default function Page() {
+export default function LandingPage() {
+    const test = useSelector((state) => state.user.value.email);
     return (
         <View style={styles.container}>
             <View style={styles.main}>
                 <ThemedText type="title" style={styles.title}>
                     Hello World
                 </ThemedText>
+                <ThemedText>{test}</ThemedText>
                 <ThemedText style={styles.subtitle}>This is the first page of your app.</ThemedText>
                 <Link href="register" style={styles.link}>
                     <ThemedText type="link">Register</ThemedText>
+                </Link>
+                <Link href="login" style={styles.link}>
+                    <ThemedText type="link">Login</ThemedText>
                 </Link>
             </View>
         </View>
