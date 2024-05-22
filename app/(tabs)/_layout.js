@@ -54,9 +54,19 @@ export default function TabLayout() {
                     title: "Profile",
                     tabBarIcon: ({ color, focused }) => (
                         <TabBarIcon name={focused ? "settings" : "settings-outline"} color={color} />
+
                     ),
                 }}
             />
+            <Tabs.Screen
+                name="deposition/mydepositions"
+                options={{
+                    title: "My depositions",
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabBarIcon name={focused ? "library" : "code-slash-outline"} color={color} />
+                    ),
+                }}
+            /> 
         </Tabs>
     );
 }
