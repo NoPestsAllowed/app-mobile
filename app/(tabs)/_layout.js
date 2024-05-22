@@ -13,9 +13,9 @@ export default function TabLayout() {
     const user = useSelector((state) => state.user.value);
 
 
-    // if (!user.token) {
-    //     return <Redirect href="landing" />;
-    // }
+    if (!user.token) {
+        return <Redirect href="landing" />;
+    }
 
     return (
         <Tabs
@@ -38,8 +38,15 @@ export default function TabLayout() {
                 options={{
                     title: "Deposition",
                     tabBarIcon: ({ color, focused }) => (
-                        <TabBarIcon name={focused ? "folder" : "code-slash-outline"} color={color} />
+                        <TabBarIcon name={focused ? "folder" : "folder-outline"} color={color} />
                     ),
+                }}
+            />
+            <Tabs.Screen
+                name="deposition/create"
+                options={{
+                    href: null,
+                    title: "Deposition create",
                 }}
             />
             <Tabs.Screen
@@ -47,10 +54,20 @@ export default function TabLayout() {
                 options={{
                     title: "Profile",
                     tabBarIcon: ({ color, focused }) => (
-                        <TabBarIcon name={focused ? "star" : "code-slash-outline"} color={color} />
+                        <TabBarIcon name={focused ? "settings" : "settings-outline"} color={color} />
+
                     ),
                 }}
             />
+            <Tabs.Screen
+                name="deposition/mydepositions"
+                options={{
+                    title: "My depositions",
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabBarIcon name={focused ? "library" : "code-slash-outline"} color={color} />
+                    ),
+                }}
+            /> 
         </Tabs>
     );
 }

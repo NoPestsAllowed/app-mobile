@@ -51,31 +51,35 @@ export default function Register() {
                     onChangeText={(value) => setFirstName(value)}
                     value={firstName}
                     placeholder="First Name"
+                    keyboardType="given-name"
                     label="First Name"
                 />
                 <ThemedTextInput
                     onChangeText={(value) => setLastName(value)}
                     value={lastName}
                     placeholder="Last Name"
+                    keyboardType="family-name"
                     label="Last Name"
                 />
                 <ThemedTextInput
                     onChangeText={(value) => setEmail(value)}
                     value={email}
                     placeholder="Email"
-                    keyboardType="email-address"
+                    keyboardType="email"
                     label="Email"
                 />
                 <ThemedTextInput
                     onChangeText={(value) => setPassword(value)}
                     value={password}
                     placeholder="Password"
+                    keyboardType="current-password"
                     label="Password"
                 />
                 <ThemedTextInput
                     onChangeText={(value) => setConfirmPassword(value)}
                     value={confirmPassword}
                     placeholder="Confirm Password"
+                    keyboardType="current-password"
                     label="Confirm password"
                 />
                 <ThemedView style={styles.btnContainer}>

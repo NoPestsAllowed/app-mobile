@@ -38,19 +38,20 @@ export function SessionProvider(props) {
     };
 
     const signOut = () => {
-        // fetch(`${backendUrl}/logout`, {
-        //     method: "Post",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({ token: user.token }),
-        // })
-        //     .then((res) => res.json())
-        //     .then((registrationResult) => {
-        //         console.log("logout", logoutResult);
-        //         dispatch(updateEmail(null));
-        //         dispatch(removeToken());
-        //     });
-        dispatch(clearUserState());
-        router.push("/landing");
+        fetch(`${backendUrl}/logout`, {
+            method: "Post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({ token: user.token }),
+        })
+            .then((res) => res.json())
+            .then((registrationResult) => {
+                console.log("logout", registrationResult);
+                dispatch(clearUserState());
+                router.push("/landing");
+            });
     };
 
     return (
