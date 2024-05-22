@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
+import { ThemedButton } from "../../components/ThemedButton";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -33,19 +34,9 @@ export default function ProfileTab({ navigation }) {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-            headerImage={
-                <View style={styles.headerContainer}>
-                    <Image source={require("../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
-                    <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                        <View style={styles.avatarContainer}>
-                            <Image source={require("../../assets/images/avatar1.jpg")} style={styles.avatar} />
-                        </View>
-                    </View>
-                </View>
-            }
+            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
         >
+            
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title" style={styles.title}>Profile</ThemedText>
             </ThemedView>
@@ -105,14 +96,9 @@ export default function ProfileTab({ navigation }) {
                     />
                 </TouchableOpacity>
             </ThemedView>
-
-            <TouchableOpacity style={styles.button} onPress={handleLogout}>
-                <Text style={styles.buttonText}>Log out</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.button} onPress={handleDeleteAccount}>
-                <Text style={styles.buttonText}>Delete account</Text>
-            </TouchableOpacity>
+            <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
+           
+            <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
         </ParallaxScrollView>
     );
 }

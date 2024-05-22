@@ -1,23 +1,31 @@
-import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
+import React from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "./ThemedText";
 
 export function ThemedButton({ style, lightColor, darkColor, children, ...rest }) {
     return (
-        <TouchableOpacity style={[styles.btnContainer, style]} {...rest}>
-            <ThemedText style={styles.btnText}>{children}</ThemedText>
+        <TouchableOpacity style={[styles.button, style]} {...rest}>
+            <ThemedText style={styles.buttonText}>{children}</ThemedText>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    btnContainer: {
-        width: "80%",
-        borderWidth: 1,
-        borderColor: "#0a7ea4",
-        borderRadius: 5,
-        flexDirection: "row",
-        justifyContent: "center",
-        marginTop: 5,
+    button: {
+        backgroundColor: '#A53939',
+        paddingVertical: 15, 
+        paddingHorizontal: 50, 
+        margin: 10, 
+        borderRadius: 10,
+        alignItems: 'center',
+        shadowColor: '#888',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        elevation: 3,
     },
-    btnText: {},
+    buttonText: {
+        color: '#f5f5f5',
+        fontSize: 18,
+    },
 });

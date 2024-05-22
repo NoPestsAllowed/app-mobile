@@ -57,9 +57,7 @@ export default function HomeTab() {
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
                 <Button title="mentions legale"></Button>
-                <ThemedButton style={styles.button} onPress={() => logout()}>
-                    Logout
-                </ThemedButton>
+                <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
