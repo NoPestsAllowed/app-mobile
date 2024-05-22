@@ -46,6 +46,7 @@ export default function RootLayout() {
         <Stack.Screen key="landing" name="landing" />,
         <Stack.Screen key="register" name="register" />,
         <Stack.Screen key="login" name="login" />,
+        <Stack.Screen key="mentions" name="mentions" />,
         <Stack.Screen key="+not-found" name="+not-found" />,
     ];
     const [stacks, setStacks] = useState(baseStacks);

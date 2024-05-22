@@ -20,6 +20,9 @@ export default function LandingPage() {
                     <ThemedText type="link">Login</ThemedText>
                 </Link>
             </View>
+            <Link href="mentions" style={styles.link}>
+                    <ThemedText type="link">Mentions legales</ThemedText>
+                </Link>
         </View>
     );
 }
