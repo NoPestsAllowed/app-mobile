@@ -33,12 +33,12 @@ export default function MydepositionsTab({ navigation }) {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
+            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
             headerImage={
                 <View style={styles.headerContainer}>
                     <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                     <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
+                        <Text style={styles.welcomeText}>Welcome, John{firstName}!</Text>
                         <View style={styles.avatarContainer}>
                             <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
                         </View>
@@ -67,6 +67,7 @@ export default function MydepositionsTab({ navigation }) {
             <ThemedView style={styles.rowContainer}>
                 <ThemedText style={styles.line2}>Bureau Paris</ThemedText>
                 <ThemedText style={styles.line2}>8 Av. du Mahatma Gandhi, Paris</ThemedText>
+                
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
@@ -75,7 +76,6 @@ export default function MydepositionsTab({ navigation }) {
             </ThemedView>
 
             <ThemedText style={styles.profileInfo}>You have --- depositions</ThemedText>
-
             <TouchableOpacity style={styles.button} onPress={handleLogout}>
                 <Text style={styles.buttonText}>Create Deposition</Text>
             </TouchableOpacity>
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     welcomeText: {
         marginRight: 25,
         fontSize: 24,
-        color: '#A53939',
+        color: 'white',
         top: 50,
         fontWeight: "800",
     },
@@ -168,19 +168,20 @@ const styles = StyleSheet.create({
     rowContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginVertical: 0, 
     },
     line1: {
-        height:35,
+        height: 35,
         flex: 1,
         textAlign: 'left',
         paddingLeft: 10,
         lineHeight: 35,
-        left:5,
+        left: 5,
         fontSize: 16,
         backgroundColor: "lightgrey",
     },
     line2: {
-        height:35,
+        height: 35,
         flex: 3,
         paddingLeft: 10,
         textAlign: 'left',
