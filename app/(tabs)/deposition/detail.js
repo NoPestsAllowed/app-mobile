@@ -46,32 +46,20 @@ export default function MydepositionsTab({ navigation }) {
 
     return (
         <ParallaxScrollView
-            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-            headerImage={
-                <View style={styles.headerContainer}>
-                    <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
-                    <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
-                        <View style={styles.avatarContainer}>
-                            <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
-                        </View>
-                    </View>
-                </View>
-            }
-        >
+        headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
+    >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={styles.title}>Dépositions Numéro 2</ThemedText>
+                <ThemedText type="title">Dépositions Numéro 2</ThemedText>
                
             </ThemedView>
             <ThemedView>
-            <ThemedText>Created at:22/05/2024</ThemedText>
+            <ThemedText>Created at: 22/05/2024</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-            <ThemedText>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi incidunt provident aut culpa voluptate at, vero quos, voluptatem quaerat accusantium minus, itaque nostrum. Cumque impedit quisquam, sit corporis tempore sed.
-         Pariatur, dolorem fugit. Vitae tempora ipsam corrupti corporis itaque perspiciatis accusantium ab, ad repellendus a minus ducimus minima pariatur possimus incidunt fuga suscipit expedita nemo porro omnis sit exercitationem! Aliquid!
-         Sapiente aliquam voluptate quos perferendis aperiam suscipit impedit, harum neque minima fugit reiciendis quod eligendi numquam perspiciatis accusamus quia officia eaque eum, velit, sunt asperiores exercitationem iusto laudantium. Obcaecati, repudiandae.</ThemedText>
-      
+            <ThemedText>{ }     Nous avons loué notre Airnb depuis une semaine et à notre arrivée il était plein de fourmis. 
+            Nous ne pouvons rien poser sur le sol, car les insectes continuent de courir partout et touchent tout. 
+            Nos vacances sont gâchées à cause de ce problème.</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
@@ -142,14 +130,6 @@ const styles = StyleSheet.create({
         margin: 3,
         fontSize: 18,
     },
-    title: {
-        fontSize: 32,
-        color: '#A53939',
-        shadowColor: '#888',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 7,
-    },
     input: {
         borderWidth: 1,
         borderColor: '#A53939',
@@ -209,6 +189,8 @@ const styles = StyleSheet.create({
         margin: 10,
         width:150,
         height:150,
+        borderWidth: 2,
+        borderColor: '#ca8035',
     },
     photosContainer: {
         flex: 1,
