@@ -13,9 +13,10 @@ export default function TabLayout() {
     const colorScheme = useColorScheme();
     const user = useSelector((state) => state.user.value);
 
-    // if (!user.token) {
-    //     return <Redirect href="landing" />;
-    // }
+
+    if (!user.token) {
+        return <Redirect href="landing" />;
+    }
 
     return (
         <>

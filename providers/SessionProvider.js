@@ -21,6 +21,7 @@ export function SessionProvider(props) {
     }, [user]);
 
     const signIn = (email, password) => {
+        console.log("conecté")
         fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -38,20 +39,20 @@ export function SessionProvider(props) {
     };
 
     const signOut = async () => {
-        fetch(`${backendUrl}/logout`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify({ token: user.token }),
-        })
-            .then((res) => res.json())
-            .then((registrationResult) => {
-                console.log("logout", registrationResult);
+        // fetch(`${backendUrl}/logout`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${user.token}`,
+        //     },
+        //     body: JSON.stringify({ token: user.token }),
+        // })
+        //     .then((res) => res.json())
+        //     .then((registrationResult) => {
+        //         console.log("logout", registrationResult);
                 dispatch(clearUserState());
                 router.push("/landing");
-            });
+            // });
     };
 
     return (
