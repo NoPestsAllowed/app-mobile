@@ -8,7 +8,7 @@ import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("John");
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
