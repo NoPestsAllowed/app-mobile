@@ -65,7 +65,7 @@ export default function CreateDepositionTab({ navigation }) {
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasCameraPermission(status === 'granted');
+            setHasCameraPermission(status === "granted");
         })();
     }, []);
 
@@ -81,7 +81,6 @@ export default function CreateDepositionTab({ navigation }) {
         }
     };
 
-
     if (cameraOpen && hasCameraPermission) {
         return (
             <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
@@ -89,7 +88,6 @@ export default function CreateDepositionTab({ navigation }) {
                     <TouchableOpacity onPress={takePicture}>
                         <FontAwesome name="circle-thin" size={95} color="#ffffff" />
                     </TouchableOpacity>
-
                 </View>
             </CameraView>
         );
@@ -116,6 +114,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.btnContainer}>
                 <ThemedButton
+                    elevated={false}
                     onPress={() => {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
@@ -126,6 +125,7 @@ export default function CreateDepositionTab({ navigation }) {
                 </ThemedButton>
 
                 <ThemedButton
+                    elevated={false}
                     onPress={() => {
                         setDepoByPicture(false);
                         setDepoByHonnor(true);
@@ -137,15 +137,15 @@ export default function CreateDepositionTab({ navigation }) {
             </ThemedView>
 
             {depoByPicture && (
-                <>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Open Camera</Text>
-                    </TouchableOpacity>
+                <ThemedView style={styles.pictureBtn}>
+                    <ThemedButton onPress={openCamera} style={styles.button}>
+                        <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
+                    </ThemedButton>
 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Upload images from phone</Text>
-                    </TouchableOpacity>
-                </>
+                    <ThemedButton style={styles.button}>
+                        <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
+                    </ThemedButton>
+                </ThemedView>
             )}
 
             {depoByHonnor && <ThemedCheckbox label="Je déclare sur l'honneur la véracité de ma déposition" />}
@@ -168,9 +168,9 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedButton onPress={openCamera}>Open Camera</ThemedButton>
-            <ThemedButton>Upload Images from Phone</ThemedButton>
-            <ThemedButton onPress={() => navigation.goBack()}>Logout</ThemedButton>
+            {/* <ThemedButton onPress={openCamera}>Open Camera</ThemedButton>
+            <ThemedButton>Upload Images from Phone</ThemedButton> */}
+            {/* <ThemedButton onPress={() => navigation.goBack()}>Logout</ThemedButton> */}
         </ParallaxScrollView>
     );
 }
@@ -178,11 +178,11 @@ export default function CreateDepositionTab({ navigation }) {
 const styles = StyleSheet.create({
     titleContainer: {
         padding: 16,
-        alignItems: 'center',
+        alignItems: "center",
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
     profileInfo: {
         margin: 16,
@@ -192,14 +192,14 @@ const styles = StyleSheet.create({
     },
     snapContainer: {
         flex: 1,
-        backgroundColor: 'transparent',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
+        backgroundColor: "transparent",
+        justifyContent: "flex-end",
+        alignItems: "center",
     },
     controls: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: "100%",
         paddingHorizontal: 20,
         paddingBottom: 20,
     },
@@ -212,8 +212,11 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     optionSelected: {
-        backgroundColor: "green",
+        backgroundColor: "#bbf7d0",
         border: 2,
         border: "green",
+    },
+    pictureBtn: {
+        alignItems: "center",
     },
 });

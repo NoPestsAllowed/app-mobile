@@ -19,8 +19,8 @@ export default function SelectList({ userLocation }) {
             `
             [out:json];
             (
-                rel["type"="associatedStreet"](around:50,${latitude},${longitude});
-                rel["amenity"](around:50,${latitude},${longitude});
+                rel["type"="associatedStreet"](around:${distance},${latitude},${longitude});
+                rel["amenity"](around:${distance},${latitude},${longitude});
             );
             (._;>;);
             out meta;
@@ -122,9 +122,9 @@ export default function SelectList({ userLocation }) {
                 <ThemedTextInput placeholder="Search location" onChangeText={(v) => autocompleteLocation(v)} />
                 <ThemedText>{overpassResult && overpassResult.length} results length</ThemedText>
                 <ThemedView
-                    style={{
-                        maxHeight: "20%",
-                    }}
+                // style={{
+                //     maxHeight: "20%",
+                // }}
                 >
                     <Animated.View>
                         <ScrollView
