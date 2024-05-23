@@ -5,6 +5,7 @@ import { ThemedText } from "../../components/ThemedText";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedButton } from "../../components/ThemedButton";
 import { useSession } from "../../hooks/useSession";
+import { Link } from "expo-router";
 
 export default function HomeTab() {
     const { logout } = useSession();
@@ -56,8 +57,8 @@ export default function HomeTab() {
                 </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
-                <Button title="mentions legale"></Button>
-                <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
+                <Link href="mentions" style={styles.buttonText}>mentions legales</Link>
+                <ThemedButton style={styles.button} onPress={() => logout()}>Logout</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );

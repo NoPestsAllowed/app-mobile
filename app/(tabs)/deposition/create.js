@@ -13,6 +13,7 @@ export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
     const [localisation, setLocalisation] = useState("");
     const [ownerEmail, setOwnerEmail] = useState("");
+    const [description, setDescription] = useState("");
     const [userLocation, setUserLocation] = useState(null);
 
     const initialLocalisation = {
