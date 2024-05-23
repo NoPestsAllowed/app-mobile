@@ -9,6 +9,8 @@ import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import { Camera, CameraView } from "expo-camera";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {useDispatch , useSelector } from "react-redux";
+import {updatePhoto} from "../../../reducers/user";
 
 export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
@@ -19,7 +21,8 @@ export default function CreateDepositionTab({ navigation }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
 
-    const cameraRef = useRef(null);
+  
+    let cameraRef = useRef(null);
 
     const initialLocalisation = {
         latitude: 48.86667,
@@ -67,9 +70,13 @@ export default function CreateDepositionTab({ navigation }) {
         setCameraOpen(true);
     };
 
+    const myPhoto = useSelector((state) => state.user.value.photo);
+    const [photo, setPhoto] = useState({});
+    const dispatch = useDispatch();
     const takePicture = async () => {
         if (cameraRef.current) {
             const photo = await cameraRef.current.takePictureAsync();
+            dispatch(updatePhoto(photo?.uri));
             console.log(photo);
             setCameraOpen(false); // Close the camera after taking a picture
         }
@@ -78,12 +85,14 @@ export default function CreateDepositionTab({ navigation }) {
 
     if (cameraOpen && hasCameraPermission) {
         return (
-            <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
+            <CameraView style={{ flex: 1 }} ref={cameraRef} >
                 <View style={styles.snapContainer}>
-                    <TouchableOpacity onPress={takePicture}>
+                    <TouchableOpacity onPress={() => takePicture()}  onChangeText={(value) => setPhoto(value)} value={photo}>
                         <FontAwesome name="circle-thin" size={95} color="#ffffff" />
                     </TouchableOpacity>
-                   
+                    <View style={styles.controls}>
+
+                    </View>
                 </View>
             </CameraView>
         );

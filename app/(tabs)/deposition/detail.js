@@ -5,6 +5,8 @@ import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch , useSelector } from "react-redux";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function MydepositionsTab({ navigation }) {
     const [firstName, setFirstName] = useState(""); 
@@ -14,6 +16,7 @@ export default function MydepositionsTab({ navigation }) {
     const [birthDate, setBirthDate] = useState("");
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
+    
 
     const handleLogout = () => {
         navigation.navigate('Home');
@@ -30,6 +33,16 @@ export default function MydepositionsTab({ navigation }) {
     const toggleAuthorizeNotifications = () => {
         setAuthorizeNotifications(!authorizeNotifications);
     };
+    
+    const user = useSelector((state) => state.user.value);
+    const photos = user.photo.map((data, i) => {
+        return (
+            <View key={i} style={styles.photosContainer}>
+                <FontAwesome name='times' size={20} color='#000000' style={styles.deleteIcon} />
+                <Image source={{ uri: data }} style={styles.photos} />
+            </View>
+        );
+    });
 
     return (
         <ParallaxScrollView
@@ -67,13 +80,13 @@ export default function MydepositionsTab({ navigation }) {
             </ThemedView>
 
             <ThemedView style={styles.photosContainer}>
+                { /* <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
                 <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
                 <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
                 <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
                 <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                
+                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} /> */}
+                {photos}
             </ThemedView>
 
 
