@@ -21,7 +21,6 @@ export function SessionProvider(props) {
     }, [user]);
 
     const signIn = (email, password) => {
-        console.log("conecté")
         fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -50,9 +49,9 @@ export function SessionProvider(props) {
         //     .then((res) => res.json())
         //     .then((registrationResult) => {
         //         console.log("logout", registrationResult);
-                dispatch(clearUserState());
-                router.push("/landing");
-            // });
+        dispatch(clearUserState());
+        router.push("/landing");
+        // });
     };
 
     return (

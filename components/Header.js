@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
+import { ThemedText } from "./ThemedText";
 
 export function Header({ style, lightColor, darkColor, children, ...rest }) {
     const { session } = useSession();
@@ -73,7 +74,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                 />
             </View>
             <View style={styles.rightHeader}>
-                <Text style={styles.welcomeText}>Welcome, John!</Text>
+                <ThemedText style={styles.welcomeText}>Welcome, John!</ThemedText>
                 <TouchableOpacity style={styles.avatarContainer} onPress={handleAvatarPress}>
                     <Image source={require("../assets/images/avatar1.jpg")} style={styles.avatar} />
                 </TouchableOpacity>
@@ -87,19 +88,19 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                 <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
                     <View style={styles.popupMenu}>
                         <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/create")}>
-                            <Text style={styles.menuItemText}>Create Depositions</Text>
+                            <ThemedText style={styles.menuItemText}>Create Depositions</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
                             onPress={() => router.navigate("deposition/mydepositions")}
                         >
-                            <Text style={styles.menuItemText}>My Depositions</Text>
+                            <ThemedText style={styles.menuItemText}>My Depositions</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("contact")}>
-                            <Text style={styles.menuItemText}>Contact us</Text>
+                            <ThemedText style={styles.menuItemText}>Contact us</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("login")}>
-                            <Text style={styles.menuItemText}>Logout</Text>
+                            <ThemedText style={styles.menuItemText}>Logout</ThemedText>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
