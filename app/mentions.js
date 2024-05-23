@@ -8,7 +8,7 @@ export default function MentionsPage() {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.main}>
-                <ThemedText type="title" style={styles.title}>
+                <ThemedText type="title">
                     Mentions Legales
                 </ThemedText>
                 <View style={styles.section}>
@@ -38,7 +38,7 @@ export default function MentionsPage() {
                     Nom du directeur de publication : [Nom du directeur]{'\n'}
                     </ThemedText>
                 </View>
-                <ThemedText type="title" style={styles.title2}>
+                <ThemedText type="title">
                     Politique de Confidentialité
                 </ThemedText>
 
@@ -220,13 +220,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         maxWidth: 960,
         marginHorizontal: "auto",
-    },
-    title: {
-        fontSize: 54,
-        textAlign: "center",
-        fontWeight: "bold",
-        lineHeight: 64,
-        marginBottom: 50,
     },
     title2: {
         fontSize: 32,

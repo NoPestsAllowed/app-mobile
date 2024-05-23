@@ -61,7 +61,7 @@ export default function MydepositionsTab({ navigation }) {
             </View>
 
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={styles.title}>My depositions</ThemedText>
+                <ThemedText type="title">My depositions</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainerTable}>
@@ -114,14 +114,6 @@ const styles = StyleSheet.create({
     profileInfo: {
         margin: 3,
         fontSize: 18,
-    },
-    title: {
-        fontSize: 32,
-        color: '#A53939',
-        shadowColor: '#888',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 7,
     },
     rowContainerTable: {
         paddingHorizontal: 10,

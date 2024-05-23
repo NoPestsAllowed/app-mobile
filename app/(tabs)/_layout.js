@@ -53,7 +53,8 @@ export default function TabLayout() {
                         ),
                     }}
                 />
-                <Tabs.Screen
+               
+               <Tabs.Screen
                     name="deposition/create"
                     options={{
                         title: "Deposition Create",
@@ -67,12 +68,19 @@ export default function TabLayout() {
                         href: null,
                     }}
                 />
-                <Tabs.Screen
+                 <Tabs.Screen
                     name="deposition/mydepositions"
                     options={{
-                        title: "My depositions",
+                        title: "Deposition Detail",
+                        href: null,
+                    }}
+                />
+             <Tabs.Screen
+                    name="contact"
+                    options={{
+                        title: "Contact",
                         tabBarIcon: ({ color, focused }) => (
-                            <TabBarIcon name={focused ? "library" : "library-outline"} color={color} />
+                            <TabBarIcon name={focused ? "library" : "mail"} color={color} />
                         ),
                     }}
                 />

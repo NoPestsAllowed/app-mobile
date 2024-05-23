@@ -8,7 +8,7 @@ export default function LandingPage() {
     return (
         <View style={styles.container}>
             <View style={styles.main}>
-                <ThemedText type="title" style={styles.title}>
+                <ThemedText type="title">
                     Hello World
                 </ThemedText>
                 <ThemedText>{test}</ThemedText>
@@ -38,11 +38,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         maxWidth: 960,
         marginHorizontal: "auto",
-    },
-    title: {
-        fontSize: 64,
-        fontWeight: "bold",
-        lineHeight: 64,
     },
     subtitle: {
         fontSize: 36,
