@@ -1,38 +1,28 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../components/ParallaxScrollView";
-import { ThemedText } from "../../components/ThemedText";
-import { ThemedButton } from "../../components/ThemedButton";
-import { ThemedView } from "../../components/ThemedView";
-import { ThemedTextInput } from "../../components/ThemedTextInput";
+import ParallaxScrollView from "../components/ParallaxScrollView";
+import { ThemedText } from "../components/ThemedText";
+import { ThemedButton } from "../components/ThemedButton";
+import { ThemedView } from "../components/ThemedView";
+import { ThemedTextInput } from "../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { router } from "expo-router";
 
-
-export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("");
+export default function MessagesentTab({ navigation }) {
+    const [firstName, setFirstName] = useState("John");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState("");
-    const [modifyNotifications, setModifyNotifications] = useState(false);
-    const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
-    
+  
+    const handleLogin = () => {
+        navigation.navigate('login');
+    };
 
-    const handleLogout = () => {
+    const handleHome = () => {
         navigation.navigate('Home');
     };
 
-    const handleDeleteAccount = () => {
-        navigation.navigate('Home');
-    };
-
-    const toggleModifyNotifications = () => {
-        setModifyNotifications(!modifyNotifications);
-    };
-
-    const toggleAuthorizeNotifications = () => {
-        setAuthorizeNotifications(!authorizeNotifications);
-    };
 
     return (
         <ParallaxScrollView
@@ -40,7 +30,7 @@ export default function ProfileTab({ navigation }) {
         >
             
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profile</ThemedText>
+                <ThemedText type="title">Your message has been sent !</ThemedText>
             </ThemedView>
 
             <ThemedTextInput

@@ -99,8 +99,8 @@ export default function CreateDepositionTab({ navigation }) {
             headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title" style={styles.title}>
-                    Create Deposition
+                <ThemedText type="title">
+                    Créer une déposition
                 </ThemedText>
             </ThemedView>
 
@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     profileInfo: {
-        margin: 16,
+        margin: 3,
+        fontSize: 18,
     },
     input: {
         marginVertical: 8,

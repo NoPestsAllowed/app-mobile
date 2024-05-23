@@ -166,14 +166,6 @@ const styles = StyleSheet.create({
 //         color: '#f5f5f5',
 //         fontSize: 18,
 //     },
-//     title: {
-//         fontSize: 32,
-//         color: "#A53939",
-//         shadowColor: "#888",
-//         shadowOffset: { width: 0, height: 2},
-//         shadowOpacity: 1,
-//         shadowRadius: 7,
-// },
 // input: {
 //     borderWidth: 1,
 //     borderColor: '#A53939',

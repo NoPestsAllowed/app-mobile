@@ -45,16 +45,17 @@ export default function HomeTab() {
                 </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
+            <ThemedView style={styles.alertContainer}>
+            <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
+                <ThemedText type="subtitle" style={styles.alert}>ALERT!</ThemedText>
+                </ThemedView>
                 <ThemedText style={styles.paragraph}>
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
-                        When
-                    </ThemedText>{" "}
-                    you're ready, run <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a
-                    fresh <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{" "}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-                    <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-                </ThemedText>
+                        3 
+                        {/* {lastDepositions} */}
+                    </ThemedText> { }
+                     raports d'insectes ont été ajoutés dans les dernières 24 heures !
+                     </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
                 <Link href="mentions" style={styles.buttonText}>mentions legales</Link>
@@ -71,15 +72,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         padding: 16,
     },
-    noPestsAllowedLogo: {
-        height: 100,
-        width: 100,
-        top: 50,
-    },
-    rightHeader: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
     welcomeText: {
         marginRight: 25,
         fontSize: 24,
@@ -87,21 +79,7 @@ const styles = StyleSheet.create({
         top: 50,
         fontWeight: "800",
     },
-    avatarContainer: {
-        height: 104,
-        width: 104,
-        borderRadius: 52,
-        borderWidth: 2,
-        borderColor: "silver",
-        justifyContent: "center",
-        alignItems: "center",
-        top: 50,
-    },
-    avatar: {
-        height: 100,
-        width: 100,
-        borderRadius: 50,
-    },
+   
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
@@ -146,7 +124,24 @@ const styles = StyleSheet.create({
     paragraph: {
         paddingLeft: 5,
     },
+    alertContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+    },
+    alert: {
+        marginLeft: 28,
+        color: "#7a2307",
+        fontSize: "20",
+        fontWeight: "800",
+    },
+    alertLogo: {
+        height:50, 
+        width:50,
+    },
     firstWord: {
         marginLeft: 25,
+        color: "#7a2307",
+        fontSize: "20",
     },
 });
