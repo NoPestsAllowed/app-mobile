@@ -15,6 +15,7 @@ export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
     const [localisation, setLocalisation] = useState("");
     const [ownerEmail, setOwnerEmail] = useState("");
+    const [description, setDescription] = useState("");
 
     // const [modifyNotifications, setModifyNotifications] = useState(false);
     // const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
@@ -69,6 +70,16 @@ return (
             value={localisation}
             placeholder="Localisation"
             label="Localisation"
+            style={[styles.profileInfo, styles.input]}
+        />
+
+        <ThemedTextInput
+            multiline
+            numberOfLines={4}
+            onChangeText={(value) => setDescription(value)} 
+            value={description}
+            placeholder="Description"
+            label="Description"
             style={[styles.profileInfo, styles.input]}
         />
 
