@@ -7,6 +7,8 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
+import SelectList from "../../../components/SelectList";
+// const { fetchOverpass } = require("../../../modules/overpassApi");
 
 export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
@@ -50,10 +52,27 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    const autocompleteLocation = (value) => {
-        console.log("autocomplete");
-        setLocalisation(value);
-    };
+    // const autocompleteLocation = async (value) => {
+    //     const { latitude, longitude } = userLocation;
+    //     const distance = 5;
+    //     console.log("autocomplete");
+    //     setLocalisation(value);
+    //     const overpassQueryResult = await fetchOverpass(`
+    //         [out:json];
+    //         (way["highway"="residential"]["name"]["addr:housenumber"](around:${distance},${latitude},${longitude});
+    //         rel["type"="associatedStreet"](around:${distance},${latitude},${longitude}););
+    //         out center;(way[building]["addr:housenumber"](around:${distance},${latitude},${longitude});
+    //         nwr["addr:housenumber"][!"communication:*"](around:${distance},${latitude},${longitude});
+    //         nwr["tourism"](around:${distance},${latitude},${longitude});
+    //         nwr["station"](around:${distance},${latitude},${longitude});
+    //         nwr["amenity"](around:${distance},${latitude},${longitude});
+    //         nwr["shop"](around:${distance},${latitude},${longitude});
+    //         nwr["name"](around:${distance},${latitude},${longitude}););
+    //         out center;
+    //     `);
+    //     console.log(overpassQueryResult);
+    //     setOverpassResult(overpassQueryResult.features);
+    // };
 
     return (
         <ParallaxScrollView
@@ -74,13 +93,14 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput
+            {/* <ThemedTextInput
                 onChangeText={(value) => autocompleteLocation(value)}
                 value={localisation}
                 placeholder="Localisation"
                 label="Localisation"
                 style={[styles.profileInfo, styles.input]}
-            />
+            /> */}
+            {userLocation && <SelectList userLocation={userLocation} />}
 
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
