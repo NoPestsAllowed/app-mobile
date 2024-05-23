@@ -13,7 +13,6 @@ export default function TabLayout() {
     const colorScheme = useColorScheme();
     const user = useSelector((state) => state.user.value);
 
-
     if (!user.token) {
         return <Redirect href="landing" />;
     }
@@ -72,9 +71,7 @@ export default function TabLayout() {
                     name="deposition/mydepositions"
                     options={{
                         title: "My depositions",
-                        tabBarIcon: ({ color, focused }) => (
-                            <TabBarIcon name={focused ? "library" : "library-outline"} color={color} />
-                        ),
+                        href: null,
                     }}
                 />
             </Tabs>

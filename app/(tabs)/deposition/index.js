@@ -118,19 +118,19 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     button: {
-        backgroundColor: '#A53939',
+        backgroundColor: "#A53939",
         padding: 10,
         margin: 5,
         borderRadius: 10,
-        alignItems: 'center',
-        shadowColor: '#888',
+        alignItems: "center",
+        shadowColor: "#888",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 7,
         elevation: 3,
     },
     buttonText: {
-        color: '#f5f5f5',
+        color: "#f5f5f5",
         fontSize: 18,
-    }
+    },
 });
