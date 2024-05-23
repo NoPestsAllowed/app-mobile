@@ -52,7 +52,7 @@ export default function register() {
    
     
        <TouchableOpacity style={styles.button}>
-           <Text style={styles.buttonText}>Se connecter</Text>
+           <Text style={styles.buttonText} onPress={()=>handleLogin()}>Se connecter</Text>
        </TouchableOpacity>
        </KeyboardAvoidingView>
     //     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>

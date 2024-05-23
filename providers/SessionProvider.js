@@ -21,6 +21,7 @@ export function SessionProvider(props) {
     }, [user]);
 
     const signIn = (email, password) => {
+        console.log("conecté")
         fetch(`${backendUrl}/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
