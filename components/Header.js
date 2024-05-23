@@ -1,5 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View, Text, Image, Alert, Animated, Easing, Platform, Modal } from "react-native";
+import {
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Text,
+    Image,
+    Alert,
+    Animated,
+    Easing,
+    Platform,
+    Modal,
+} from "react-native";
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
 
@@ -75,11 +86,13 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
             >
                 <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
                     <View style={styles.popupMenu}>
-
                         <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/create")}>
                             <Text style={styles.menuItemText}>Create Depositions</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/mydepositions")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => router.navigate("deposition/mydepositions")}
+                        >
                             <Text style={styles.menuItemText}>My Depositions</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("contact")}>
@@ -107,7 +120,7 @@ const styles = StyleSheet.create({
     logoContainer: {
         height: 77,
         width: 77,
-        top:15,
+        top: 15,
         borderRadius: 50,
         borderWidth: 1,
         borderColor: "#c17829",
@@ -127,7 +140,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: "white",
         top: 15,
-        fontWeight: "800",
+        fontWeight: 800,
     },
     avatarContainer: {
         height: 77,
@@ -154,8 +167,8 @@ const styles = StyleSheet.create({
         padding: 25,
         elevation: 4,
         color: "black",
-        elevation: 10, 
-        zIndex: 10, 
+        elevation: 10,
+        zIndex: 10,
     },
     menuItem: {
         paddingVertical: 8,
@@ -164,12 +177,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         margin: 5,
         color: "white",
-        fontWeight:"700",
+        fontWeight: 700,
     },
     modalOverlay: {
         flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-end',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    }
+        justifyContent: "flex-start",
+        alignItems: "flex-end",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
 });

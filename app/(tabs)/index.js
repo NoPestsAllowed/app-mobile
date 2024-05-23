@@ -13,12 +13,9 @@ export default function HomeTab() {
 
     return (
         <ParallaxScrollView
-        headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-        headerImage={
-                <Image source={require("../../assets/images/map.png")} style={styles.map} />
-
-        }
-    >
+            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
+            headerImage={<Image source={require("../../assets/images/map.png")} style={styles.map} />}
+        >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Welcome!{firstName}</ThemedText>
             </ThemedView>
@@ -45,21 +42,27 @@ export default function HomeTab() {
                 </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-            <ThemedView style={styles.alertContainer}>
-            <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
-                <ThemedText type="subtitle" style={styles.alert}>ALERT!</ThemedText>
+                <ThemedView style={styles.alertContainer}>
+                    <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
+                    <ThemedText type="subtitle" style={styles.alert}>
+                        ALERT!
+                    </ThemedText>
                 </ThemedView>
                 <ThemedText style={styles.paragraph}>
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
-                        3 
-                        {/* {lastDepositions} */}
-                    </ThemedText> { }
-                     raports d'insectes ont été ajoutés dans les dernières 24 heures !
-                     </ThemedText>
+                        3{/* {lastDepositions} */}
+                    </ThemedText>{" "}
+                    {}
+                    raports d'insectes ont été ajoutés dans les dernières 24 heures !
+                </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
-                <Link href="mentions" style={styles.buttonText}>mentions legales</Link>
-                <ThemedButton style={styles.button} onPress={() => logout()}>Logout</ThemedButton>
+                <Link href="mentions" style={styles.buttonText}>
+                    mentions legales
+                </Link>
+                <ThemedButton style={styles.button} onPress={() => logout()}>
+                    Logout
+                </ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -77,9 +80,9 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: "#A53939",
         top: 50,
-        fontWeight: "800",
+        fontWeight: 800,
     },
-   
+
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
@@ -125,23 +128,23 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
     },
     alertContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         padding: 10,
     },
     alert: {
         marginLeft: 28,
         color: "#7a2307",
-        fontSize: "20",
-        fontWeight: "800",
+        fontSize: 20,
+        fontWeight: 800,
     },
     alertLogo: {
-        height:50, 
-        width:50,
+        height: 50,
+        width: 50,
     },
     firstWord: {
         marginLeft: 25,
         color: "#7a2307",
-        fontSize: "20",
+        fontSize: 20,
     },
 });

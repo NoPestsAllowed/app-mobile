@@ -99,9 +99,7 @@ export default function CreateDepositionTab({ navigation }) {
             headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">
-                    Créer une déposition
-                </ThemedText>
+                <ThemedText type="title">Créer une déposition</ThemedText>
             </ThemedView>
 
             <ThemedTextInput

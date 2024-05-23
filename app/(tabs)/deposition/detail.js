@@ -7,7 +7,7 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function MydepositionsTab({ navigation }) {
-    const [firstName, setFirstName] = useState(""); 
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -37,15 +37,15 @@ export default function MydepositionsTab({ navigation }) {
     >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Dépositions Numéro 2</ThemedText>
-               
+
             </ThemedView>
             <ThemedView>
             <ThemedText>Created at: 22/05/2024</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-            <ThemedText>{ }     Nous avons loué notre Airnb depuis une semaine et à notre arrivée il était plein de fourmis. 
-            Nous ne pouvons rien poser sur le sol, car les insectes continuent de courir partout et touchent tout. 
+            <ThemedText>{ }     Nous avons loué notre Airnb depuis une semaine et à notre arrivée il était plein de fourmis.
+            Nous ne pouvons rien poser sur le sol, car les insectes continuent de courir partout et touchent tout.
             Nos vacances sont gâchées à cause de ce problème.</ThemedText>
             </ThemedView>
 
@@ -61,11 +61,11 @@ export default function MydepositionsTab({ navigation }) {
                 <Image style={styles.photos} source={require("../../../assets/images/report4.png")} />
                 <Image style={styles.photos} source={require("../../../assets/images/report5.png")} />
                 <Image style={styles.photos} source={require("../../../assets/images/report6.png")} />
-                
+
             </ThemedView>
 
 
-            
+
         </ParallaxScrollView>
     );
 }
@@ -91,14 +91,14 @@ const styles = StyleSheet.create({
         fontSize: 24,
         color: '#A53939',
         top: 50,
-        fontWeight: "800",
+        fontWeight: 800,
     },
     avatarContainer: {
-        height: 104, 
-        width: 104, 
-        borderRadius: 52, 
-        borderWidth: 2, 
-        borderColor: 'silver', 
+        height: 104,
+        width: 104,
+        borderRadius: 52,
+        borderWidth: 2,
+        borderColor: 'silver',
         justifyContent: 'center',
         alignItems: 'center',
         top: 50,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     avatar: {
         height: 100,
         width: 100,
-        borderRadius: 50, 
+        borderRadius: 50,
     },
     titleContainer: {
         flexDirection: "row",
