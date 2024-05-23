@@ -20,6 +20,7 @@ export default function SelectList({ userLocation }) {
             [out:json];
             (
                 rel["type"="associatedStreet"](around:50,${latitude},${longitude});
+                rel["amenity"](around:50,${latitude},${longitude});
             );
             (._;>;);
             out meta;
@@ -37,6 +38,7 @@ export default function SelectList({ userLocation }) {
             [out:json];
             (
                 rel["type"="associatedStreet"](around:50,${latitude},${longitude});
+                node["amenity"](around:150,${latitude},${longitude});
             );
             (._;>;);
             out meta;
@@ -46,10 +48,70 @@ export default function SelectList({ userLocation }) {
             const result = overpassQueryResult.flat(1);
             setOverpassResult(
                 // overpassQueryResult.features.filter((item, idx) => overpassQueryResult.features.indexOf(item) === idx)
-                result.filter((item, idx) => result.indexOf(item) === idx)
+                result
+                    .filter((item, idx) => result.indexOf(item) === idx)
+                    .filter((item) => {
+                        console.log(
+                            "here",
+                            item && item.street,
+                            item.tags["amenity"] &&
+                                (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+                                (item.tags["addr:street"] || item.tags["contact:street"])
+                        );
+                        return (
+                            (item && item.street) ||
+                            (item.tags["amenity"] &&
+                                (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+                                (item.tags["addr:street"] || item.tags["contact:street"]))
+                        );
+                    })
             );
         } else {
             console.log("in else");
+        }
+    };
+
+    const displayableItem = (item) => {
+        // console.log(item);
+        if (item.street) {
+            return `${item.tags["addr:housenumber"]} ${item.street}`;
+        } else if (
+            item.tags["amenity"] &&
+            (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+            (item.tags["addr:street"] || item.tags["contact:street"])
+        ) {
+            // console.log(item.tags["amenity"], typeof item.tags["name"] !== "undefined", item.tags["name"]);
+            let resultText =
+                item.tags["amenity"] + " " + typeof item.tags["name"] !== "undefined" ? item.tags["name"] : "";
+            // console.log(resultText);
+            if (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) {
+                // console.log(item.tags["addr:housenumber"], item.tags["contact:housenumber"]);
+                // console.log(
+                //     typeof item.tags["addr:housenumber"] !== "undefined"
+                //         ? item.tags["addr:housenumber"]
+                //         : item.tags["contact:housenumber"]
+                // );
+                resultText += ", ";
+                resultText +=
+                    typeof item.tags["addr:housenumber"] !== "undefined"
+                        ? item.tags["addr:housenumber"]
+                        : item.tags["contact:housenumber"];
+            }
+
+            if (item.tags["addr:street"] || item.tags["contact:street"]) {
+                console.log(
+                    item,
+                    "-" + typeof item.tags["addr:street"] !== "undefined"
+                        ? item.tags["addr:street"]
+                        : item.tags["contact:street"]
+                );
+                resultText += " ";
+                resultText +=
+                    typeof item.tags["addr:street"] !== "undefined"
+                        ? item.tags["addr:street"]
+                        : item.tags["contact:street"];
+            }
+            return resultText;
         }
     };
 
@@ -59,7 +121,11 @@ export default function SelectList({ userLocation }) {
             <ThemedView>
                 <ThemedTextInput placeholder="Search location" onChangeText={(v) => autocompleteLocation(v)} />
                 <ThemedText>{overpassResult && overpassResult.length} results length</ThemedText>
-                <ThemedView>
+                <ThemedView
+                    style={{
+                        maxHeight: "20%",
+                    }}
+                >
                     <Animated.View>
                         <ScrollView
                             contentContainerStyle={{
@@ -69,15 +135,8 @@ export default function SelectList({ userLocation }) {
                             nestedScrollEnabled={true}
                         >
                             {overpassResult &&
-                                overpassResult.map((d, idx) => {
-                                    if (d) {
-                                        return (
-                                            <ThemedText key={d.uid + idx}>
-                                                {d?.tags ? d.tags["addr:housenumber"] : JSON.stringify(d.tags)}
-                                                {" " + d.street}
-                                            </ThemedText>
-                                        );
-                                    }
+                                overpassResult.map((item, idx) => {
+                                    return <ThemedText key={item.uid + idx}>{displayableItem(item)}</ThemedText>;
                                 })}
                         </ScrollView>
                     </Animated.View>

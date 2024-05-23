@@ -3,11 +3,13 @@ import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
+import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import SelectList from "../../../components/SelectList";
+import ThemedCheckbox from "../../../components/ThemedCheckbox";
 // const { fetchOverpass } = require("../../../modules/overpassApi");
 
 export default function CreateDepositionTab({ navigation }) {
@@ -15,6 +17,9 @@ export default function CreateDepositionTab({ navigation }) {
     const [localisation, setLocalisation] = useState("");
     const [ownerEmail, setOwnerEmail] = useState("");
     const [userLocation, setUserLocation] = useState(null);
+
+    const [depoByPicture, setDepoByPicture] = useState(true);
+    const [depoByHonnor, setDepoByHonnor] = useState(false);
 
     const initialLocalisation = {
         latitude: 48.86667,
@@ -52,28 +57,6 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    // const autocompleteLocation = async (value) => {
-    //     const { latitude, longitude } = userLocation;
-    //     const distance = 5;
-    //     console.log("autocomplete");
-    //     setLocalisation(value);
-    //     const overpassQueryResult = await fetchOverpass(`
-    //         [out:json];
-    //         (way["highway"="residential"]["name"]["addr:housenumber"](around:${distance},${latitude},${longitude});
-    //         rel["type"="associatedStreet"](around:${distance},${latitude},${longitude}););
-    //         out center;(way[building]["addr:housenumber"](around:${distance},${latitude},${longitude});
-    //         nwr["addr:housenumber"][!"communication:*"](around:${distance},${latitude},${longitude});
-    //         nwr["tourism"](around:${distance},${latitude},${longitude});
-    //         nwr["station"](around:${distance},${latitude},${longitude});
-    //         nwr["amenity"](around:${distance},${latitude},${longitude});
-    //         nwr["shop"](around:${distance},${latitude},${longitude});
-    //         nwr["name"](around:${distance},${latitude},${longitude}););
-    //         out center;
-    //     `);
-    //     console.log(overpassQueryResult);
-    //     setOverpassResult(overpassQueryResult.features);
-    // };
-
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
@@ -93,13 +76,42 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {/* <ThemedTextInput
-                onChangeText={(value) => autocompleteLocation(value)}
-                value={localisation}
-                placeholder="Localisation"
-                label="Localisation"
-                style={[styles.profileInfo, styles.input]}
-            /> */}
+            <ThemedView style={styles.btnContainer}>
+                <ThemedButton
+                    onPress={() => {
+                        setDepoByPicture(true);
+                        setDepoByHonnor(false);
+                    }}
+                    style={[styles.proofBtn, depoByPicture === true ? styles.optionSelected : ""]}
+                >
+                    J'ai un preuve
+                </ThemedButton>
+
+                <ThemedButton
+                    onPress={() => {
+                        setDepoByPicture(false);
+                        setDepoByHonnor(true);
+                    }}
+                    style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
+                >
+                    Je veux déclarer sur l'honneur
+                </ThemedButton>
+            </ThemedView>
+
+            {depoByPicture && (
+                <>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Open Camera</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Upload images from phone</Text>
+                    </TouchableOpacity>
+                </>
+            )}
+
+            {depoByHonnor && <ThemedCheckbox label="Je déclare sur l'honneur la véracité de ma déposition" />}
+
             {userLocation && <SelectList userLocation={userLocation} />}
 
             <ThemedTextInput
@@ -109,14 +121,6 @@ export default function CreateDepositionTab({ navigation }) {
                 label="Owner email"
                 style={[styles.profileInfo, styles.input]}
             />
-
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Open Camera</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Upload images from phone</Text>
-            </TouchableOpacity>
 
             <TouchableOpacity style={styles.buttonSubmit}>
                 <Text style={styles.submitButton}>Submit</Text>
@@ -223,4 +227,17 @@ const styles = StyleSheet.create({
     //     width: "100%",
     //     height: "20%",
     // },
+    btnContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
+    proofBtn: {
+        width: "40%",
+        alignItems: "center",
+    },
+    optionSelected: {
+        backgroundColor: "green",
+        border: 2,
+        border: "green",
+    },
 });
