@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Image, StyleSheet, Platform, Button, Text, View } from "react-native";
+import { StyleSheet, Platform, Image, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedButton } from "../../components/ThemedButton";
 import { useSession } from "../../hooks/useSession";
+import MapView from "react-native-maps";
 import { Link } from "expo-router";
+import Ant from "../../components/Ant";
+import { router } from "expo-router";
 
 export default function HomeTab() {
     const { logout } = useSession();
@@ -14,32 +17,62 @@ export default function HomeTab() {
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-            headerImage={<Image source={require("../../assets/images/map.png")} style={styles.map} />}
+            headerImage={
+                <View style={styles.mapContainer}>
+                    <MapView
+                        initialRegion={{
+                            latitude: 48.86667,
+                            longitude: 2.333333,
+                            latitudeDelta: 0.000922,
+                            longitudeDelta: 0.000421,
+                        }}
+                        style={{ flex: 1 }}
+                    />
+                    <Ant
+                        path={[
+                            { x: 0, y: 0 },
+                            { x: 100, y: 150 },
+                            { x: 200, y: 50 },
+                            { x: 300, y: 300 },
+                            { x: 50, y: 400 },
+                        ]}
+                        duration={10000}
+                        delay={0}
+                    />
+                    <Ant
+                        path={[
+                            { x: 300, y: 400 },
+                            { x: 200, y: 300 },
+                            { x: 100, y: 200 },
+                            { x: 0, y: 100 },
+                            { x: 300, y: 0 },
+                        ]}
+                        duration={12000}
+                        delay={2000}
+                    />
+                    <Ant
+                        path={[
+                            { x: 150, y: 0 },
+                            { x: 150, y: 150 },
+                            { x: 150, y: 300 },
+                            { x: 150, y: 450 },
+                        ]}
+                        duration={8000}
+                        delay={1000}
+                    />
+                </View>
+            }
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Welcome</ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-                <ThemedText style={styles.paragraph}>
-                    <ThemedText type="defaultSemiBold" style={styles.firstWord}>
-                        Edit
-                    </ThemedText>{" "}
-                    app/(tabs)/index.tsx to see changes. Press{" "}
-                    <ThemedText type="defaultSemiBold">
-                        {Platform.select({ ios: "cmd + d", android: "cmd + m" })}
-                    </ThemedText>{" "}
-                    to open developer tools.
-                </ThemedText>
+                <ThemedText type="subtitle">Connect to your account to verify the address</ThemedText>
+                <ThemedButton onPress={() => router.navigate("login")}>Connect</ThemedButton>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-                <ThemedText style={styles.paragraph}>
-                    <ThemedText type="defaultSemiBold" style={styles.firstWord}>
-                        Tap
-                    </ThemedText>{" "}
-                    the Explore tab to learn more about what's included in this starter app.
-                </ThemedText>
+                <ThemedText type="subtitle">Verify my currect location</ThemedText>
+                <ThemedButton onPress={() => router.navigate("login")}>Check</ThemedButton>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
                 <ThemedView style={styles.alertContainer}>
@@ -52,17 +85,13 @@ export default function HomeTab() {
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
                         3{/* {lastDepositions} */}
                     </ThemedText>{" "}
-                    {}
-                    raports d'insectes ont été ajoutés dans les dernières 24 heures !
+                    rapports d'insectes ont été ajoutés au cours des dernières 24 heures !
                 </ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainerlast}>
                 <Link href="mentions" style={styles.buttonText}>
                     mentions legales
                 </Link>
-                <ThemedButton style={styles.button} onPress={() => logout()}>
-                    Logout
-                </ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -73,35 +102,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 16,
+        padding: 10,
     },
     welcomeText: {
         marginRight: 25,
-        fontSize: 24,
+        fontSize: 25,
         color: "#A53939",
-        top: 50,
-        fontWeight: 800,
-    },
-
-    titleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-    },
-    stepContainer: {
-        gap: 8,
-        marginBottom: 8,
-        paddingHorizontal: 10,
+        paddingHorizontal: 2,
         flexDirection: "column",
     },
-    noPestsAllowedLogo: {
-        height: 100,
-        width: 100,
-        top: 100,
-        bottom: 25,
-        left: 25,
-        position: "absolute",
-    },
+  
     button: {
         backgroundColor: "#A53939",
         padding: 10,
@@ -117,10 +127,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#A53939",
         fontSize: 18,
+        textDecorationLine: 'underline',
     },
     stepContainerlast: {
         gap: 8,
-        marginBottom: 8,
+        marginBottom: 5,
         flexDirection: "column",
         alignItems: "center",
     },
@@ -130,7 +141,7 @@ const styles = StyleSheet.create({
     alertContainer: {
         flexDirection: "row",
         alignItems: "center",
-        padding: 10,
+        padding: 2,
     },
     alert: {
         marginLeft: 28,
@@ -146,5 +157,8 @@ const styles = StyleSheet.create({
         marginLeft: 25,
         color: "#7a2307",
         fontSize: 20,
+    },
+    mapContainer: {
+        flex: 1,
     },
 });

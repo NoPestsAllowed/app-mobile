@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         padding: 16,
         backgroundColor: "#9f4634",
-        height: 130,
+        height: 100,
     },
     logoContainer: {
         height: 77,
         width: 77,
-        top: 15,
+        top: 3,
         borderRadius: 50,
         borderWidth: 1,
         borderColor: "#c17829",
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         marginRight: 25,
         fontSize: 24,
         color: "white",
-        top: 15,
+        top: 7,
         fontWeight: 800,
     },
     avatarContainer: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         borderColor: "#c17829",
         justifyContent: "center",
         alignItems: "center",
-        top: 15,
+        top: 3,
     },
     avatar: {
         height: 75,
