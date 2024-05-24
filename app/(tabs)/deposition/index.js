@@ -5,16 +5,17 @@ import { ThemedView } from "../../../components/ThemedView";
 import { Collapsible } from "../../../components/Collapsible";
 import { ExternalLink } from "../../../components/ExternalLink";
 import { ThemedButton } from "../../../components/ThemedButton";
-import { router } from "expo-router";
-import MapView from "react-native-maps";
+import { Link, router } from "expo-router";
+import MapView, { Marker } from "react-native-maps";
 import EmptyState from "../../../components/EmptyState";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import DepositionCard from "../../../components/DepositionCard";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function DepositionTab() {
-    const [depositions, setDeposition] = useState([]);
+    const [depositions, setDepositions] = useState([]);
     const user = useSelector((state) => state.user.value);
 
     useEffect(() => {
@@ -26,10 +27,13 @@ export default function DepositionTab() {
             },
         })
             .then((res) => res.json())
-            .then((depositions) => {
-                console.log("here", depositions);
+            .then((depositionsResponse) => {
+                console.log("here", depositionsResponse);
+                setDepositions(depositionsResponse.depositions);
             });
     }, []);
+
+    // console.log("depos", depos);
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -39,23 +43,59 @@ export default function DepositionTab() {
                     initialRegion={{
                         latitude: 48.86667,
                         longitude: 2.333333,
-                        latitudeDelta: 0.000922,
-                        longitudeDelta: 0.000421,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
                     }}
                     style={{ flex: 1 }}
-                ></MapView>
+                >
+                    {depositions.map((deposition) => {
+                        return (
+                            <Marker
+                                key={deposition._id}
+                                coordinate={{
+                                    latitude: deposition.placeId.geojson.coordinates[0],
+                                    longitude: deposition.placeId.geojson.coordinates[1],
+                                }}
+                                title={deposition.name}
+                                description={deposition.description}
+                            />
+                        );
+                    })}
+                </MapView>
             }
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Deposition</ThemedText>
             </ThemedView>
 
-            <EmptyState headline="No depo" desc="Start by creating a deposition">
-                <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
-              
-            </EmptyState>
+            <ThemedView style={styles.nomQuiVeutRienDire}>
+                {depositions.length === 0 && (
+                    <EmptyState headline="No depo" desc="Start by creating a deposition">
+                        <ThemedButton onPress={() => router.navigate("deposition/create")}>
+                            Create deposition
+                        </ThemedButton>
+                    </EmptyState>
+                )}
 
-            <ThemedText>This app includes example code to help you get started.</ThemedText>
+                {depositions.length > 0 &&
+                    depositions.map((deposition) => {
+                        console.log(deposition._id);
+                        return (
+                            <Link
+                                style={{ minWidth: "100%", width: "100%" }}
+                                key={deposition._id}
+                                href={{
+                                    pathname: "/deposition/[id]",
+                                    params: { id: deposition._id },
+                                }}
+                            >
+                                <DepositionCard deposition={deposition} />
+                            </Link>
+                        );
+                    })}
+            </ThemedView>
+            {/* {depos} */}
+            {/* <ThemedText>This app includes example code to help you get started.</ThemedText>
             <Collapsible title="File-based routing">
                 <ThemedText>
                     This app has two screens: <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{" "}
@@ -114,7 +154,7 @@ export default function DepositionTab() {
                         </ThemedText>
                     ),
                 })}
-            </Collapsible>
+            </Collapsible> */}
         </ParallaxScrollView>
     );
 }
@@ -128,6 +168,9 @@ const styles = StyleSheet.create({
     stepContainer: {
         gap: 8,
         marginBottom: 8,
+    },
+    nomQuiVeutRienDire: {
+        width: "90%",
     },
     button: {
         backgroundColor: "#A53939",
