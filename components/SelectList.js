@@ -1,39 +1,22 @@
 import { View, Text, Animated, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemedView } from "../components/ThemedView";
 import { ThemedTextInput } from "../components/ThemedTextInput";
 import { ThemedText } from "../components/ThemedText";
+import { StyleSheet } from "react-native";
 const { fetchOverpass } = require("../modules/overpassApi");
 
-export default function SelectList({ userLocation }) {
-    console.log("userLocation", userLocation);
+export default function SelectList({ depoLocation, itemSelected }) {
+    console.log("depoLocation", depoLocation);
     const [overpassResult, setOverpassResult] = useState([]);
-    const { latitude, longitude } = userLocation.coords;
-    console.log("overpassResult", latitude, longitude);
+    const [displayLocationName, setDisplayLocationName] = useState("");
+    const [showResult, setShowResult] = useState(false);
 
-    const autocompleteLocation = async (value) => {
+    const { latitude, longitude } = depoLocation.coords;
+
+    const loadLocation = async (value) => {
         const distance = 25;
 
-        console.log(
-            "autocomplete",
-            `
-            [out:json];
-            (
-                rel["type"="associatedStreet"](around:${distance},${latitude},${longitude});
-                rel["amenity"](around:${distance},${latitude},${longitude});
-            );
-            (._;>;);
-            out meta;
-        `
-        );
-
-        // const overpassQueryResult = await fetchOverpass(`
-        //     [out:json];
-        //     (way["highway"="residential"]["name"]["addr:housenumber"](around:${distance},${latitude},${longitude});
-        //     rel["type"="associatedStreet"](around:${distance},${latitude},${longitude}););
-        //     out center;
-        //     out center;
-        // `);
         const overpassQueryResult = await fetchOverpass(`
             [out:json];
             (
@@ -51,13 +34,13 @@ export default function SelectList({ userLocation }) {
                 result
                     .filter((item, idx) => result.indexOf(item) === idx)
                     .filter((item) => {
-                        console.log(
-                            "here",
-                            item && item.street,
-                            item.tags["amenity"] &&
-                                (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
-                                (item.tags["addr:street"] || item.tags["contact:street"])
-                        );
+                        // console.log(
+                        //     "here",
+                        //     item && item.street,
+                        //     item.tags["amenity"] &&
+                        //         (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+                        //         (item.tags["addr:street"] || item.tags["contact:street"])
+                        // );
                         return (
                             (item && item.street) ||
                             (item.tags["amenity"] &&
@@ -66,6 +49,7 @@ export default function SelectList({ userLocation }) {
                         );
                     })
             );
+            setShowResult(true);
         } else {
             console.log("in else");
         }
@@ -115,11 +99,23 @@ export default function SelectList({ userLocation }) {
         }
     };
 
+    useEffect(() => {
+        loadLocation();
+    }, [depoLocation]);
+
+    const selectItem = (item) => {
+        console.log("selected", item);
+        itemSelected(item);
+        setDisplayLocationName(displayableItem(item));
+        setShowResult(false);
+    };
+
     return (
         <ThemedView>
             <Text>SelectList</Text>
             <ThemedView>
-                <ThemedTextInput placeholder="Search location" onChangeText={(v) => autocompleteLocation(v)} />
+                <ThemedTextInput placeholder="Select location" value={displayLocationName} disabled={true} />
+                {/* onChangeText={(v) => autocompleteLocation(v)} */}
                 <ThemedText>{overpassResult && overpassResult.length} results length</ThemedText>
                 <ThemedView
                 // style={{
@@ -135,8 +131,17 @@ export default function SelectList({ userLocation }) {
                             nestedScrollEnabled={true}
                         >
                             {overpassResult &&
+                                showResult &&
                                 overpassResult.map((item, idx) => {
-                                    return <ThemedText key={item.uid + idx}>{displayableItem(item)}</ThemedText>;
+                                    return (
+                                        <ThemedText
+                                            style={styles.item}
+                                            key={item.uid + idx}
+                                            onPress={() => selectItem(item)}
+                                        >
+                                            {displayableItem(item)}
+                                        </ThemedText>
+                                    );
                                 })}
                         </ScrollView>
                     </Animated.View>
@@ -145,3 +150,12 @@ export default function SelectList({ userLocation }) {
         </ThemedView>
     );
 }
+
+const styles = StyleSheet.create({
+    item: {
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderColor: "#cbd5e1",
+        borderWidth: 1,
+    },
+});
