@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Platform, Image } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -13,7 +13,7 @@ import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
 import CameraComponent from "../../../components/CameraComponent";
 import { useDispatch, useSelector } from "react-redux";
-// const { fetchOverpass } = require("../../../modules/overpassApi");
+import * as ImagePicker from 'expo-image-picker';
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -31,11 +31,34 @@ export default function CreateDepositionTab({ navigation }) {
     const [depoByHonnor, setDepoByHonnor] = useState(false);
     // const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
+
+    const [selectedImage, setSelectedImage] = useState(null);
     const [visualProofs, setVisualProofs] = useState([]);
 
     const user = useSelector((state) => state.user.value);
 
     const dispatch = useDispatch();
+
+    const pickImage = async () => {
+        if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Désolé, nous avons besoin des permissions pour accéder à la galerie!');
+                return;
+            }
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setSelectedImage(result.uri);
+        }
+    };
 
     const initialLocalisation = {
         latitude: 48.86667,
@@ -176,9 +199,9 @@ export default function CreateDepositionTab({ navigation }) {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
                     }}
-                    style={[styles.proofBtn, depoByPicture === true ? styles.optionSelected : ""]}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : ""]}
                 >
-                    J'ai un preuve
+                    J'ai une preuve
                 </ThemedButton>
 
                 <ThemedButton
@@ -199,9 +222,10 @@ export default function CreateDepositionTab({ navigation }) {
                         <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
                     </ThemedButton>
 
-                    <ThemedButton style={styles.button}>
+                    <ThemedButton style={styles.button} onPress={pickImage}>
                         <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
                     </ThemedButton>
+                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
                 </ThemedView>
             )}
 
@@ -269,10 +293,21 @@ const styles = StyleSheet.create({
     },
     optionSelected: {
         backgroundColor: "#bbf7d0",
-        border: 2,
-        border: "green",
+        borderWidth: 2,
+        borderColor: "green",
     },
     pictureBtn: {
         alignItems: "center",
+    },
+    button: {
+        marginVertical: 10,
+    },
+    buttonText: {
+        color: "#fff",
+    },
+    image: {
+        width: 200,
+        height: 200,
+        marginTop: 20,
     },
 });
