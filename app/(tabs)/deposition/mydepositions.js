@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, FlatList, Platform, TouchableHighlight } from "react-native";
+import { StyleSheet, View, FlatList, Platform, TouchableHighlight } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
 import { ThemedButton } from "../../../components/ThemedButton";
+import { ThemedButtonEdit } from "../../../components/ThemedButtonEdit";
 import { router } from "expo-router";
 
 export default function MydepositionsTab({ navigation }) {
@@ -32,7 +33,7 @@ export default function MydepositionsTab({ navigation }) {
     };
 
     const depositions = [
-        { title: 'Ma maison', address: '1 Rue de la Republique, Meudon', key: '1' },
+        { title: 'Maison', address: '1 Rue de la Republique, Meudon', key: '1' },
         { title: 'AirBnb', address: '35 Louis Avenue, Nice', key: '2' },
         { title: 'Bureau', address: '7 Manon Avenue, Metz', key: '2' },
         { title: 'Crèche', address: '1 Rue de Lévis, Paris', key: '3' },
@@ -48,6 +49,8 @@ export default function MydepositionsTab({ navigation }) {
                 <ThemedText style={styles.line1}>{item.title}</ThemedText>
                 <ThemedView style={styles.verticalLine} />
                 <ThemedText style={styles.line2}>{item.address}</ThemedText>
+                <ThemedButtonEdit onPress={() => router.navigate("deposition/edit", { id: item.key })}>Edit</ThemedButtonEdit>
+                <ThemedButtonEdit onPress={() => router.navigate("deposition/delete", { id: item.key })}>Delete</ThemedButtonEdit>
             </View>
         </TouchableHighlight>
     );
@@ -69,6 +72,7 @@ export default function MydepositionsTab({ navigation }) {
                     <ThemedText style={styles.lineTitle1}>Name</ThemedText>
                     <ThemedView style={styles.verticalLine} />
                     <ThemedText style={styles.lineTitle2}>Address</ThemedText>
+                    <ThemedText style={styles.lineTitle3}>Action</ThemedText>
                 </ThemedView>
 
                 <FlatList
@@ -87,9 +91,8 @@ export default function MydepositionsTab({ navigation }) {
 
             <ThemedText style={styles.profileInfo}>You have --- depositions</ThemedText>
             <ThemedButton onPress={() => router.navigate("deposition/create")}>
-    Create deposition
-</ThemedButton>
-
+                Create deposition
+            </ThemedButton>
         </ParallaxScrollView>
     );
 }
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
+        bottom:20,
     },
     profileInfo: {
         margin: 3,
@@ -125,31 +129,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         width: '100%',
+        marginBottom: 10,
+        radius:10,
     },
     rowContainer: {
         backgroundColor: "#7a2307",
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'center', 
         padding: 10,
-        width: '100%',
+        marginBottom: 10,
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+        elevation: 3,
     },
     separator: {
         height: 1,
         backgroundColor: '#CCCCCC',
         width: '100%',
-    },
-    button: {
-        backgroundColor: '#A53939',
-        padding: 10,
-        margin: 5,
-        borderRadius: 10,
-        alignItems: 'center',
-        shadowColor: '#888',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 7,
-        elevation: 3,
+        marginBottom: 5,
     },
     notifications: {
         fontSize: 18,
@@ -179,35 +179,34 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: '900',
     },
-    line1: {
+    lineTitle3: {
         height: 35,
         flex: 1,
         textAlign: 'center',
-        paddingLeft: 10,
+        paddingRight: 10,
         lineHeight: 35,
+        fontSize: 20,
+        color: "white",
+        fontWeight: '900',
+    },
+    line1: {
+        flex: 1,
         fontSize: 16,
         color: "white",
         fontWeight: '500',
         flexWrap: 'wrap',
-        right: 5,
     },
     line2: {
-        height: 35,
-        flex: 3,
-        textAlign: 'center',
-        paddingRight: 10,
-        lineHeight: 35,
+        flex: 2,
         fontSize: 16,
         color: 'white',
         flexWrap: 'wrap',
-        right: 5,
     },
     verticalLine: {
-        width: 2,
+        width: 1,
         backgroundColor: 'white',
         marginHorizontal: 10,
         height: '100%',
-        right: 5,
     },
     notificationContainer: {
         flexDirection: 'row',
