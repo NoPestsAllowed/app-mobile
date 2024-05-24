@@ -8,8 +8,28 @@ import { ThemedButton } from "../../../components/ThemedButton";
 import { router } from "expo-router";
 import MapView from "react-native-maps";
 import EmptyState from "../../../components/EmptyState";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function DepositionTab() {
+    const [depositions, setDeposition] = useState([]);
+    const user = useSelector((state) => state.user.value);
+
+    useEffect(() => {
+        fetch(`${backendUrl}/depositions`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((depositions) => {
+                console.log("here", depositions);
+            });
+    }, []);
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
