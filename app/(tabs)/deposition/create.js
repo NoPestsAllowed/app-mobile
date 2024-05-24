@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Platform, Image } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -11,7 +11,7 @@ import { Camera, CameraView } from "expo-camera";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
-// const { fetchOverpass } = require("../../../modules/overpassApi");
+import * as ImagePicker from 'expo-image-picker';
 
 export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
@@ -25,7 +25,30 @@ export default function CreateDepositionTab({ navigation }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
 
+    const [selectedImage, setSelectedImage] = useState(null);
+
     const cameraRef = useRef(null);
+
+    const pickImage = async () => {
+        if (Platform.OS !== 'web') {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+                alert('Désolé, nous avons besoin des permissions pour accéder à la galerie!');
+                return;
+            }
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setSelectedImage(result.uri);
+        }
+    };
 
     const initialLocalisation = {
         latitude: 48.86667,
@@ -83,7 +106,7 @@ export default function CreateDepositionTab({ navigation }) {
 
     if (cameraOpen && hasCameraPermission) {
         return (
-            <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
+            <CameraView style={{ flex: 1 }} ref={cameraRef} flashMode={"on"}>
                 <View style={styles.snapContainer}>
                     <TouchableOpacity onPress={takePicture}>
                         <FontAwesome name="circle-thin" size={95} color="#ffffff" />
@@ -117,9 +140,9 @@ export default function CreateDepositionTab({ navigation }) {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
                     }}
-                    style={[styles.proofBtn, depoByPicture === true ? styles.optionSelected : ""]}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : ""]}
                 >
-                    J'ai un preuve
+                    J'ai une preuve
                 </ThemedButton>
 
                 <ThemedButton
@@ -140,9 +163,10 @@ export default function CreateDepositionTab({ navigation }) {
                         <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
                     </ThemedButton>
 
-                    <ThemedButton style={styles.button}>
+                    <ThemedButton style={styles.button} onPress={pickImage}>
                         <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
                     </ThemedButton>
+                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
                 </ThemedView>
             )}
 
@@ -165,10 +189,6 @@ export default function CreateDepositionTab({ navigation }) {
                 label="Description"
                 style={[styles.profileInfo, styles.input]}
             />
-
-            {/* <ThemedButton onPress={openCamera}>Open Camera</ThemedButton>
-            <ThemedButton>Upload Images from Phone</ThemedButton> */}
-            {/* <ThemedButton onPress={() => navigation.goBack()}>Logout</ThemedButton> */}
         </ParallaxScrollView>
     );
 }
@@ -212,10 +232,21 @@ const styles = StyleSheet.create({
     },
     optionSelected: {
         backgroundColor: "#bbf7d0",
-        border: 2,
-        border: "green",
+        borderWidth: 2,
+        borderColor: "green",
     },
     pictureBtn: {
         alignItems: "center",
+    },
+    button: {
+        marginVertical: 10,
+    },
+    buttonText: {
+        color: "#fff",
+    },
+    image: {
+        width: 200,
+        height: 200,
+        marginTop: 20,
     },
 });

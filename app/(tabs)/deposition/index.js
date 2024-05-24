@@ -32,6 +32,7 @@ export default function DepositionTab() {
 
             <EmptyState headline="No depo" desc="Start by creating a deposition">
                 <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
+              
             </EmptyState>
 
             <ThemedText>This app includes example code to help you get started.</ThemedText>
