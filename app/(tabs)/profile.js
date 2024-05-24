@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../components/ParallaxScrollView";
-import { ThemedText } from "../../components/ThemedText";
-import { ThemedButton } from "../../components/ThemedButton";
-import { ThemedView } from "../../components/ThemedView";
-import { ThemedTextInput } from "../../components/ThemedTextInput";
+import { Image, StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import ParallaxScrollView from '../../components/ParallaxScrollView';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedButton } from '../../components/ThemedButton';
+import { ThemedView } from '../../components/ThemedView';
+import { ThemedTextInput } from '../../components/ThemedTextInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAccount, userState } from '../../reducers/user';
@@ -21,7 +21,7 @@ export default function ProfileTab({ navigation }) {
     const [birthDate, setBirthDate] = useState("");
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
-    
+
 
     const dispatch = useDispatch();
      const user = useSelector((state) => state.user.value);
@@ -67,69 +67,57 @@ export default function ProfileTab({ navigation }) {
     };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
-        >
-            
+        <ParallaxScrollView headerBackgroundColor={{ light: '#9f4634', dark: '#1D3D47' }}>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profile</ThemedText>
+                <ThemedText type='title'>Profile</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)} 
+                onChangeText={(value) => setFirstName(value)}
                 value={firstName}
-                placeholder="First Name"
-                label="First Name"
+                placeholder='First Name'
+                label='First Name'
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setLastName(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setLastName(value)}
                 value={lastName}
-                placeholder="Last Name"
-                label="Last Name"
+                placeholder='Last Name'
+                label='Last Name'
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setBirthDate(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setBirthDate(value)}
                 value={birthDate}
-                placeholder="Birth Date"
-                label="Birth Date"
+                placeholder='Birth Date'
+                label='Birth Date'
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setPassword(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setPassword(value)}
                 value={password}
-                placeholder="Password"
-                label="Password"
+                placeholder='Password'
+                label='Password'
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
-                <TouchableOpacity onPress={toggleModifyNotifications}>
-                    <Icon 
-                        name={modifyNotifications ? 'bell' : 'bell-o'} 
-                        size={30} 
-                        color={modifyNotifications ? '#A53939' : 'grey'} 
-                    />
+                <TouchableOpacity onPress={toggleAuthorizeNotifications}>
+                    <Icon name='bell' size={30} color={authorizeNotifications ? '#A53939' : 'grey'} />
                 </TouchableOpacity>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                    <Icon 
-                        name='globe' 
-                        size={30} 
-                        color={authorizeNotifications ? '#A53939' : 'grey'} 
-                    />
+                    <Icon name='globe' size={30} color={authorizeNotifications ? '#A53939' : 'grey'} />
                 </TouchableOpacity>
             </ThemedView>
+
             <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
            
             <ThemedButton >Modifier mon compte</ThemedButton>
@@ -143,18 +131,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         padding: 16,
-        elevation: 1, 
-        zIndex: 1, 
+        elevation: 1,
+        zIndex: 1,
     },
-
     rightHeader: {
         flexDirection: 'row',
         alignItems: 'center',
     },
-
     titleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: 8,
     },
     profileInfo: {
@@ -185,12 +171,12 @@ const styles = StyleSheet.create({
     },
     notifications: {
         fontSize: 18,
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
     notificationContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginVertical: 5,
-    }
+    },
 });
