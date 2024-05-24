@@ -8,9 +8,7 @@ export default function LandingPage() {
     return (
         <View style={styles.container}>
             <View style={styles.main}>
-                <ThemedText type="title" style={styles.title}>
-                    Hello World
-                </ThemedText>
+                <ThemedText type="title">Hello World</ThemedText>
                 <ThemedText>{test}</ThemedText>
                 <ThemedText style={styles.subtitle}>This is the first page of your app.</ThemedText>
                 <Link href="register" style={styles.link}>
@@ -39,13 +37,8 @@ const styles = StyleSheet.create({
         maxWidth: 960,
         marginHorizontal: "auto",
     },
-    title: {
-        fontSize: 64,
-        fontWeight: "bold",
-        lineHeight: 64,
-    },
     subtitle: {
-        fontSize: 36,
+        // fontSize: 36,
         color: "#38434D",
         lineHeight: 36,
     },

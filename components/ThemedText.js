@@ -29,12 +29,16 @@ const styles = StyleSheet.create({
     defaultSemiBold: {
         fontSize: 16,
         lineHeight: 24,
-        fontWeight: "600",
+        fontWeight: 600,
     },
     title: {
         fontSize: 32,
-        fontWeight: "bold",
-        lineHeight: 32,
+        color: "#A53939",
+        shadowColor: "#888",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        fontWeight: 800,
     },
     subtitle: {
         fontSize: 20,

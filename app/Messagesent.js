@@ -1,70 +1,28 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../components/ParallaxScrollView";
-import { ThemedText } from "../../components/ThemedText";
-import { ThemedButton } from "../../components/ThemedButton";
-import { ThemedView } from "../../components/ThemedView";
-import { ThemedTextInput } from "../../components/ThemedTextInput";
+import ParallaxScrollView from "../components/ParallaxScrollView";
+import { ThemedText } from "../components/ThemedText";
+import { ThemedButton } from "../components/ThemedButton";
+import { ThemedView } from "../components/ThemedView";
+import { ThemedTextInput } from "../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteAccount, userState } from '../../reducers/user';
+import { router } from "expo-router";
 
-const backendUrl = process.env.EXPO_PUBLIC_API_URL;
-
-
-
-export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("");
+export default function MessagesentTab({ navigation }) {
+    const [firstName, setFirstName] = useState("John");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState("");
-    const [modifyNotifications, setModifyNotifications] = useState(false);
-    const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
-    
-
-    const dispatch = useDispatch();
-     const user = useSelector((state) => state.user.value);
-    //const userState = useSelector(state => state.user);
-
-    // const handleLogout = () => {
-    //     navigation.navigate('Home');
-    // };
-
-    const handleModification = () => {
-
-    }
-
-    const handleDeleteAccount = () => {
-        console.log(user);
-        const userId = user.id;
-        console.log(userId);
-        fetch(`${backendUrl}/delete/${userId}`, {
-            method: 'DELETE',
-            // headers: { 'Content-Type': 'application/json' },
-        })
-        .then(response => response.json())
-    .then(data => {
-        if (data.message === "Votre compte a bien été supprimé") {
-            dispatch(deleteAccount(userId));
-            dispatch(clearUserState());
-        } else {
-            console.error(data.error);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-        
+  
+    const handleLogin = () => {
+        navigation.navigate('login');
     };
 
-    const toggleModifyNotifications = () => {
-        setModifyNotifications(!modifyNotifications);
+    const handleHome = () => {
+        navigation.navigate('Home');
     };
 
-    const toggleAuthorizeNotifications = () => {
-        setAuthorizeNotifications(!authorizeNotifications);
-    };
 
     return (
         <ParallaxScrollView
@@ -72,7 +30,7 @@ export default function ProfileTab({ navigation }) {
         >
             
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profile</ThemedText>
+                <ThemedText type="title">Your message has been sent !</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
@@ -132,7 +90,7 @@ export default function ProfileTab({ navigation }) {
             </ThemedView>
             <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
            
-            <ThemedButton >Modifier mon compte</ThemedButton>
+            <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
         </ParallaxScrollView>
     );
 }

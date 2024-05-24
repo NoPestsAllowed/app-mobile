@@ -32,7 +32,6 @@ export default function DepositionTab() {
 
             <EmptyState headline="No depo" desc="Start by creating a deposition">
                 <ThemedButton onPress={() => router.navigate("deposition/create")}>Create deposition</ThemedButton>
-                <ThemedButton onPress={() => router.navigate("deposition/detail")}>Détails deposition</ThemedButton>
             </EmptyState>
 
             <ThemedText>This app includes example code to help you get started.</ThemedText>
@@ -109,28 +108,20 @@ const styles = StyleSheet.create({
         gap: 8,
         marginBottom: 8,
     },
-    noPestsAllowedLogo: {
-        height: 100,
-        width: 100,
-        top: 100,
-        bottom: 25,
-        left: 25,
-        position: "absolute",
-    },
     button: {
-        backgroundColor: '#A53939',
+        backgroundColor: "#A53939",
         padding: 10,
         margin: 5,
         borderRadius: 10,
-        alignItems: 'center',
-        shadowColor: '#888',
+        alignItems: "center",
+        shadowColor: "#888",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 7,
         elevation: 3,
     },
     buttonText: {
-        color: '#f5f5f5',
+        color: "#f5f5f5",
         fontSize: 18,
-    }
+    },
 });
