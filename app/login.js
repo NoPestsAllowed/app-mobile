@@ -30,7 +30,7 @@ export default function register() {
            
                <ThemedText type="title" style={styles.title}>Login</ThemedText>
            </ThemedView>
-           
+           <ThemedView style={styles.inputContainer}>
        <ThemedTextInput
            onChangeText={(value) => setEmail(value)} 
            value={email}
@@ -50,33 +50,12 @@ export default function register() {
            secureTextEntry={true}
        />
    
-    
+  
        <TouchableOpacity style={styles.button}  onPress={()=>handleLogin()}>
            <Text style={styles.buttonText}>Se connecter</Text>
        </TouchableOpacity>
+       </ThemedView>
        </KeyboardAvoidingView>
-    //     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-    //         <ThemedView >
-    //             <ThemedText style={styles.title}  type="title">Login</ThemedText>
-    //             <ThemedTextInput style={styles.input}
-    //                 onChangeText={(value) => setEmail(value)}
-    //                 value={email}
-    //                 placeholder="Email"
-    //                 keyboardType="email-address"
-    //                 label="Email"
-    //             />
-    //             <ThemedTextInput style={styles.input}
-    //                 onChangeText={(value) => setPassword(value)}
-    //                 value={password}
-    //                 placeholder="Password"
-    //                 keyboardType="current-password"
-    //                 label="Password"
-    //             />
-    //              <TouchableOpacity onPress={() => handleLogin()} style={styles.btnContainer}>
-    //     <Text style={styles.buttonText}>Se connecter</Text>
-    // </TouchableOpacity>
-    //         </ThemedView>
-    //     </KeyboardAvoidingView>
     );
 }
 const styles = StyleSheet.create({
@@ -85,9 +64,13 @@ const styles = StyleSheet.create({
         // margin: 20,
         alignItems: "center",
         justifyContent: "center",
-        gap: 10,
+        // gap: 10,
     },
-
+    inputContainer: {
+        width: '100%',
+        padding: 30,
+        borderRadius: 1,
+      },
     input: {
         borderWidth: 1,
         borderColor: "#A53939",
@@ -96,14 +79,14 @@ const styles = StyleSheet.create({
         margin: 3,
         fontSize: 18,
         textAlign: "center",
-        width: "90%",
+        width: "100%",
     },
     buttonText: {
         color: "#f5f5f5",
         fontSize: 18,
     },
     button: {
-        width: "90%",
+        width: "100%",
         backgroundColor: "#A53939",
         padding: 10,
         marginTop: 50,
