@@ -7,11 +7,15 @@ import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
-import { Camera, CameraView } from "expo-camera";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import { Camera, CameraView } from "expo-camera";
+// import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
+import CameraComponent from "../../../components/CameraComponent";
+import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from 'expo-image-picker';
+
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
@@ -20,14 +24,20 @@ export default function CreateDepositionTab({ navigation }) {
     const [description, setDescription] = useState("");
     const [userLocation, setUserLocation] = useState(null);
 
+    const [depoLocation, setDepoLocation] = useState(null);
+    const [depoPlace, setDepoPlace] = useState(null);
+
     const [depoByPicture, setDepoByPicture] = useState(true);
     const [depoByHonnor, setDepoByHonnor] = useState(false);
-    const [hasCameraPermission, setHasCameraPermission] = useState(false);
+    // const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(null);
+    const [visualProofs, setVisualProofs] = useState([]);
 
-    const cameraRef = useRef(null);
+    const user = useSelector((state) => state.user.value);
+
+    const dispatch = useDispatch();
 
     const pickImage = async () => {
         if (Platform.OS !== 'web') {
@@ -85,36 +95,85 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasCameraPermission(status === "granted");
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const { status } = await Camera.requestCameraPermissionsAsync();
+    //         setHasCameraPermission(status === "granted");
+    //     })();
+    // }, []);
 
     const openCamera = () => {
         setCameraOpen(true);
     };
 
-    const takePicture = async () => {
-        if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync();
-            console.log(photo);
-            setCameraOpen(false); // Close the camera after taking a picture
-        }
+    const handlePictureTaken = (picture) => {
+        console.log(picture);
+        setDepoLocation(userLocation);
+        setVisualProofs((vproofs) => [...vproofs, picture]);
     };
 
-    if (cameraOpen && hasCameraPermission) {
+    const itemSelected = (item) => {
+        console.log("itemSelected", item);
+        if (item.tags["contact:email"]) {
+            setOwnerEmail(item.tags["contact:email"]);
+        } else if (item.tags["email"]) {
+            setOwnerEmail(item.tags["email"]);
+        }
+        setDepoPlace(item);
+    };
+
+    // const takePicture = async () => {
+    //     if (cameraRef.current) {
+    //         const photo = await cameraRef.current.takePictureAsync();
+    //         console.log(photo);
+    //         setCameraOpen(false); // Close the camera after taking a picture
+    //     }
+    // };
+
+    if (cameraOpen) {
         return (
-            <CameraView style={{ flex: 1 }} ref={cameraRef} flashMode={"on"}>
-                <View style={styles.snapContainer}>
-                    <TouchableOpacity onPress={takePicture}>
-                        <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-                    </TouchableOpacity>
-                </View>
-            </CameraView>
+            // <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
+            //     <View style={styles.snapContainer}>
+            //         <TouchableOpacity onPress={takePicture}>
+            //             <FontAwesome name="circle-thin" size={95} color="#ffffff" />
+            //         </TouchableOpacity>
+            //     </View>
+            // </CameraView>
+
+            <CameraComponent
+                closeCamera={() => {
+                    console.log("closing cam");
+                    setCameraOpen(false);
+                }}
+                handlePictureTaken={(picture) => handlePictureTaken(picture)}
+            />
         );
     }
+
+    const submitDeposition = () => {
+        const deposition = {
+            name: depositionName,
+            description: description,
+            placeOwnerEmail: ownerEmail,
+            place: depoPlace,
+            visualProofs: visualProofs,
+        };
+
+        console.log(deposition);
+        fetch(`${backendUrl}/depositions/create`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify(deposition),
+        })
+            .then((res) => res.json())
+            .then((createDepositionResponse) => {
+                console.log("createDepositionResponse", createDepositionResponse);
+            })
+            .catch((err) => console.error(err));
+    };
 
     return (
         <ParallaxScrollView
@@ -172,7 +231,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             {depoByHonnor && <ThemedCheckbox label="Je déclare sur l'honneur la véracité de ma déposition" />}
 
-            {userLocation && <SelectList userLocation={userLocation} />}
+            {depoLocation && <SelectList depoLocation={depoLocation} itemSelected={(item) => itemSelected(item)} />}
 
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
@@ -189,6 +248,8 @@ export default function CreateDepositionTab({ navigation }) {
                 label="Description"
                 style={[styles.profileInfo, styles.input]}
             />
+
+            <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
         </ParallaxScrollView>
     );
 }
