@@ -7,10 +7,12 @@ import moment from "moment";
 export default function DepositionCard({ deposition }) {
     // console.log("deposition from card", deposition);
     return (
-        <ThemedView>
+        <ThemedView style={styles.container}>
+            {/* <ThemedView style={styles.content}> */}
             <ThemedText type="title" style={styles.title}>
                 {deposition.name}
             </ThemedText>
+            {/* </ThemedView> */}
             <ThemedText type="subtitle" style={styles.subtitle}>
                 {deposition.placeId.address}
             </ThemedText>
@@ -24,15 +26,32 @@ export default function DepositionCard({ deposition }) {
 
 const styles = StyleSheet.create({
     container: {
-        //
+        // flex: 1,
+        borderWidth: 1,
+        borderColor: "#94a3b8",
+        borderRadius: 7,
+        // paddingVertical: 5,
+        paddingHorizontal: 15,
+    },
+    content: {
+        borderTopRadius: 6,
+        backgroundColor: "#f3f4f6",
+        overflow: "hidden",
     },
     title: {
-        fontSize: 24,
+        fontSize: 18,
+        marginVertical: 5,
+        // paddingHorizontal: 5,
+        // borderTopRadius: 6,
+        // backgroundColor: "#f3f4f6",
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 14,
+        marginVertical: 5,
+        // paddingHorizontal: 5,
     },
     date: {
         fontSize: 8,
+        paddingHorizontal: 5,
     },
 });

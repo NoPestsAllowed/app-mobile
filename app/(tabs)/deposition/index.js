@@ -82,7 +82,7 @@ export default function DepositionTab() {
                         console.log(deposition._id);
                         return (
                             <Link
-                                style={{ minWidth: "100%", width: "100%" }}
+                                style={{ marginVertical: 5 }}
                                 key={deposition._id}
                                 href={{
                                     pathname: "/deposition/[id]",
@@ -170,7 +170,8 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     nomQuiVeutRienDire: {
-        width: "90%",
+        // width: "90%",
+        flex: 1,
     },
     button: {
         backgroundColor: "#A53939",
