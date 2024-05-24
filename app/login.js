@@ -48,11 +48,12 @@ export default function register() {
            label="Password"
            keyboardType="current-password"
            style={[styles.profileInfo, styles.input]}
+           secureTextEntry={true}
        />
    
     
-       <TouchableOpacity style={styles.button}>
-           <Text style={styles.buttonText} onPress={()=>handleLogin()}>Se connecter</Text>
+       <TouchableOpacity style={styles.button}  onPress={()=>handleLogin()}>
+           <Text style={styles.buttonText}>Se connecter</Text>
        </TouchableOpacity>
        </KeyboardAvoidingView>
     //     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>

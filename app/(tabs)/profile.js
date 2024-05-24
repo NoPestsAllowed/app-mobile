@@ -6,9 +6,14 @@ import { ThemedButton } from "../../components/ThemedButton";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAccount, userState } from '../../reducers/user';
+
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
+
 
 export default function ProfileTab({ navigation }) {
-    const [firstName, setFirstName] = useState("John");
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,12 +21,39 @@ export default function ProfileTab({ navigation }) {
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
 
-    const handleLogout = () => {
-        navigation.navigate('Home');
-    };
+    const dispatch = useDispatch();
+     const user = useSelector((state) => state.user.value);
+    //const userState = useSelector(state => state.user);
+
+    // const handleLogout = () => {
+    //     navigation.navigate('Home');
+    // };
+
+    const handleModification = () => {
+
+    }
 
     const handleDeleteAccount = () => {
-        navigation.navigate('Home');
+        console.log(user);
+        const userId = user.id;
+        console.log(userId);
+        fetch(`${backendUrl}/delete/${userId}`, {
+            method: 'DELETE',
+            // headers: { 'Content-Type': 'application/json' },
+        })
+        .then(response => response.json())
+    .then(data => {
+        if (data.message === "Votre compte a bien été supprimé") {
+            dispatch(deleteAccount(userId));
+            dispatch(clearUserState());
+        } else {
+            console.error(data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+        
     };
 
     const toggleModifyNotifications = () => {
@@ -98,7 +130,7 @@ export default function ProfileTab({ navigation }) {
             </ThemedView>
             <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
            
-            <ThemedButton onPress={() => logout()}>Logout</ThemedButton>
+            <ThemedButton >Modifier mon compte</ThemedButton>
         </ParallaxScrollView>
     );
 }

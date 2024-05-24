@@ -1,4 +1,4 @@
-import { StyleSheet, KeyboardAvoidingView, Platform, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { StyleSheet, KeyboardAvoidingView, Platform, Text, TouchableOpacity, Image, ScrollView, View } from "react-native";
 import { ThemedText } from "../components/ThemedText";
 import { ThemedTextInput } from "../components/ThemedTextInput";
 import { ThemedView } from "../components/ThemedView";
@@ -49,13 +49,15 @@ export default function Register() {
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height" } style={styles.container}>
+
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding" }  style={styles.container}>
+ 
          <ThemedView style={styles.titleContainer}>   
         <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo}/>
             
                 <ThemedText type="title" style={styles.title}>Inscription</ThemedText>
             </ThemedView>
-            
+          
         <ThemedTextInput
             onChangeText={(value) => setFirstName(value)} 
             value={firstName}
@@ -82,6 +84,7 @@ export default function Register() {
             keyboardType="email"
             style={[styles.profileInfo, styles.input]}
         />
+        {emailError && <Text style={styles.error}>Adresse email non valide</Text>}
 
         <ThemedTextInput 
             onChangeText={(value) => setPassword(value)} 
@@ -90,6 +93,7 @@ export default function Register() {
             label="Mot de passe"
             keyboardType="current-password"
             style={[styles.profileInfo, styles.input]}
+            secureTextEntry={true}
         />
 
         <ThemedTextInput 
@@ -99,12 +103,15 @@ export default function Register() {
             label="Confirmer Mot de passe"
             keyboardType="current-password"
             style={[styles.profileInfo, styles.input]}
+            secureTextEntry={true}
         />
-         {emailError && <Text style={styles.error}>Invalid email address</Text>}
+         
         <TouchableOpacity style={styles.button} onPress={() => handleRegistration()}>
             <Text style={styles.buttonText}>S'inscrire</Text>
         </TouchableOpacity>
+ 
         </KeyboardAvoidingView>
+
     );
 }
 

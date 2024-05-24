@@ -6,6 +6,7 @@ import { ThemedView } from "../../../components/ThemedView";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
 export default function MydepositionsTab({ navigation }) {
     const [firstName, setFirstName] = useState(""); 
     const [lastName, setLastName] = useState("");
@@ -38,7 +39,7 @@ export default function MydepositionsTab({ navigation }) {
                 <View style={styles.headerContainer}>
                     <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                     <View style={styles.rightHeader}>
-                        <Text style={styles.welcomeText}>Welcome, {firstName}!</Text>
+                        <Text style={styles.welcomeText}>Welcome!</Text>
                         <View style={styles.avatarContainer}>
                             <Image source={require("../../../assets/images/avatar1.jpg")} style={styles.avatar} />
                         </View>

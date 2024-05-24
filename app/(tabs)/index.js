@@ -9,7 +9,7 @@ import { Link } from "expo-router";
 
 export default function HomeTab() {
     const { logout } = useSession();
-    const [firstName, setFirstName] = useState("John");
+    const [firstName, setFirstName] = useState("");
 
     return (
         <ParallaxScrollView
@@ -20,7 +20,7 @@ export default function HomeTab() {
         }
     >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Welcome!</ThemedText>
+                <ThemedText type="title">Welcome</ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
                 <ThemedText type="subtitle">Step 1: Try it</ThemedText>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     buttonText: {
-        color: "#f5f5f5",
+        color: "#A53939",
         fontSize: 18,
     },
     stepContainerlast: {
