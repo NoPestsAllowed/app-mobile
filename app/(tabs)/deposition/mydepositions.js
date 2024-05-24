@@ -42,11 +42,16 @@ export default function MydepositionsTab({ navigation }) {
     const renderItem = ({ item }) => (
         <TouchableHighlight key={item.key} onPress={() => console.log(item)} underlayColor="#DDDDDD">
             <View style={styles.rowContainer}>
-                <ThemedText style={styles.line1}>{item.title}</ThemedText>
-                <ThemedView style={styles.verticalLine} />
-                <ThemedText style={styles.line2}>{item.address}</ThemedText>
-                <ThemedButtonEdit onPress={() => router.navigate("deposition/edit", { id: item.key })}>Edit</ThemedButtonEdit>
-                <ThemedButtonEdit onPress={() => router.navigate("deposition/delete", { id: item.key })}>Delete</ThemedButtonEdit>
+                <View style={styles.rowContent}>
+                    <View style={styles.rowTextContainer}>
+                        <ThemedText style={styles.line1}>{item.title}</ThemedText>
+                        <ThemedText style={styles.line2}>{item.address}</ThemedText>
+                    </View>
+                    <View style={styles.actionButtonsContainer}>
+                        <ThemedButtonEdit onPress={() => router.navigate("deposition/edit", { id: item.key })}>Edit</ThemedButtonEdit>
+                        <ThemedButtonEdit onPress={() => router.navigate("deposition/delete", { id: item.key })}>Delete</ThemedButtonEdit>
+                    </View>
+                </View>
             </View>
         </TouchableHighlight>
     );
@@ -77,6 +82,7 @@ export default function MydepositionsTab({ navigation }) {
                     data={depositions}
                     renderItem={renderItem}
                 />
+
             </ThemedView>
 
             <ThemedText style={styles.profileInfo}>You have --- depositions</ThemedText>
@@ -88,121 +94,76 @@ export default function MydepositionsTab({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
-        height: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "transparent",
-    },
-    thinLine: {
-        height: 1,
-        backgroundColor: "#A53939",
-        width: "100%",
-    },
-    titleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-        bottom:20,
-    },
-    profileInfo: {
-        margin: 3,
-        fontSize: 18,
-    },
-    rowContainerTable: {
-        paddingHorizontal: 10,
-    },
-    rowContainerTitle: {
-        backgroundColor: "#ca8035",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 10,
-        width: '100%',
-        marginBottom: 10,
-        radius:10,
-    },
     rowContainer: {
-        backgroundColor: "#7a2307",
+        backgroundColor: "white",
         flexDirection: 'row',
         alignItems: 'center', 
         padding: 10,
         marginBottom: 10,
         borderRadius: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 1,
+        shadowColor: '#7a2307',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 25,
         elevation: 3,
     },
-    separator: {
-        height: 1,
-        backgroundColor: '#CCCCCC',
-        width: '100%',
-        marginBottom: 5,
-    },
-    notifications: {
-        fontSize: 18,
-        fontStyle: "italic",
-    },
-    buttonText: {
-        color: "#f5f5f5",
-        fontSize: 18,
+    rowContainerTitle: {
+        backgroundColor: " #ca8035", 
+        flexDirection: 'row',
+        justifyContent: "space-around",
+        borderRadius: 5,
+        shadowColor: '#7a2307',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 25,
+        elevation: 3,
+        marginBottom:10,
     },
     lineTitle1: {
-        height: 35,
-        flex: 1,
-        textAlign: "center",
-        paddingLeft: 10,
-        lineHeight: 35,
+        backgroundColor: " #ca8035",  
         fontSize: 20,
-        color: "white",
-        fontWeight: 900,
+        color: "#470a07",
     },
     lineTitle2: {
-        height: 35,
-        flex: 3,
-        textAlign: "center",
-        paddingRight: 10,
-        lineHeight: 35,
+        backgroundColor: " #ca8035",  
         fontSize: 20,
-        color: "white",
-        fontWeight: 900,
+        color: "#470a07",
     },
     lineTitle3: {
-        height: 35,
-        flex: 1,
-        textAlign: 'center',
-        paddingRight: 10,
-        lineHeight: 35,
+        backgroundColor: " #ca8035",  
         fontSize: 20,
-        color: "white",
-        fontWeight: '900',
+        color: "#470a07",
+        shadowOpacity: 0.5,
+        shadowColor: '#7a2307',
+    },
+    rowContent: {
+        flexDirection: 'column',
+        flex: 1,
+    },
+    rowTextContainer: {
+        flexDirection: 'row',
+        marginLeft:5,
+        marginRight:10,
+        flex: 1,
+    },
+    actionButtonsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        marginTop: 10,
     },
     line1: {
-        flex: 1,
-        fontSize: 16,
-        color: "white",
+        fontSize: 18,
+        marginRight:10,
+        color: "black",
         fontWeight: 500,
         flexWrap: "wrap",
-        right: 5,
+        marginBottom: 5,
     },
     line2: {
-        flex: 2,
-        fontSize: 16,
-        color: 'white',
-        flexWrap: 'wrap',
-    },
-    verticalLine: {
-        width: 1,
-        backgroundColor: 'white',
-        marginHorizontal: 10,
-        height: '100%',
-    },
-    notificationContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        backgroundColor: "lightgrey",
+        fontSize: 18,
+        marginLeft:25,
+        marginRight:10,
+        color: "black",
+        flexWrap: "wrap",
     },
 });

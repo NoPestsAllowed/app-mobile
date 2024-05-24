@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         shadowRadius: 7,
         fontWeight: 800,
+        margin: 1,
     },
     subtitle: {
         fontSize: 20,
@@ -47,6 +48,6 @@ const styles = StyleSheet.create({
     link: {
         lineHeight: 30,
         fontSize: 16,
-        color: "#0a7ea4",
+        color: "#ca8035",
     },
 });

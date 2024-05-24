@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         flexDirection: "row",
         justifyContent: "center",
-        marginTop: 5,
+        margin: 5,
     },
     elevated: {
         backgroundColor: "#A53939",
