@@ -28,6 +28,7 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
+// persistor.purge();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
