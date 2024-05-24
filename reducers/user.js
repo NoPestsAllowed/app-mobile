@@ -27,7 +27,7 @@ export const userSlice = createSlice({
             state.value.token = null;
             state.value.id = null;
         },
-        updatePhoto: (state, action ) => {
+        updatePhoto: (state, action) => {
             console.log(action.payload, state.value);
             state.value.photo.push(action.payload);
         },
