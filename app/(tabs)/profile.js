@@ -7,7 +7,7 @@ import { ThemedView } from '../../components/ThemedView';
 import { ThemedTextInput } from '../../components/ThemedTextInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteAccount, userState } from '../../reducers/user';
+import { deleteAccount, userState, clearUserState } from '../../reducers/user';
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -25,6 +25,7 @@ export default function ProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
      const user = useSelector((state) => state.user.value);
+    // console.log(user)
     //const userState = useSelector(state => state.user);
 
     // const handleLogout = () => {
@@ -36,19 +37,22 @@ export default function ProfileTab({ navigation }) {
     }
 
     const handleDeleteAccount = () => {
-        console.log(user);
         const userId = user.id;
         console.log(userId);
-        fetch(`${backendUrl}/delete/${userId}`, {
-            method: 'DELETE',
-            // headers: { 'Content-Type': 'application/json' },
+        fetch(`${backendUrl}/users/delete/${userId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          //  body: JSON.stringify(user)
         })
-        .then(response => response.json())
+    // .then((res) => res.json())
     .then(data => {
-        if (data.message === "Votre compte a bien été supprimé") {
+        console.log(data)
+        if (data) {
             dispatch(deleteAccount(userId));
             dispatch(clearUserState());
-        } else {
+
+        } 
+        else {
             console.error(data.error);
         }
     })
@@ -69,22 +73,29 @@ export default function ProfileTab({ navigation }) {
     return (
         <ParallaxScrollView headerBackgroundColor={{ light: '#9f4634', dark: '#1D3D47' }}>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type='title'>Profile</ThemedText>
+                <ThemedText type="title">Profil de {user.firstname}</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)}
-                value={firstName}
-                placeholder='First Name'
-                label='First Name'
+                onChangeText={(value) => setFirstName(value)} 
+                value={user.firstname}
+                placeholder="First Name"
+                label="First Name"
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput
-                onChangeText={(value) => setLastName(value)}
-                value={lastName}
-                placeholder='Last Name'
-                label='Last Name'
+            <ThemedTextInput 
+                onChangeText={(value) => setLastName(value)} 
+                value={user.lastname}
+                placeholder="Last Name"
+                label="Last Name"
+                style={[styles.profileInfo, styles.input]}
+            />
+                <ThemedTextInput 
+                onChangeText={(value) => setLastName(value)} 
+                value={user.email}
+                placeholder="Email"
+                label="Email"
                 style={[styles.profileInfo, styles.input]}
             />
 
@@ -96,13 +107,13 @@ export default function ProfileTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput
-                onChangeText={(value) => setPassword(value)}
+            {/* <ThemedTextInput 
+                onChangeText={(value) => setPassword(value)} 
                 value={password}
                 placeholder='Password'
                 label='Password'
                 style={[styles.profileInfo, styles.input]}
-            />
+            /> */}
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
@@ -117,10 +128,10 @@ export default function ProfileTab({ navigation }) {
                     <Icon name='globe' size={30} color={authorizeNotifications ? '#A53939' : 'grey'} />
                 </TouchableOpacity>
             </ThemedView>
-
-            <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
+            
            
             <ThemedButton >Modifier mon compte</ThemedButton>
+            <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
         </ParallaxScrollView>
     );
 }

@@ -63,14 +63,9 @@ export default function MydepositionsTab({ navigation }) {
             <ThemedView style={styles.notificationContainer}>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}></TouchableOpacity>
             </ThemedView>
-
+            
             <ThemedView style={styles.photosContainer}>
-                {/* <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} />
-                <Image style={styles.photos} source={require("../../../assets/images/avatar1.jpg")} /> */}
+              
                 {photos}
             </ThemedView>
         </ParallaxScrollView>
