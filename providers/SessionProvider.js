@@ -58,6 +58,7 @@ export function SessionProvider(props) {
         <AuthContext.Provider
             value={{
                 login: (email, password) => {
+                    console.log("hheerr", email, password);
                     signIn(email, password);
                 },
                 logout: () => {

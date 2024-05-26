@@ -7,7 +7,7 @@ import { StyleSheet } from "react-native";
 const { fetchOverpass } = require("../modules/overpassApi");
 
 export default function SelectList({ depoLocation, itemSelected }) {
-    console.log("depoLocation", depoLocation);
+    // console.log("depoLocation", depoLocation);
     const [overpassResult, setOverpassResult] = useState([]);
     const [displayLocationName, setDisplayLocationName] = useState("");
     const [showResult, setShowResult] = useState(false);
@@ -43,7 +43,7 @@ export default function SelectList({ depoLocation, itemSelected }) {
                         // );
                         return (
                             (item && item.street) ||
-                            (item.tags["amenity"] &&
+                            (item?.tags["amenity"] &&
                                 (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
                                 (item.tags["addr:street"] || item.tags["contact:street"]))
                         );
@@ -83,12 +83,12 @@ export default function SelectList({ depoLocation, itemSelected }) {
             }
 
             if (item.tags["addr:street"] || item.tags["contact:street"]) {
-                console.log(
-                    item,
-                    "-" + typeof item.tags["addr:street"] !== "undefined"
-                        ? item.tags["addr:street"]
-                        : item.tags["contact:street"]
-                );
+                // console.log(
+                //     item,
+                //     "-" + typeof item.tags["addr:street"] !== "undefined"
+                //         ? item.tags["addr:street"]
+                //         : item.tags["contact:street"]
+                // );
                 resultText += " ";
                 resultText +=
                     typeof item.tags["addr:street"] !== "undefined"

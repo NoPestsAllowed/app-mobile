@@ -13,7 +13,8 @@ import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
 import CameraComponent from "../../../components/CameraComponent";
 import { useDispatch, useSelector } from "react-redux";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -37,13 +38,14 @@ export default function CreateDepositionTab({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
 
+    const router = useRouter();
     const dispatch = useDispatch();
 
     const pickImage = async () => {
-        if (Platform.OS !== 'web') {
+        if (Platform.OS !== "web") {
             const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-                alert('Désolé, nous avons besoin des permissions pour accéder à la galerie!');
+            if (status !== "granted") {
+                alert("Désolé, nous avons besoin des permissions pour accéder à la galerie!");
                 return;
             }
         }
@@ -72,14 +74,8 @@ export default function CreateDepositionTab({ navigation }) {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === "granted") {
-                Location.watchPositionAsync(
-                    {
-                        distanceInterval: 10,
-                    },
-                    (location) => {
-                        setUserLocation(location);
-                    }
-                );
+                let location = await Location.getCurrentPositionAsync({});
+                setUserLocation(location);
             }
         })();
     }, []);
@@ -171,8 +167,26 @@ export default function CreateDepositionTab({ navigation }) {
             .then((res) => res.json())
             .then((createDepositionResponse) => {
                 console.log("createDepositionResponse", createDepositionResponse);
+                clearInputs();
+                // Redirect user to deposition/index
+                // this does not work:
+                // router.navigate("deposition/index");
             })
             .catch((err) => console.error(err));
+    };
+
+    const clearInputs = () => {
+        setDepositionName("");
+        setOwnerEmail("");
+        setDescription("");
+        // setUserLocation(null);
+        setDepoLocation(null);
+        setDepoPlace(null);
+        setDepoByPicture(true);
+        setDepoByHonnor(false);
+        setCameraOpen(false);
+        setSelectedImage(null);
+        setVisualProofs([]);
     };
 
     return (
@@ -194,6 +208,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.btnContainer}>
                 <ThemedButton
+                    colored={false}
                     elevated={false}
                     onPress={() => {
                         setDepoByPicture(true);
@@ -205,6 +220,7 @@ export default function CreateDepositionTab({ navigation }) {
                 </ThemedButton>
 
                 <ThemedButton
+                    colored={false}
                     elevated={false}
                     onPress={() => {
                         setDepoByPicture(false);
@@ -222,9 +238,9 @@ export default function CreateDepositionTab({ navigation }) {
                         <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
                     </ThemedButton>
 
-                    <ThemedButton style={styles.button} onPress={pickImage}>
+                    {/* <ThemedButton style={styles.button} onPress={pickImage}>
                         <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
-                    </ThemedButton>
+                    </ThemedButton> */}
                     {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
                 </ThemedView>
             )}
@@ -238,6 +254,8 @@ export default function CreateDepositionTab({ navigation }) {
                 value={ownerEmail}
                 placeholder="Owner Email"
                 label="Owner Email"
+                keyboardType="email-address"
+                inputMode="email"
                 style={[styles.profileInfo, styles.input]}
             />
 
@@ -249,7 +267,9 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
+            <ThemedView style={{ alignItems: "center" }}>
+                <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }

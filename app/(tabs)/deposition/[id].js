@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, ActivityIndicator, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -11,12 +11,13 @@ import moment from "moment";
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function DepositionDetail() {
-    const params = useLocalSearchParams();
+    const { id } = useLocalSearchParams();
     const user = useSelector((state) => state.user.value);
-    console.log("here", params.id);
+    console.log("here", id);
     const [deposition, setDeposition] = useState(null);
+
     useEffect(() => {
-        fetch(`${backendUrl}/depositions/${params.id}`, {
+        fetch(`${backendUrl}/depositions/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -30,11 +31,15 @@ export default function DepositionDetail() {
                 setDeposition(data.deposition);
             })
             .catch((err) => console.log(err));
-    }, []);
+        return () => {
+            setDeposition(null);
+        };
+    }, [id]);
+
     if (!deposition) {
         return (
-            <ThemedView>
-                <ThemedText>Loading deposition</ThemedText>
+            <ThemedView style={styles.loadingContainer}>
+                <ActivityIndicator size={75} color="#9f4634" />
             </ThemedView>
         );
     }
@@ -84,6 +89,11 @@ export default function DepositionDetail() {
 }
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     headerContainer: {
         flexDirection: "row",
         alignItems: "center",
