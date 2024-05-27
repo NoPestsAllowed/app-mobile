@@ -20,6 +20,7 @@ export default function UpdateProfileTab({ navigation }) {
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
 
+
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
     // console.log(user)
@@ -63,14 +64,17 @@ export default function UpdateProfileTab({ navigation }) {
     };
 
     return (
-        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
+        >
+
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Profil de {user.firstname}</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)}
-                value={user.firstname}
+                value={firstName}
                 placeholder="First Name"
                 label="First Name"
                 style={[styles.profileInfo, styles.input]}
@@ -78,7 +82,7 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedTextInput
                 onChangeText={(value) => setLastName(value)}
-                value={user.lastname}
+                value={lastName}
                 placeholder="Last Name"
                 label="Last Name"
                 style={[styles.profileInfo, styles.input]}
@@ -94,16 +98,18 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setBirthDate(value)}
                 value={birthDate}
-                placeholder="Birth Date"
-                label="Birth Date"
+                placeholder='Birth Date'
+                label='Birth Date'
                 style={[styles.profileInfo, styles.input]}
             />
 
+            <ThemedTextInput
+                onChangeText={(value) => setPassword(value)}
             {/* <ThemedTextInput
                 onChangeText={(value) => setPassword(value)}
                 value={password}
-                placeholder="Password"
-                label="Password"
+                placeholder='Password'
+                label='Password'
                 style={[styles.profileInfo, styles.input]}
             /> */}
 
@@ -112,18 +118,21 @@ export default function UpdateProfileTab({ navigation }) {
                 <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleModifyNotifications}>
                     <Icon
-                        name={modifyNotifications ? "bell" : "bell-o"}
+                        name={modifyNotifications ? 'bell' : 'bell-o'}
                         size={30}
-                        color={modifyNotifications ? "#A53939" : "grey"}
+                        color={modifyNotifications ? '#A53939' : 'grey'}
                     />
                 </TouchableOpacity>
             </ThemedView>
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                    <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
+                    <Icon
+                        name='globe'
+                        size={30}
+                        color={authorizeNotifications ? '#A53939' : 'grey'}
+                    />
                 </TouchableOpacity>
             </ThemedView>
 
@@ -142,10 +151,9 @@ const styles = StyleSheet.create({
         elevation: 1,
         zIndex: 1,
     },
-
     rightHeader: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 
     titleContainer: {
