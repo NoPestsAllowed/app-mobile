@@ -14,12 +14,14 @@ import {
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
 import { ThemedText } from "./ThemedText";
+import {  useSelector } from 'react-redux';
 
 export function Header({ style, lightColor, darkColor, children, ...rest }) {
     const { session } = useSession();
     const [menuVisible, setMenuVisible] = useState(false);
 
     const rotation = useRef(new Animated.Value(0)).current;
+    const user = useSelector((state) => state.user.value);
 
     useEffect(() => {
         const rotateLogo = () => {
@@ -74,7 +76,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                 />
             </View>
             <View style={styles.rightHeader}>
-                <ThemedText style={styles.welcomeText}>Welcome, John!</ThemedText>
+                <ThemedText style={styles.welcomeText}>Welcome, {user.firstname}</ThemedText>
                 <TouchableOpacity style={styles.avatarContainer} onPress={handleAvatarPress}>
                     <Image source={require("../assets/images/avatar1.jpg")} style={styles.avatar} />
                 </TouchableOpacity>
@@ -137,8 +139,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     welcomeText: {
-        marginRight: 25,
-        fontSize: 24,
+        marginRight: 5,
+        fontSize: 16,
         color: "white",
         top: 7,
         fontWeight: 800,

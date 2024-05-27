@@ -45,9 +45,9 @@ export default function TabLayout() {
                     }}
                 />
                 <Tabs.Screen
-                    name="profile"
+                    name="profile/update"
                     options={{
-                        title: "Profile",
+                        title: "Update Profile",
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "eye" : "eye-outline"} color={color} />
                         ),
@@ -63,6 +63,13 @@ export default function TabLayout() {
                 />
                 <Tabs.Screen
                     name="deposition/detail"
+                    options={{
+                        title: "Deposition Detail",
+                        href: null,
+                    }}
+                />
+                <Tabs.Screen
+                    name="deposition/[id]"
                     options={{
                         title: "Deposition Detail",
                         href: null,

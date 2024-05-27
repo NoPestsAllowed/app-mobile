@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Platform, Image } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -7,11 +7,16 @@ import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
-import { Camera, CameraView } from "expo-camera";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+// import { Camera, CameraView } from "expo-camera";
+// import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
-// const { fetchOverpass } = require("../../../modules/overpassApi");
+import CameraComponent from "../../../components/CameraComponent";
+import { useDispatch, useSelector } from "react-redux";
+import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
+
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function CreateDepositionTab({ navigation }) {
     const [depositionName, setDepositionName] = useState("");
@@ -20,12 +25,42 @@ export default function CreateDepositionTab({ navigation }) {
     const [description, setDescription] = useState("");
     const [userLocation, setUserLocation] = useState(null);
 
+    const [depoLocation, setDepoLocation] = useState(null);
+    const [depoPlace, setDepoPlace] = useState(null);
+
     const [depoByPicture, setDepoByPicture] = useState(true);
     const [depoByHonnor, setDepoByHonnor] = useState(false);
-    const [hasCameraPermission, setHasCameraPermission] = useState(false);
+    // const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
 
-    const cameraRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [visualProofs, setVisualProofs] = useState([]);
+
+    const user = useSelector((state) => state.user.value);
+
+    const router = useRouter();
+    const dispatch = useDispatch();
+
+    const pickImage = async () => {
+        if (Platform.OS !== "web") {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== "granted") {
+                alert("Désolé, nous avons besoin des permissions pour accéder à la galerie!");
+                return;
+            }
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.cancelled) {
+            setSelectedImage(result.uri);
+        }
+    };
 
     const initialLocalisation = {
         latitude: 48.86667,
@@ -39,14 +74,8 @@ export default function CreateDepositionTab({ navigation }) {
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status === "granted") {
-                Location.watchPositionAsync(
-                    {
-                        distanceInterval: 10,
-                    },
-                    (location) => {
-                        setUserLocation(location);
-                    }
-                );
+                let location = await Location.getCurrentPositionAsync({});
+                setUserLocation(location);
             }
         })();
     }, []);
@@ -62,36 +91,103 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            setHasCameraPermission(status === "granted");
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const { status } = await Camera.requestCameraPermissionsAsync();
+    //         setHasCameraPermission(status === "granted");
+    //     })();
+    // }, []);
 
     const openCamera = () => {
         setCameraOpen(true);
     };
 
-    const takePicture = async () => {
-        if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync();
-            console.log(photo);
-            setCameraOpen(false); // Close the camera after taking a picture
-        }
+    const handlePictureTaken = (picture) => {
+        console.log(picture);
+        setDepoLocation(userLocation);
+        setVisualProofs((vproofs) => [...vproofs, picture]);
     };
 
-    if (cameraOpen && hasCameraPermission) {
+    const itemSelected = (item) => {
+        console.log("itemSelected", item);
+        if (item.tags["contact:email"]) {
+            setOwnerEmail(item.tags["contact:email"]);
+        } else if (item.tags["email"]) {
+            setOwnerEmail(item.tags["email"]);
+        }
+        setDepoPlace(item);
+    };
+
+    // const takePicture = async () => {
+    //     if (cameraRef.current) {
+    //         const photo = await cameraRef.current.takePictureAsync();
+    //         console.log(photo);
+    //         setCameraOpen(false); // Close the camera after taking a picture
+    //     }
+    // };
+
+    if (cameraOpen) {
         return (
-            <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
-                <View style={styles.snapContainer}>
-                    <TouchableOpacity onPress={takePicture}>
-                        <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-                    </TouchableOpacity>
-                </View>
-            </CameraView>
+            // <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
+            //     <View style={styles.snapContainer}>
+            //         <TouchableOpacity onPress={takePicture}>
+            //             <FontAwesome name="circle-thin" size={95} color="#ffffff" />
+            //         </TouchableOpacity>
+            //     </View>
+            // </CameraView>
+
+            <CameraComponent
+                closeCamera={() => {
+                    console.log("closing cam");
+                    setCameraOpen(false);
+                }}
+                handlePictureTaken={(picture) => handlePictureTaken(picture)}
+            />
         );
     }
+
+    const submitDeposition = () => {
+        const deposition = {
+            name: depositionName,
+            description: description,
+            placeOwnerEmail: ownerEmail,
+            place: depoPlace,
+            visualProofs: visualProofs,
+        };
+
+        console.log(deposition);
+        fetch(`${backendUrl}/depositions/create`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify(deposition),
+        })
+            .then((res) => res.json())
+            .then((createDepositionResponse) => {
+                console.log("createDepositionResponse", createDepositionResponse);
+                clearInputs();
+                // Redirect user to deposition/index
+                // this does not work:
+                // router.navigate("deposition/index");
+            })
+            .catch((err) => console.error(err));
+    };
+
+    const clearInputs = () => {
+        setDepositionName("");
+        setOwnerEmail("");
+        setDescription("");
+        // setUserLocation(null);
+        setDepoLocation(null);
+        setDepoPlace(null);
+        setDepoByPicture(true);
+        setDepoByHonnor(false);
+        setCameraOpen(false);
+        setSelectedImage(null);
+        setVisualProofs([]);
+    };
 
     return (
         <ParallaxScrollView
@@ -112,17 +208,19 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.btnContainer}>
                 <ThemedButton
+                    colored={false}
                     elevated={false}
                     onPress={() => {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
                     }}
-                    style={[styles.proofBtn, depoByPicture === true ? styles.optionSelected : ""]}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : ""]}
                 >
-                    J'ai un preuve
+                    J'ai une preuve
                 </ThemedButton>
 
                 <ThemedButton
+                    colored={false}
                     elevated={false}
                     onPress={() => {
                         setDepoByPicture(false);
@@ -140,21 +238,24 @@ export default function CreateDepositionTab({ navigation }) {
                         <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
                     </ThemedButton>
 
-                    <ThemedButton style={styles.button}>
+                    {/* <ThemedButton style={styles.button} onPress={pickImage}>
                         <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
-                    </ThemedButton>
+                    </ThemedButton> */}
+                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
                 </ThemedView>
             )}
 
             {depoByHonnor && <ThemedCheckbox label="Je déclare sur l'honneur la véracité de ma déposition" />}
 
-            {userLocation && <SelectList userLocation={userLocation} />}
+            {depoLocation && <SelectList depoLocation={depoLocation} itemSelected={(item) => itemSelected(item)} />}
 
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
                 value={ownerEmail}
                 placeholder="Owner Email"
                 label="Owner Email"
+                keyboardType="email-address"
+                inputMode="email"
                 style={[styles.profileInfo, styles.input]}
             />
 
@@ -166,9 +267,9 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {/* <ThemedButton onPress={openCamera}>Open Camera</ThemedButton>
-            <ThemedButton>Upload Images from Phone</ThemedButton> */}
-            {/* <ThemedButton onPress={() => navigation.goBack()}>Logout</ThemedButton> */}
+            <ThemedView style={{ alignItems: "center" }}>
+                <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }
@@ -212,10 +313,21 @@ const styles = StyleSheet.create({
     },
     optionSelected: {
         backgroundColor: "#bbf7d0",
-        border: 2,
-        border: "green",
+        borderWidth: 2,
+        borderColor: "green",
     },
     pictureBtn: {
         alignItems: "center",
+    },
+    button: {
+        marginVertical: 10,
+    },
+    buttonText: {
+        color: "#fff",
+    },
+    image: {
+        width: 200,
+        height: 200,
+        marginTop: 20,
     },
 });

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateEmail, setToken, removeToken, clearUserState } from "../reducers/user";
+import { updateEmail, setToken, removeToken, clearUserState, updateUser } from "../reducers/user";
 import { AuthContext } from "../contexts/authContext";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
@@ -31,6 +31,7 @@ export function SessionProvider(props) {
             })
             .then((registrationResult) => {
                 dispatch(updateEmail(email));
+                dispatch(updateUser({firstname : registrationResult.user.firstname, lastname: registrationResult.user.lastname, id: registrationResult.user._id}))
                 dispatch(setToken(registrationResult.token));
                 router.push("/(tabs)");
             })
@@ -58,6 +59,7 @@ export function SessionProvider(props) {
         <AuthContext.Provider
             value={{
                 login: (email, password) => {
+                    console.log("hheerr", email, password);
                     signIn(email, password);
                 },
                 logout: () => {

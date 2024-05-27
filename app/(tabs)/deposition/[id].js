@@ -1,78 +1,99 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, TouchableOpacity, ActivityIndicator, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
-import { ThemedTextInput } from "../../../components/ThemedTextInput";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
+import { useSelector } from "react-redux";
+import MapView, { Marker } from "react-native-maps";
+import moment from "moment";
 
-export default function MydepositionsTab({ navigation }) {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState("");
-    const [modifyNotifications, setModifyNotifications] = useState(false);
-    const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
-    const handleLogout = () => {
-        navigation.navigate("Home");
-    };
-
-    const handleDeleteAccount = () => {
-        navigation.navigate("Home");
-    };
-
-    const toggleModifyNotifications = () => {
-        setModifyNotifications(!modifyNotifications);
-    };
-
-    const toggleAuthorizeNotifications = () => {
-        setAuthorizeNotifications(!authorizeNotifications);
-    };
-
+export default function DepositionDetail() {
+    const { id } = useLocalSearchParams();
     const user = useSelector((state) => state.user.value);
-    const photos = user.photo.map((data, i) => {
-        return (
-            <View key={i} style={styles.photosContainer}>
-                <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
-                <Image source={{ uri: data }} style={styles.photos} />
-            </View>
-        );
-    });
+    console.log("here", id);
+    const [deposition, setDeposition] = useState(null);
 
+    useEffect(() => {
+        fetch(`${backendUrl}/depositions/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("////////");
+                console.log(data.deposition.placeId);
+                setDeposition(data.deposition);
+            })
+            .catch((err) => console.log(err));
+        return () => {
+            setDeposition(null);
+        };
+    }, [id]);
+
+    if (!deposition) {
+        return (
+            <ThemedView style={styles.loadingContainer}>
+                <ActivityIndicator size={75} color="#9f4634" />
+            </ThemedView>
+        );
+    }
     return (
-        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+            headerImage={
+                <MapView
+                    initialRegion={{
+                        latitude: deposition.placeId.geojson.coordinates[0],
+                        longitude: deposition.placeId.geojson.coordinates[1],
+                        latitudeDelta: 0.000922,
+                        longitudeDelta: 0.000421,
+                    }}
+                    style={{ flex: 1 }}
+                >
+                    <Marker
+                        key={deposition.id}
+                        coordinate={{
+                            latitude: deposition.placeId.geojson.coordinates[0],
+                            longitude: deposition.placeId.geojson.coordinates[1],
+                        }}
+                        title={deposition.name}
+                        description={deposition.description}
+                    />
+                </MapView>
+            }
+        >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Dépositions Numéro 2</ThemedText>
+                <ThemedText type="title">{deposition.name}</ThemedText>
             </ThemedView>
             <ThemedView>
-                <ThemedText>Created at: 22/05/2024</ThemedText>
+                <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
-                <ThemedText>
-                    {} Nous avons loué notre Airnb depuis une semaine et à notre arrivée il était plein de fourmis. Nous
-                    ne pouvons rien poser sur le sol, car les insectes continuent de courir partout et touchent tout.
-                    Nos vacances sont gâchées à cause de ce problème.
-                </ThemedText>
+                <ThemedText>{deposition.description}</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.notificationContainer}>
+            {/* <ThemedView style={styles.notificationContainer}>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}></TouchableOpacity>
-            </ThemedView>
-            
-            <ThemedView style={styles.photosContainer}>
-              
-                {photos}
-            </ThemedView>
+            </ThemedView> */}
+
+            {/* <ThemedView style={styles.photosContainer}>{photos}</ThemedView> */}
         </ParallaxScrollView>
     );
 }
 
 const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
     headerContainer: {
         flexDirection: "row",
         alignItems: "center",

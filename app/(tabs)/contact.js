@@ -7,6 +7,7 @@ import { ThemedView } from "../../components/ThemedView";
 import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { router } from "expo-router";
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ContactTab({ navigation }) {
     const [firstName, setFirstName] = useState("John");
@@ -14,6 +15,8 @@ export default function ContactTab({ navigation }) {
     const [email, setEmail] = useState("");
     const [messageTitle, setMessageTitle] = useState("");
     const [message, setMessage] = useState("");
+
+    const user = useSelector((state) => state.user.value);
 
     const handleSendMessage = () => {
         navigation.navigate('Messagesent');
@@ -30,7 +33,7 @@ export default function ContactTab({ navigation }) {
 
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)} 
-                value={firstName}
+                value={user.firstname}
                 placeholder="First Name"
                 label="First Name"
                 style={[styles.profileInfo, styles.input]}
@@ -38,7 +41,7 @@ export default function ContactTab({ navigation }) {
 
             <ThemedTextInput 
                 onChangeText={(value) => setLastName(value)} 
-                value={lastName}
+                value={user.lastname}
                 placeholder="Last Name"
                 label="Last Name"
                 style={[styles.profileInfo, styles.input]}
@@ -46,7 +49,7 @@ export default function ContactTab({ navigation }) {
 
             <ThemedTextInput 
                 onChangeText={(value) => setEmailAddress(value)} 
-                value={email}
+                value={user.email}
                 placeholder="Email address"
                 label="Email address"
                 style={[styles.profileInfo, styles.input]}
