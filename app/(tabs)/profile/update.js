@@ -20,7 +20,6 @@ export default function UpdateProfileTab({ navigation }) {
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
 
-
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
     // console.log(user)
@@ -64,10 +63,7 @@ export default function UpdateProfileTab({ navigation }) {
     };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
-        >
-
+        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Profil de {user.firstname}</ThemedText>
             </ThemedView>
@@ -98,13 +94,11 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setBirthDate(value)}
                 value={birthDate}
-                placeholder='Birth Date'
-                label='Birth Date'
+                placeholder="Birth Date"
+                label="Birth Date"
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput
-                onChangeText={(value) => setPassword(value)}
             {/* <ThemedTextInput
                 onChangeText={(value) => setPassword(value)}
                 value={password}
@@ -118,9 +112,9 @@ export default function UpdateProfileTab({ navigation }) {
                 <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleModifyNotifications}>
                     <Icon
-                        name={modifyNotifications ? 'bell' : 'bell-o'}
+                        name={modifyNotifications ? "bell" : "bell-o"}
                         size={30}
-                        color={modifyNotifications ? '#A53939' : 'grey'}
+                        color={modifyNotifications ? "#A53939" : "grey"}
                     />
                 </TouchableOpacity>
             </ThemedView>
@@ -128,11 +122,7 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                    <Icon
-                        name='globe'
-                        size={30}
-                        color={authorizeNotifications ? '#A53939' : 'grey'}
-                    />
+                    <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
                 </TouchableOpacity>
             </ThemedView>
 
@@ -152,8 +142,8 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     rightHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
 
     titleContainer: {
