@@ -58,7 +58,7 @@ export default function Register() {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding"} style={styles.container}>
-            <ThemedView style={styles.titleContainer}>
+            <ThemedView style={(styles.titleContainer, styles.bgTransparent)}>
                 <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
 
                 <ThemedText type="title" style={styles.title}>
@@ -128,6 +128,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         // gap: 10,
+    },
+    bgTransparent: {
+        backgroundColor: "transparent",
     },
     error: {
         marginTop: 10,

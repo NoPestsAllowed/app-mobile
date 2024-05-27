@@ -25,7 +25,7 @@ export default function register() {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
-            <ThemedView style={styles.titleContainer}>
+            <ThemedView style={[styles.titleContainer, styles.bgTransparent]}>
                 <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                 <ThemedText type="title" style={styles.title}>
                     Login
@@ -90,11 +90,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         // gap: 10,
     },
+    bgTransparent: {
+        backgroundColor: "transparent",
+    },
     inputContainer: {
-        width: '100%',
+        width: "100%",
         padding: 30,
         borderRadius: 1,
-      },
+    },
     input: {
         borderWidth: 1,
         borderColor: "#A53939",

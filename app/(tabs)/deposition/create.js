@@ -155,7 +155,6 @@ export default function CreateDepositionTab({ navigation }) {
             visualProofs: visualProofs,
         };
 
-        console.log(deposition);
         fetch(`${backendUrl}/depositions/create`, {
             method: "POST",
             headers: {
