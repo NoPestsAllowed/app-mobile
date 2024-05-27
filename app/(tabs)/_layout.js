@@ -38,7 +38,7 @@ export default function TabLayout() {
                 <Tabs.Screen
                     name="deposition/index"
                     options={{
-                        title: "Deposition",
+                        title: "My depositions",
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "folder" : "folder-outline"} color={color} />
                         ),

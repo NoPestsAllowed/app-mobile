@@ -14,11 +14,12 @@ import {
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
 import { ThemedText } from "./ThemedText";
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export function Header({ style, lightColor, darkColor, children, ...rest }) {
     const { session } = useSession();
     const [menuVisible, setMenuVisible] = useState(false);
+    const [borderColor, setBorderColor] = useState("#c17829");
 
     const rotation = useRef(new Animated.Value(0)).current;
     const user = useSelector((state) => state.user.value);
@@ -40,6 +41,16 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
         return () => clearInterval(interval);
     }, [rotation]);
+
+    useEffect(() => {
+        const changeBorderColor = () => {
+            setBorderColor(prevColor => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
+        };
+
+        const borderColorInterval = setInterval(changeBorderColor, 4500);
+
+        return () => clearInterval(borderColorInterval);
+    }, []);
 
     const handleAvatarPress = () => {
         setMenuVisible(!menuVisible);
@@ -77,8 +88,8 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
             </View>
             <View style={styles.rightHeader}>
                 <ThemedText style={styles.welcomeText}>Welcome, {user.firstname}</ThemedText>
-                <TouchableOpacity style={styles.avatarContainer} onPress={handleAvatarPress}>
-                    <Image source={require("../assets/images/avatar1.jpg")} style={styles.avatar} />
+                <TouchableOpacity style={[styles.avatarContainer, { borderColor }]} onPress={handleAvatarPress}>
+                    <Image source={require("../assets/images/avatar1.png")} style={styles.avatar} />
                 </TouchableOpacity>
             </View>
             <Modal
@@ -143,14 +154,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "white",
         top: 7,
-        fontWeight: 800,
+        fontWeight: "800",
     },
     avatarContainer: {
         height: 77,
         width: 77,
         borderRadius: 50,
-        borderWidth: 2,
-        borderColor: "#c17829",
+        borderWidth: 3,
         justifyContent: "center",
         alignItems: "center",
         top: 3,
@@ -180,7 +190,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         margin: 5,
         color: "white",
-        fontWeight: 700,
+        fontWeight: "700",
     },
     modalOverlay: {
         flex: 1,
