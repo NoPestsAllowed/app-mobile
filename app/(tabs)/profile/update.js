@@ -70,7 +70,7 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)}
-                value={user.firstName}
+                value={user.firstname}
                 placeholder="First Name"
                 label="First Name"
                 style={[styles.profileInfo, styles.input]}
@@ -78,7 +78,7 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedTextInput
                 onChangeText={(value) => setLastName(value)}
-                value={user.lastName}
+                value={user.lastname}
                 placeholder="Last Name"
                 label="Last Name"
                 style={[styles.profileInfo, styles.input]}
