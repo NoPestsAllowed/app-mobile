@@ -21,17 +21,7 @@ export default function DepositionDetail() {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("////////");
-                console.log(data.deposition.placeId);
-                setDeposition(data.deposition);
-            })
-            .catch((err) => console.log(err));
-        return () => {
+                Authorization: `Bearer ${user.token}`,y
             setDeposition(null);
         };
     }, [id]);
