@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 32,
-        color: "#A53939",
+        // color: "#A53939",
         shadowColor: "#888",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,

@@ -5,10 +5,10 @@ import { ThemedView } from "../../../components/ThemedView";
 import { Collapsible } from "../../../components/Collapsible";
 import { ExternalLink } from "../../../components/ExternalLink";
 import { ThemedButton } from "../../../components/ThemedButton";
-import { Link, router } from "expo-router";
+import { Link, router, useFocusEffect } from "expo-router";
 import MapView, { Marker } from "react-native-maps";
 import EmptyState from "../../../components/EmptyState";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import DepositionCard from "../../../components/DepositionCard";
 
@@ -18,20 +18,39 @@ export default function DepositionTab() {
     const [depositions, setDepositions] = useState([]);
     const user = useSelector((state) => state.user.value);
 
-    useEffect(() => {
-        fetch(`${backendUrl}/depositions`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((depositionsResponse) => {
-                console.log("here", depositionsResponse);
-                setDepositions(depositionsResponse.depositions);
-            });
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            fetch(`${backendUrl}/depositions`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            })
+                .then((res) => res.json())
+                .then((depositionsResponse) => {
+                    setDepositions(depositionsResponse.depositions);
+                });
+            return () => {
+                console.log("This route is now unfocused.");
+            };
+        }, [])
+    );
+
+    // useEffect(() => {
+    //     fetch(`${backendUrl}/depositions`, {
+    //         method: "GET",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             Authorization: `Bearer ${user.token}`,
+    //         },
+    //     })
+    //         .then((res) => res.json())
+    //         .then((depositionsResponse) => {
+    //             // console.log("here", depositionsResponse);
+    //             setDepositions(depositionsResponse.depositions);
+    //         });
+    // }, []);
 
     // console.log("depos", depos);
     return (
@@ -82,7 +101,7 @@ export default function DepositionTab() {
                         console.log(deposition._id);
                         return (
                             <Link
-                                style={{ minWidth: "100%", width: "100%" }}
+                                style={{ marginVertical: 5 }}
                                 key={deposition._id}
                                 href={{
                                     pathname: "/deposition/[id]",
@@ -93,6 +112,11 @@ export default function DepositionTab() {
                             </Link>
                         );
                     })}
+            </ThemedView>
+            <ThemedView style={styles.bottomBtnContainer}>
+                <Link href="/deposition/create" asChild>
+                    <ThemedButton elevated={false}>Create Deposition</ThemedButton>
+                </Link>
             </ThemedView>
             {/* {depos} */}
             {/* <ThemedText>This app includes example code to help you get started.</ThemedText>
@@ -170,7 +194,8 @@ const styles = StyleSheet.create({
         marginBottom: 8,
     },
     nomQuiVeutRienDire: {
-        width: "90%",
+        // width: "90%",
+        flex: 1,
     },
     button: {
         backgroundColor: "#A53939",
@@ -178,14 +203,18 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 10,
         alignItems: "center",
-        shadowColor: "#888",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 1,
-        shadowRadius: 7,
-        elevation: 3,
+        // shadowColor: "#888",
+        // shadowOffset: { width: 0, height: 2 },
+        // shadowOpacity: 1,
+        // shadowRadius: 7,
+        // elevation: 3,
     },
     buttonText: {
-        color: "#f5f5f5",
+        color: "white",
         fontSize: 18,
+    },
+    bottomBtnContainer: {
+        flexDirection: "row",
+        justifyContent: "center",
     },
 });
