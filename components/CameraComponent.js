@@ -46,7 +46,12 @@ export default function CameraComponent(props) {
                         {/* <ThemedText style={styles.text}>Flip Camera</ThemedText> */}
                         <FontAwesome name="refresh" size={15} color="#ffffff" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => props.closeCamera()}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            props.closeCamera();
+                        }}
+                    >
                         <FontAwesome name="close" size={15} color="#ffffff" />
                     </TouchableOpacity>
                 </ThemedView>

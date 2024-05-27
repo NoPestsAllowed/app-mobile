@@ -24,38 +24,62 @@ export default function register() {
     };
 
     return (
-        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height" } style={styles.container}>
-        <ThemedView style={styles.titleContainer}>   
-       <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo}/>
-           
-               <ThemedText type="title" style={styles.title}>Login</ThemedText>
-           </ThemedView>
-           <ThemedView style={styles.inputContainer}>
-       <ThemedTextInput
-           onChangeText={(value) => setEmail(value)} 
-           value={email}
-           placeholder="Email"
-           label="Email"
-           keyboardType="email"
-           style={[styles.profileInfo, styles.input]}
-       />
-   
-       <ThemedTextInput 
-           onChangeText={(value) => setPassword(value)} 
-           value={password}
-           placeholder="Password"
-           label="Password"
-           keyboardType="current-password"
-           style={[styles.profileInfo, styles.input]}
-           secureTextEntry={true}
-       />
-   
-  
-       <TouchableOpacity style={styles.button}  onPress={()=>handleLogin()}>
-           <Text style={styles.buttonText}>Se connecter</Text>
-       </TouchableOpacity>
-       </ThemedView>
-       </KeyboardAvoidingView>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+            <ThemedView style={styles.titleContainer}>
+                <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
+                <ThemedText type="title" style={styles.title}>
+                    Login
+                </ThemedText>
+            </ThemedView>
+
+            <ThemedTextInput
+                onChangeText={(value) => {
+                    setEmail(value);
+                }}
+                value={email}
+                placeholder="Email"
+                label="Email"
+                keyboardType="email-address"
+                inputMode="email"
+                style={[styles.profileInfo, styles.input]}
+            />
+
+            <ThemedTextInput
+                onChangeText={(value) => setPassword(value)}
+                value={password}
+                placeholder="Password"
+                label="Password"
+                keyboardType="current-password"
+                style={[styles.profileInfo, styles.input]}
+                secureTextEntry={true}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
+                <Text style={styles.buttonText}>Se connecter</Text>
+            </TouchableOpacity>
+        </KeyboardAvoidingView>
+        //     <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+        //         <ThemedView >
+        //             <ThemedText style={styles.title}  type="title">Login</ThemedText>
+        //             <ThemedTextInput style={styles.input}
+        //                 onChangeText={(value) => setEmail(value)}
+        //                 value={email}
+        //                 placeholder="Email"
+        //                 keyboardType="email-address"
+        //                 label="Email"
+        //             />
+        //             <ThemedTextInput style={styles.input}
+        //                 onChangeText={(value) => setPassword(value)}
+        //                 value={password}
+        //                 placeholder="Password"
+        //                 keyboardType="current-password"
+        //                 label="Password"
+        //             />
+        //              <TouchableOpacity onPress={() => handleLogin()} style={styles.btnContainer}>
+        //     <Text style={styles.buttonText}>Se connecter</Text>
+        // </TouchableOpacity>
+        //         </ThemedView>
+        //     </KeyboardAvoidingView>
     );
 }
 const styles = StyleSheet.create({

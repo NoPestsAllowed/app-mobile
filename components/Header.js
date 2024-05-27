@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     welcomeText: {
-        marginRight: 25,
-        fontSize: 24,
+        marginRight: 5,
+        fontSize: 16,
         color: "white",
         top: 7,
         fontWeight: 800,

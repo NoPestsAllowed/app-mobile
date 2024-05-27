@@ -69,6 +69,13 @@ export default function TabLayout() {
                     }}
                 />
                 <Tabs.Screen
+                    name="deposition/[id]"
+                    options={{
+                        title: "Deposition Detail",
+                        href: null,
+                    }}
+                />
+                <Tabs.Screen
                     name="deposition/mydepositions"
                     options={{
                         title: "Deposition Detail",
