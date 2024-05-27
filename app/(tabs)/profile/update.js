@@ -168,7 +168,7 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedText style={styles.label}>Email</ThemedText>
             <ThemedTextInput
-                onChangeText={(value) => setLastName(value)}
+                onChangeText={(value) => setEmail(value)}
                 value={user.email}
                 placeholder="Email"
                 style={[styles.profileInfo, styles.input]}
@@ -184,8 +184,8 @@ export default function UpdateProfileTab({ navigation }) {
             {/* <ThemedTextInput
                 onChangeText={(value) => setPassword(value)}
                 value={password}
-                placeholder="Password"
-                label="Password"
+                placeholder='Password'
+                label='Password'
                 style={[styles.profileInfo, styles.input]}
             /> */}
 
@@ -203,7 +203,6 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
                     <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
                 </TouchableOpacity>
@@ -224,7 +223,6 @@ const styles = StyleSheet.create({
         elevation: 1,
         zIndex: 1,
     },
-
     rightHeader: {
         flexDirection: "row",
         alignItems: "center",

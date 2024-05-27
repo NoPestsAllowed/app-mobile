@@ -57,7 +57,6 @@ export default function DepositionTab() {
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
             headerImage={
-                // <Image source={require("../../../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                 <MapView
                     initialRegion={{
                         latitude: 48.86667,
@@ -113,11 +112,14 @@ export default function DepositionTab() {
                         );
                     })}
             </ThemedView>
-            <ThemedView style={styles.bottomBtnContainer}>
-                <Link href="/deposition/create" asChild>
-                    <ThemedButton elevated={false}>Create Deposition</ThemedButton>
-                </Link>
-            </ThemedView>
+            {depositions.length > 0 && (
+                <ThemedView style={styles.bottomBtnContainer}>
+                    <Link href="/deposition/create" asChild>
+                        <ThemedButton elevated={false}>Create Deposition</ThemedButton>
+                    </Link>
+                </ThemedView>
+            )}
+
             {/* {depos} */}
             {/* <ThemedText>This app includes example code to help you get started.</ThemedText>
             <Collapsible title="File-based routing">
