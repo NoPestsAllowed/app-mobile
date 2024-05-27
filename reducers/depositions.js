@@ -30,10 +30,24 @@ export const depositionsSlice = createSlice({
             state.value.email = action.payload;
         },
         addVisualProofToNewDeposition: (state, action) => {
+            console.log(action.payload);
             state.value.newDeposition.visualProofs.push(action.payload);
         },
+        clearVisualProofToNewDeposition: (state, action) => {
+            state.value.newDeposition.visualProofs = [];
+        },
+        removeVisualProof: (state, action) => {
+            console.log(action.payload);
+            state.value.newDeposition.visualProofs = state.value.newDeposition.visualProofs.filter(
+                (proof) => proof.uri !== action.payload.uri
+            );
+        },
         clearNewDeposition: (state) => {
-            state.value.token = null;
+            state.value.newDeposition.name = null;
+            state.value.newDeposition.description = null;
+            state.value.newDeposition.placeOwnerEmail = null;
+            state.value.newDeposition.visualProofs = [];
+            state.value.newDeposition.termsAccepted = false;
         },
     },
 });
@@ -45,5 +59,7 @@ export const {
     updateNewDeposition,
     addVisualProofToNewDeposition,
     clearNewDeposition,
+    clearVisualProofToNewDeposition,
+    removeVisualProof,
 } = depositionsSlice.actions;
 export default depositionsSlice.reducer;
