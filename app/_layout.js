@@ -62,7 +62,7 @@ export default function RootLayout() {
         if (loaded && isSignedUser) {
             setStacks((stacks) => {
                 if (!stacks.some((stack) => stack.props.name === "(tabs)")) {
-                    return [<Stack.Screen key="(tabs)" name="(tabs)" options={{ headerShown: false }} />, ...stacks];
+                    return [<Stack.Screen key="(tabs)" name="(tabs)" />, ...stacks];
                 }
                 return stacks;
             });
@@ -84,7 +84,7 @@ export default function RootLayout() {
             <PersistGate persistor={persistor}>
                 <SessionProvider>
                     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-                        <Stack>{stacks}</Stack>
+                        <Stack screenOptions={{ headerShown: false }}>{stacks}</Stack>
                     </ThemeProvider>
                 </SessionProvider>
             </PersistGate>
