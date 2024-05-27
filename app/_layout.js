@@ -15,10 +15,11 @@ import createSecureStore from "redux-persist-expo-securestore";
 import { SessionProvider } from "../providers/SessionProvider";
 import user from "../reducers/user";
 import { useSession } from "../hooks/useSession";
+import depositions from "../reducers/depositions";
 
 const storage = createSecureStore();
 
-const reducers = combineReducers({ user });
+const reducers = combineReducers({ user, depositions });
 
 const persistConfig = { key: "noPestsAllowed", storage };
 

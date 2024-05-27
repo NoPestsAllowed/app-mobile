@@ -15,6 +15,7 @@ import CameraComponent from "../../../components/CameraComponent";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
+import { newDeposition } from "../../../reducers/depositions";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -37,6 +38,7 @@ export default function CreateDepositionTab({ navigation }) {
     const [visualProofs, setVisualProofs] = useState([]);
 
     const user = useSelector((state) => state.user.value);
+    const pictures = useSelector((state) => state.value.depositions.newDeposition.visualProofs);
 
     const router = useRouter();
     const dispatch = useDispatch();
@@ -91,13 +93,6 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const { status } = await Camera.requestCameraPermissionsAsync();
-    //         setHasCameraPermission(status === "granted");
-    //     })();
-    // }, []);
-
     const openCamera = () => {
         setCameraOpen(true);
     };
@@ -106,6 +101,7 @@ export default function CreateDepositionTab({ navigation }) {
         console.log(picture);
         setDepoLocation(userLocation);
         setVisualProofs((vproofs) => [...vproofs, picture]);
+        dispatch(addVisualProofToNewDeposition(visualProofs));
     };
 
     const itemSelected = (item) => {
@@ -118,24 +114,8 @@ export default function CreateDepositionTab({ navigation }) {
         setDepoPlace(item);
     };
 
-    // const takePicture = async () => {
-    //     if (cameraRef.current) {
-    //         const photo = await cameraRef.current.takePictureAsync();
-    //         console.log(photo);
-    //         setCameraOpen(false); // Close the camera after taking a picture
-    //     }
-    // };
-
     if (cameraOpen) {
         return (
-            // <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
-            //     <View style={styles.snapContainer}>
-            //         <TouchableOpacity onPress={takePicture}>
-            //             <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-            //         </TouchableOpacity>
-            //     </View>
-            // </CameraView>
-
             <CameraComponent
                 closeCamera={() => {
                     console.log("closing cam");
@@ -154,24 +134,35 @@ export default function CreateDepositionTab({ navigation }) {
             place: depoPlace,
             visualProofs: visualProofs,
         };
-
-        fetch(`${backendUrl}/depositions/create`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${user.token}`,
-            },
-            body: JSON.stringify(deposition),
-        })
-            .then((res) => res.json())
-            .then((createDepositionResponse) => {
-                console.log("createDepositionResponse", createDepositionResponse);
-                clearInputs();
-                // Redirect user to deposition/index
-                // this does not work:
-                // router.navigate("deposition/index");
-            })
-            .catch((err) => console.error(err));
+        console.log(deposition);
+        const depositionFormData = new FormData();
+        depositionFormData.append("deposition", deposition);
+        visualProofs.map((proof, index) => {
+            const photoName = proof.uri?.substring(proof.uri?.lastIndexOf("/") + 1, proof.uri?.length);
+            depositionFormData.append(`visualProofs-${index}`, {
+                uri: proof.uri,
+                name: photoName,
+                type: "image/jpeg",
+            });
+        });
+        console.log(depositionFormData);
+        // fetch(`${backendUrl}/depositions/create`, {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${user.token}`,
+        //     },
+        //     body: depositionFormData,
+        // })
+        //     .then((res) => res.json())
+        //     .then((createDepositionResponse) => {
+        //         console.log("createDepositionResponse", createDepositionResponse);
+        //         clearInputs();
+        //         // Redirect user to deposition/index
+        //         // this does not work:
+        //         // router.navigate("deposition/index");
+        //     })
+        //     .catch((err) => console.error(err));
     };
 
     const clearInputs = () => {
@@ -266,6 +257,7 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
+            {pictures && console.log(pictures)}
             <ThemedView style={{ alignItems: "center" }}>
                 <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
             </ThemedView>

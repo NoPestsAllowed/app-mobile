@@ -38,5 +38,12 @@ export const depositionsSlice = createSlice({
     },
 });
 
-export const {} = depositionsSlice.actions;
+export const {
+    setDepositions,
+    clearDepositions,
+    newDeposition,
+    updateNewDeposition,
+    addVisualProofToNewDeposition,
+    clearNewDeposition,
+} = depositionsSlice.actions;
 export default depositionsSlice.reducer;
