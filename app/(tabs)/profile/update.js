@@ -111,28 +111,7 @@ export default function UpdateProfileTab({ navigation }) {
             { cancelable: true }
         );
     };
-    //     const userId = user.id;
-    //     console.log(userId);
-    //     fetch(`${backendUrl}/users/delete/${userId}`, {
-    //         method: "DELETE",
-    //         headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
-            
-    //     })
-            
-    //         .then((data) => {
-    //             console.log(data);
-    //             if (data) {
-    //                 dispatch(deleteAccount(userId));
-    //                 dispatch(clearUserState());
-    //             } else {
-    //                 console.error(data.error);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error:", error);
-    //         });
-    // };
-
+  
     const toggleModifyNotifications = () => {
         setModifyNotifications(!modifyNotifications);
     };
@@ -181,14 +160,6 @@ export default function UpdateProfileTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {/* <ThemedTextInput
-                onChangeText={(value) => setPassword(value)}
-                value={password}
-                placeholder='Password'
-                label='Password'
-                style={[styles.profileInfo, styles.input]}
-            /> */}
-
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
                 <Text style={styles.notifications}>Activate</Text>
@@ -208,8 +179,9 @@ export default function UpdateProfileTab({ navigation }) {
                 </TouchableOpacity>
             </ThemedView>
 
-            <ThemedButton onPress={() => handleModification()}>Modifier mon compte</ThemedButton>
-            <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
+            <ThemedView style={styles.profilModification}>
+            <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }
@@ -281,6 +253,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    profilModification: {
+        
+        alignItems: "center",
+        justifyContent: "center",
+    }
 
  
 });

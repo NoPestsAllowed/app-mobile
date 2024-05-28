@@ -33,26 +33,40 @@ export default function UpdateProfileTab({ navigation }) {
     const handleModification = () => { };
 
     const handleDeleteAccount = () => {
-        const userId = user.id;
-        console.log(userId);
-        fetch(`${backendUrl}/users/delete/${userId}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-            //  body: JSON.stringify(user)
-        })
-            // .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                if (data) {
-                    dispatch(deleteAccount(userId));
-                    dispatch(clearUserState());
-                } else {
-                    console.error(data.error);
+        Alert.alert(
+            "Confirmation",
+            "Êtes-vous sûr de vouloir supprimer votre compte ?",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel"
+                },
+                {
+                    text: "Supprimer",
+                    onPress: () => {
+                        const userId = user.id;
+                        fetch(`${backendUrl}/users/delete/${userId}`, {
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
+                        })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data) {
+                                dispatch(deleteAccount(userId));
+                                dispatch(clearUserState());
+                                navigation.navigate('Home');
+                            } else {
+                                console.error(data.error);
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error:", error);
+                        });
+                    }
                 }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+            ],
+            { cancelable: true }
+        );
     };
 
     const toggleModifyNotifications = () => {

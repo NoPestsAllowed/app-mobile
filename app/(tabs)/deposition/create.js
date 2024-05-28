@@ -193,7 +193,7 @@ export default function CreateDepositionTab({ navigation }) {
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
             headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
         >
-            <ThemedView style={styles.titleContainer}>
+            <ThemedView style={styles.titleContainer }>
                 <ThemedText type="title">Créer une déposition</ThemedText>
             </ThemedView>
 
@@ -215,7 +215,10 @@ export default function CreateDepositionTab({ navigation }) {
                     }}
                     style={[styles.proofBtn, depoByPicture ? styles.optionSelected : ""]}
                 >
-                    J'ai une preuve
+                    <ThemedView style={{backgroundColor:"transparent"}}>
+                  <ThemedText style={{fontWeight:"bold"}}>J'ai une preuve</ThemedText>  
+                </ThemedView>
+
                 </ThemedButton>
 
                 <ThemedButton
@@ -227,8 +230,12 @@ export default function CreateDepositionTab({ navigation }) {
                     }}
                     style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
                 >
-                    Je veux déclarer sur l'honneur
+                    <ThemedView style={{backgroundColor:"transparent"}}>
+                   <ThemedText style={{fontWeight:"bold"}}>Je veux déclarer sur l'honneur</ThemedText> 
+                    </ThemedView>
                 </ThemedButton>
+                
+
             </ThemedView>
 
             {depoByPicture && (
@@ -309,6 +316,8 @@ const styles = StyleSheet.create({
     proofBtn: {
         width: "40%",
         alignItems: "center",
+        
+        
     },
     optionSelected: {
         backgroundColor: "#bbf7d0",
@@ -329,4 +338,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginTop: 20,
     },
+    colorButton: {
+        color: "#000"
+    }
 });

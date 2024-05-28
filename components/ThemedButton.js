@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     buttonText: {
-        // color: "#f5f5f5",
+        color: "#f5f5f5",
         fontSize: 18,
     },
 });

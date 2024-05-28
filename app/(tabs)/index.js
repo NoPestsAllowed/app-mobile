@@ -68,19 +68,24 @@ export default function HomeTab() {
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
                 <ThemedText type="subtitle">Connect to your account to verify the address</ThemedText>
-                <ThemedButton onPress={() => router.navigate("login")}>Connect</ThemedButton>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Verify my currect location</ThemedText>
-                <ThemedButton onPress={() => router.navigate("login")}>Check</ThemedButton>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedView style={styles.alertContainer}>
-                    <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
-                    <ThemedText type="subtitle" style={styles.alert}>
-                        ALERT!
-                    </ThemedText>
+
+                <ThemedView style={styles.home}>
+                    <ThemedButton onPress={() => router.navigate("login")}>Connect</ThemedButton>
                 </ThemedView>
+            </ThemedView>
+            <ThemedView style={styles.home}>
+                <ThemedText type="subtitle">Verify my currect location</ThemedText>
+
+                <ThemedButton onPress={() => router.navigate("login")}>Check</ThemedButton>
+
+            </ThemedView>
+            <ThemedView style={styles.home}>
+                {/* <ThemedView style={styles.alertContainer}> */}
+                <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
+                <ThemedText type="subtitle" style={styles.alert}>
+                    ALERT!
+                </ThemedText>
+                {/* </ThemedView> */}
                 <ThemedText style={styles.paragraph}>
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
                         3{/* {lastDepositions} */}
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 2,
         flexDirection: "column",
     },
-  
+
     button: {
         backgroundColor: "#A53939",
         padding: 10,
@@ -161,4 +166,12 @@ const styles = StyleSheet.create({
     mapContainer: {
         flex: 1,
     },
+    home: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    titleContainer: {
+        alignItems: "center",
+    },
+
 });
