@@ -113,13 +113,13 @@ export default function DepositionTab() {
                         );
                     })}
             </ThemedView>
-            {/* {depositions.length > 0 && (
+            {depositions.length > 0 && (
                 <ThemedView style={styles.bottomBtnContainer}>
                     <Link href="/deposition/create" asChild>
                         <ThemedButton elevated={false}>Create Deposition</ThemedButton>
                     </Link>
                 </ThemedView>
-            )} */}
+            )}
         </ParallaxScrollView>
     );
 }
