@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import { ThemedButton } from "../components/ThemedButton";
 import { useDispatch } from "react-redux";
 import { updateEmail, setToken } from "../reducers/user";
-import { router } from "expo-router";
+import { router, Link } from "expo-router";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 const EMAIL_REGEX =
@@ -28,6 +28,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [emailError, setEmailError] = useState(false);
+    const [errorPassword, setErrorPassword] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -38,7 +39,7 @@ export default function Register() {
             email,
             password,
         };
-        if (EMAIL_REGEX.test(email)) {
+        if (EMAIL_REGEX.test(email) && password === confirmPassword) {
             fetch(`${backendUrl}/register`, {
                 method: "Post",
                 headers: { "Content-Type": "application/json" },
@@ -53,6 +54,7 @@ export default function Register() {
                 .catch((err) => console.error(err));
         } else {
             setEmailError(true);
+            setErrorPassword(true);
         }
     };
 
@@ -70,7 +72,7 @@ export default function Register() {
                 onChangeText={(value) => setFirstName(value)}
                 value={firstName}
                 placeholder="Firstname"
-                label="Firstname"
+                // label="Firstname"
                 keyboardType="given-name"
                 style={[styles.profileInfo, styles.input]}
             />
@@ -79,7 +81,7 @@ export default function Register() {
                 onChangeText={(value) => setLastName(value)}
                 value={lastName}
                 placeholder="Lastname"
-                label="Lastname"
+                // label="Lastname"
                 keyboardType="family-name"
                 style={[styles.profileInfo, styles.input]}
             />
@@ -88,7 +90,7 @@ export default function Register() {
                 onChangeText={(value) => setEmail(value)}
                 value={email}
                 placeholder="Email"
-                label="Email"
+                // label="Email"
                 keyboardType="email"
                 style={[styles.profileInfo, styles.input]}
             />
@@ -98,7 +100,7 @@ export default function Register() {
                 onChangeText={(value) => setPassword(value)}
                 value={password}
                 placeholder="Mot de passe"
-                label="Mot de passe"
+                // label="Mot de passe"
                 keyboardType="current-password"
                 style={[styles.profileInfo, styles.input]}
                 secureTextEntry={true}
@@ -108,15 +110,22 @@ export default function Register() {
                 onChangeText={(value) => setConfirmPassword(value)}
                 value={confirmPassword}
                 placeholder="Confirmer Mot de passe"
-                label="Confirmer Mot de passe"
+                // label="Confirmer Mot de passe"
                 keyboardType="current-password"
                 style={[styles.profileInfo, styles.input]}
                 secureTextEntry={true}
             />
+              {errorPassword && <Text style={styles.error}>Le mot de passe n'est pas identique</Text>}
 
             <TouchableOpacity style={styles.button} onPress={() => handleRegistration()}>
                 <Text style={styles.buttonText}>S'inscrire</Text>
             </TouchableOpacity>
+            <Link  href="landing" asChild>
+            <TouchableOpacity style={styles.retourButton} >
+                <ThemedText style={styles.buttonText}>Retour</ThemedText>
+                </TouchableOpacity>
+          
+            </Link>
         </KeyboardAvoidingView>
     );
 }
@@ -127,7 +136,7 @@ const styles = StyleSheet.create({
         // margin: 20,
         alignItems: "center",
         justifyContent: "center",
-        // gap: 10,
+        gap: 10,
     },
     bgTransparent: {
         backgroundColor: "transparent",
@@ -182,4 +191,19 @@ const styles = StyleSheet.create({
         width: 150,
         alignItems: "center",
     },
+    retourButton:{
+    
+        width: "90%",
+        backgroundColor: "#A53939",
+        padding: 10,
+        marginTop: 10,
+        borderRadius: 10,
+        alignItems: "center",
+        shadowColor: "#888",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        elevation: 3,
+    },
+    
 });

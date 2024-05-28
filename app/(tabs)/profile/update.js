@@ -72,42 +72,7 @@ export default function UpdateProfileTab({ navigation }) {
         }
     };
 
-    const handleDeleteAccount = () => {
-        Alert.alert(
-            "Confirmation",
-            "Êtes-vous sûr de vouloir supprimer votre compte ?",
-            [
-                {
-                    text: "Annuler",
-                    style: "cancel",
-                },
-                {
-                    text: "Supprimer",
-                    onPress: () => {
-                        const userId = user.id;
-                        fetch(`${backendUrl}/users/delete/${userId}`, {
-                            method: "DELETE",
-                            headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                if (data) {
-                                    dispatch(deleteAccount(userId));
-                                    dispatch(clearUserState());
-                                    navigation.navigate("Home");
-                                } else {
-                                    console.error(data.error);
-                                }
-                            })
-                            .catch((error) => {
-                                console.error("Error:", error);
-                            });
-                    },
-                },
-            ],
-            { cancelable: true }
-        );
-    };
+    
   
     const toggleModifyNotifications = () => {
         setModifyNotifications(!modifyNotifications);
@@ -120,8 +85,8 @@ export default function UpdateProfileTab({ navigation }) {
     return (
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profil de {user.firstname}</ThemedText>
-                <Image source={require("../../../assets/images/user1.jpg")} style={styles.user} />
+                <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
+                <Image source={{ uri : `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
             </ThemedView>
             <ThemedView style={styles.modify}>
                 {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
@@ -216,6 +181,12 @@ const styles = StyleSheet.create({
         borderRadius: 7,
         fontWeight: "bold",
     },
+    user: {
+        height:85,
+        width:85,
+        borderRadius: 50,
+        marginRight: 20,
+    },
     button: {
         backgroundColor: "#A53939",
         padding: 10,
@@ -255,7 +226,17 @@ const styles = StyleSheet.create({
         
         alignItems: "center",
         justifyContent: "center",
-    }
+    },
+    title: {
+        fontSize: 26,
+        shadowColor: "#888",
+        shadowOffset: {width: 0, height:2},
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        fontWeight: "bold",
+        margin: 1,
+    },
+
 
  
 });
