@@ -262,7 +262,8 @@ export default function CreateDepositionTab({ navigation }) {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
                     }}
-                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : ""]}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", 
+                    { color: "yellow" }]}
                 >
                     J'ai une preuve
                 </ThemedButton>
@@ -293,7 +294,7 @@ export default function CreateDepositionTab({ navigation }) {
                 </ThemedView>
             )}
 
-            {depoByHonnor && <ThemedCheckbox label="Je déclare sur l'honneur la véracité de ma déposition" />}
+            {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />}
 
             {depoLocation && <SelectList depoLocation={depoLocation} itemSelected={(item) => itemSelected(item)} />}
 
@@ -361,9 +362,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     optionSelected: {
-        backgroundColor: "#bbf7d0",
-        borderWidth: 2,
-        borderColor: "green",
+        backgroundColor: "#ca8035",
+        borderWidth: 3,
+        // borderColor: "green",
     },
     pictureBtn: {
         alignItems: "center",

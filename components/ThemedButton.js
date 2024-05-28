@@ -31,8 +31,7 @@ const styles = StyleSheet.create({
     btnContainer: {
         width: "80%",
         borderWidth: 1,
-        borderColor: "#0a7ea4",
-        // backgroundColor: "#A53939",
+        borderColor: "#A53939",
         borderRadius: 5,
         flexDirection: "row",
         justifyContent: "center",
@@ -59,5 +58,6 @@ const styles = StyleSheet.create({
     buttonText: {
         // color: "#f5f5f5",
         fontSize: 18,
+        fontWeight: "800",
     },
 });

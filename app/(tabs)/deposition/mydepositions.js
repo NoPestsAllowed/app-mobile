@@ -48,6 +48,7 @@ export default function MydepositionsTab({ navigation }) {
                         <ThemedText style={styles.line2}>{item.address}</ThemedText>
                     </View>
                     <View style={styles.actionButtonsContainer}>
+                        <ThemedButtonEdit onPress={() => router.navigate("deposition/id", { id: item.key })}>Open</ThemedButtonEdit>
                         <ThemedButtonEdit onPress={() => router.navigate("deposition/edit", { id: item.key })}>Edit</ThemedButtonEdit>
                         <ThemedButtonEdit onPress={() => router.navigate("deposition/delete", { id: item.key })}>Delete</ThemedButtonEdit>
                     </View>
@@ -63,16 +64,10 @@ export default function MydepositionsTab({ navigation }) {
             </View>
 
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">My depositions</ThemedText>
+                <ThemedText type="title" style={styles.title}>My depositions</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainerTable}>
-                <ThemedView style={styles.rowContainerTitle}>
-                    <ThemedText style={styles.lineTitle1}>Name</ThemedText>
-                    <ThemedView style={styles.verticalLine} />
-                    <ThemedText style={styles.lineTitle2}>Address</ThemedText>
-                    <ThemedText style={styles.lineTitle3}>Action</ThemedText>
-                </ThemedView>
 
                 <FlatList
                     ItemSeparatorComponent={
@@ -103,9 +98,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         shadowColor: '#7a2307',
         shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.5,
+        shadowOpacity: 0.8,
         shadowRadius: 25,
         elevation: 3,
+        marginTop:10,
     },
     rowContainerTitle: {
         backgroundColor: " #ca8035", 
@@ -123,6 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: " #ca8035",  
         fontSize: 20,
         color: "#470a07",
+        marginTop:10,
     },
     lineTitle2: {
         backgroundColor: " #ca8035",  
@@ -139,6 +136,12 @@ const styles = StyleSheet.create({
     rowContent: {
         flexDirection: 'column',
         flex: 1,
+        borderRadius: 25,
+        shadowColor: '#7a2307',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 35,
+        marginTop:10,
     },
     rowTextContainer: {
         flexDirection: 'row',
@@ -166,4 +169,13 @@ const styles = StyleSheet.create({
         color: "black",
         flexWrap: "wrap",
     },
+    titleContainer: {
+        backgroundColor: " #ca8035",  
+    },
+    title: {
+        shadowColor: '#7a2307',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+    }
 });
