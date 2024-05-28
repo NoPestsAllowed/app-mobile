@@ -142,6 +142,7 @@ export default function UpdateProfileTab({ navigation }) {
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Profil de {user.firstname}</ThemedText>
+                <Image source={require("../../../assets/images/user1.jpg")} style={styles.user} />
             </ThemedView>
             <ThemedView style={styles.modify}>
                 {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
@@ -229,6 +230,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
         gap: 8,
     },
     profileInfo: {
