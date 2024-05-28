@@ -22,10 +22,10 @@ export default function SelectList({ depoLocation, itemSelected }) {
             (
                 nwr["type"="associatedStreet"](around:50,${latitude},${longitude});
                 node["amenity"](around:50,${latitude},${longitude});
-                nwr["name"](around:50,${latitude},${longitude});
-                nwr["shop"](around:50,${latitude},${longitude});
-                nwr["station"](around:50,${latitude},${longitude});
-                nwr["tourism"](around:50,${latitude},${longitude});
+                node["name"](around:50,${latitude},${longitude});
+                node["shop"](around:50,${latitude},${longitude});
+                node["station"](around:50,${latitude},${longitude});
+                node["tourism"](around:50,${latitude},${longitude});
             );
             (._;>;);
             out meta;
