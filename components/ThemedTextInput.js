@@ -8,7 +8,7 @@ export function ThemedTextInput({ style, lightColor, darkColor, label = false, .
     return (
         <>
             {label && (
-                <ThemedView>
+                <ThemedView style={styles.bgTransparent}>
                     <ThemedText>{label}</ThemedText>
                 </ThemedView>
             )}
@@ -41,5 +41,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         marginVertical: 2,
+    },
+    bgTransparent: {
+        backgroundColor: "transparent",
     },
 });

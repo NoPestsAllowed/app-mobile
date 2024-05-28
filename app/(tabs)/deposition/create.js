@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, View, TouchableOpacity, Platform, Image } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -8,13 +8,20 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 // import { Camera, CameraView } from "expo-camera";
-// import FontAwesome from "react-native-vector-icons/FontAwesome";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import SelectList from "../../../components/SelectList";
 import ThemedCheckbox from "../../../components/ThemedCheckbox";
 import CameraComponent from "../../../components/CameraComponent";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
+import {
+    addVisualProofToNewDeposition,
+    newDeposition,
+    clearVisualProofToNewDeposition,
+    removeVisualProof,
+    clearNewDeposition,
+} from "../../../reducers/depositions";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -37,7 +44,8 @@ export default function CreateDepositionTab({ navigation }) {
     const [visualProofs, setVisualProofs] = useState([]);
 
     const user = useSelector((state) => state.user.value);
-
+    const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
+    // console.log("pictures", pictures);
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -70,15 +78,31 @@ export default function CreateDepositionTab({ navigation }) {
     };
     const [mapLocation, setMapLocation] = useState(initialLocalisation);
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            if (status === "granted") {
-                let location = await Location.getCurrentPositionAsync({});
-                setUserLocation(location);
-            }
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status === "granted") {
+    //             let location = await Location.getCurrentPositionAsync({});
+    //             setUserLocation(location);
+    //         }
+    //     })();
+    // }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                const { status } = await Location.requestForegroundPermissionsAsync();
+                if (status === "granted") {
+                    let location = await Location.getCurrentPositionAsync({});
+                    setUserLocation(location);
+                }
+            })();
+            return () => {
+                dispatch(clearNewDeposition());
+                clearInputs();
+            };
+        }, [])
+    );
 
     useEffect(() => {
         if (userLocation) {
@@ -91,25 +115,19 @@ export default function CreateDepositionTab({ navigation }) {
         }
     }, [userLocation]);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const { status } = await Camera.requestCameraPermissionsAsync();
-    //         setHasCameraPermission(status === "granted");
-    //     })();
-    // }, []);
-
     const openCamera = () => {
         setCameraOpen(true);
     };
 
     const handlePictureTaken = (picture) => {
-        console.log(picture);
+        // console.log(picture);
         setDepoLocation(userLocation);
         setVisualProofs((vproofs) => [...vproofs, picture]);
+        dispatch(addVisualProofToNewDeposition(picture));
     };
 
     const itemSelected = (item) => {
-        console.log("itemSelected", item);
+        // console.log("itemSelected", item);
         if (item.tags["contact:email"]) {
             setOwnerEmail(item.tags["contact:email"]);
         } else if (item.tags["email"]) {
@@ -118,24 +136,8 @@ export default function CreateDepositionTab({ navigation }) {
         setDepoPlace(item);
     };
 
-    // const takePicture = async () => {
-    //     if (cameraRef.current) {
-    //         const photo = await cameraRef.current.takePictureAsync();
-    //         console.log(photo);
-    //         setCameraOpen(false); // Close the camera after taking a picture
-    //     }
-    // };
-
     if (cameraOpen) {
         return (
-            // <CameraView style={{ flex: 1 }} ref={cameraRef} flashmode={"on"}>
-            //     <View style={styles.snapContainer}>
-            //         <TouchableOpacity onPress={takePicture}>
-            //             <FontAwesome name="circle-thin" size={95} color="#ffffff" />
-            //         </TouchableOpacity>
-            //     </View>
-            // </CameraView>
-
             <CameraComponent
                 closeCamera={() => {
                     console.log("closing cam");
@@ -155,18 +157,48 @@ export default function CreateDepositionTab({ navigation }) {
             visualProofs: visualProofs,
         };
 
-        console.log(deposition);
+        const depositionFormData = new FormData();
+        for (const key in deposition) {
+            if (Object.hasOwnProperty.call(deposition, key) && key !== "visualProofs") {
+                if (typeof deposition[key] === "object") {
+                    // Faudrait utiliser de la récursion...
+                    for (const tag in deposition[key]) {
+                        if (Object.hasOwnProperty.call(deposition[key], tag)) {
+                            if (typeof deposition[key] === "object") {
+                            } else {
+                                depositionFormData.append(tag, deposition[key][tag]);
+                            }
+                        }
+                    }
+                } else {
+                    depositionFormData.append(key, deposition[key]);
+                }
+            }
+        }
+        depositionFormData.append("depo", JSON.stringify(deposition));
+
+        visualProofs.map((proof, index) => {
+            const photoName = proof.uri?.substring(proof.uri?.lastIndexOf("/") + 1, proof.uri?.length);
+            console.log(proof.uri);
+            depositionFormData.append(`visualProofs`, {
+                uri: proof.uri,
+                name: photoName,
+                type: "image/jpeg",
+            });
+        });
+        // console.log("depositionFormData", depositionFormData);
         fetch(`${backendUrl}/depositions/create`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                // "Content-Type": "application/json",
                 Authorization: `Bearer ${user.token}`,
             },
-            body: JSON.stringify(deposition),
+            body: depositionFormData,
         })
             .then((res) => res.json())
             .then((createDepositionResponse) => {
-                console.log("createDepositionResponse", createDepositionResponse);
+                // console.log("createDepositionResponse", createDepositionResponse);
+                dispatch(clearNewDeposition());
                 clearInputs();
                 // Redirect user to deposition/index
                 // this does not work:
@@ -189,6 +221,22 @@ export default function CreateDepositionTab({ navigation }) {
         setVisualProofs([]);
     };
 
+    const handlePictureRemoval = (picture) => {
+        // console.log("removing", picture);
+        dispatch(removeVisualProof(picture));
+    };
+
+    const photos = pictures.map((picture, i) => {
+        return (
+            <View key={i} style={styles.photoContainer}>
+                <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
+                    <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
+                </TouchableOpacity>
+
+                <Image source={{ uri: picture.uri }} style={styles.photo} />
+            </View>
+        );
+    });
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
@@ -267,6 +315,7 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
+            {photos}
             <ThemedView style={{ alignItems: "center" }}>
                 <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
             </ThemedView>
@@ -329,5 +378,27 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         marginTop: 20,
+    },
+    // galleryContainer: {
+    //     flexWrap: "wrap",
+    //     flexDirection: "row",
+    //     justifyContent: "center",
+    // },
+    // photoContainer: {
+    //     alignItems: "flex-end",
+    // },
+    photo: {
+        margin: 10,
+        width: 150,
+        height: 150,
+    },
+    title: {
+        // fontFamily: "Futura",
+        fontSize: 22,
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    deleteIcon: {
+        marginRight: 10,
     },
 });
