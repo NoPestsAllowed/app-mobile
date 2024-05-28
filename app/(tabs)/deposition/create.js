@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { StyleSheet, View, TouchableOpacity, Platform, Image } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -14,7 +14,7 @@ import ThemedCheckbox from "../../../components/ThemedCheckbox";
 import CameraComponent from "../../../components/CameraComponent";
 import { useDispatch, useSelector } from "react-redux";
 import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import {
     addVisualProofToNewDeposition,
     newDeposition,
@@ -45,7 +45,7 @@ export default function CreateDepositionTab({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
     const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
-    console.log("pictures", pictures);
+    // console.log("pictures", pictures);
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -78,15 +78,31 @@ export default function CreateDepositionTab({ navigation }) {
     };
     const [mapLocation, setMapLocation] = useState(initialLocalisation);
 
-    useEffect(() => {
-        (async () => {
-            const { status } = await Location.requestForegroundPermissionsAsync();
-            if (status === "granted") {
-                let location = await Location.getCurrentPositionAsync({});
-                setUserLocation(location);
-            }
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status === "granted") {
+    //             let location = await Location.getCurrentPositionAsync({});
+    //             setUserLocation(location);
+    //         }
+    //     })();
+    // }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                const { status } = await Location.requestForegroundPermissionsAsync();
+                if (status === "granted") {
+                    let location = await Location.getCurrentPositionAsync({});
+                    setUserLocation(location);
+                }
+            })();
+            return () => {
+                dispatch(clearNewDeposition());
+                clearInputs();
+            };
+        }, [])
+    );
 
     useEffect(() => {
         if (userLocation) {
@@ -181,7 +197,7 @@ export default function CreateDepositionTab({ navigation }) {
         })
             .then((res) => res.json())
             .then((createDepositionResponse) => {
-                console.log("createDepositionResponse", createDepositionResponse);
+                // console.log("createDepositionResponse", createDepositionResponse);
                 dispatch(clearNewDeposition());
                 clearInputs();
                 // Redirect user to deposition/index
@@ -206,7 +222,7 @@ export default function CreateDepositionTab({ navigation }) {
     };
 
     const handlePictureRemoval = (picture) => {
-        console.log("removing", picture);
+        // console.log("removing", picture);
         dispatch(removeVisualProof(picture));
     };
 

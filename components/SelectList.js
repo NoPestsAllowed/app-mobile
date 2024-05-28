@@ -20,8 +20,12 @@ export default function SelectList({ depoLocation, itemSelected }) {
         const overpassQueryResult = await fetchOverpass(`
             [out:json];
             (
-                rel["type"="associatedStreet"](around:50,${latitude},${longitude});
-                node["amenity"](around:150,${latitude},${longitude});
+                nwr["type"="associatedStreet"](around:50,${latitude},${longitude});
+                node["amenity"](around:50,${latitude},${longitude});
+                nwr["name"](around:50,${latitude},${longitude});
+                nwr["shop"](around:50,${latitude},${longitude});
+                nwr["station"](around:50,${latitude},${longitude});
+                nwr["tourism"](around:50,${latitude},${longitude});
             );
             (._;>;);
             out meta;
@@ -29,25 +33,27 @@ export default function SelectList({ depoLocation, itemSelected }) {
         if (overpassQueryResult) {
             // console.log("overpassQueryResult.features", overpassQueryResult);
             const result = overpassQueryResult.flat(1);
+            const filtered = result
+                .filter((item, idx) => result.indexOf(item) === idx)
+                .filter((item) => {
+                    // console.log(
+                    //     "here",
+                    //     item && item.street,
+                    //     item.tags["amenity"] &&
+                    //         (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+                    //         (item.tags["addr:street"] || item.tags["contact:street"])
+                    // );
+                    return (
+                        (item && item.street) ||
+                        ((item?.tags["amenity"] || item?.tags["tourism"] || item?.tags["name"]) &&
+                            (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
+                            (item.tags["addr:street"] || item.tags["contact:street"]))
+                    );
+                });
+            console.log(filtered);
             setOverpassResult(
                 // overpassQueryResult.features.filter((item, idx) => overpassQueryResult.features.indexOf(item) === idx)
-                result
-                    .filter((item, idx) => result.indexOf(item) === idx)
-                    .filter((item) => {
-                        // console.log(
-                        //     "here",
-                        //     item && item.street,
-                        //     item.tags["amenity"] &&
-                        //         (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
-                        //         (item.tags["addr:street"] || item.tags["contact:street"])
-                        // );
-                        return (
-                            (item && item.street) ||
-                            (item?.tags["amenity"] &&
-                                (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
-                                (item.tags["addr:street"] || item.tags["contact:street"]))
-                        );
-                    })
+                filtered
             );
             setShowResult(true);
         } else {
