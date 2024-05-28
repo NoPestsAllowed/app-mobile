@@ -9,7 +9,7 @@ export const ThemedButton = forwardRef(function ThemedButton(
 ) {
     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "background");
     const colorText = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-    console.log(backgroundColor);
+    // console.log(backgroundColor);
     return (
         <TouchableOpacity
             style={[

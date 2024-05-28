@@ -32,7 +32,7 @@ export default function CameraComponent(props) {
 
     const takePicture = async () => {
         if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync();
+            const photo = await cameraRef.current.takePictureAsync({ quality: 0.3, imageType: "jpg" });
             props.handlePictureTaken(photo);
             props.closeCamera();
         }

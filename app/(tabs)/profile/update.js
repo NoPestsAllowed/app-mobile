@@ -1,4 +1,4 @@
-import React, { useState , useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -9,8 +9,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
 import { useFocusEffect } from "@react-navigation/native";
-
-
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -45,8 +43,8 @@ export default function UpdateProfileTab({ navigation }) {
         const userId = user.id;
         try {
             const response = await fetch(`${backendUrl}/users/update/${userId}`, {
-                method: 'PUT',
-                headers: { "Content-Type": "application/json" , Authorization: `Bearer ${user.token}` },
+                method: "PUT",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
                 body: JSON.stringify({
                     firstname: firstName,
                     lastname: lastName,
@@ -74,7 +72,6 @@ export default function UpdateProfileTab({ navigation }) {
         }
     };
 
-   
     const handleDeleteAccount = () => {
         Alert.alert(
             "Confirmation",
@@ -82,7 +79,7 @@ export default function UpdateProfileTab({ navigation }) {
             [
                 {
                     text: "Annuler",
-                    style: "cancel"
+                    style: "cancel",
                 },
                 {
                     text: "Supprimer",
@@ -92,21 +89,21 @@ export default function UpdateProfileTab({ navigation }) {
                             method: "DELETE",
                             headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
                         })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data) {
-                                dispatch(deleteAccount(userId));
-                                dispatch(clearUserState());
-                                navigation.navigate('Home');
-                            } else {
-                                console.error(data.error);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
-                    }
-                }
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data) {
+                                    dispatch(deleteAccount(userId));
+                                    dispatch(clearUserState());
+                                    navigation.navigate("Home");
+                                } else {
+                                    console.error(data.error);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error:", error);
+                            });
+                    },
+                },
             ],
             { cancelable: true }
         );
@@ -124,8 +121,10 @@ export default function UpdateProfileTab({ navigation }) {
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Profil de {user.firstname}</ThemedText>
+                <Image source={require("../../../assets/images/user1.jpg")} style={styles.user} />
             </ThemedView>
-            <ThemedView style={styles.modify}>{update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
+            <ThemedView style={styles.modify}>
+                {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
             </ThemedView>
 
             <ThemedText style={styles.label}>Prénom</ThemedText>
@@ -203,12 +202,12 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
         gap: 8,
     },
     profileInfo: {
         margin: 3,
         fontSize: 18,
-
     },
     input: {
         borderWidth: 1,
@@ -216,7 +215,6 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 7,
         fontWeight: "bold",
-
     },
     button: {
         backgroundColor: "#A53939",

@@ -68,6 +68,7 @@ export default function ContactTab({ navigation }) {
                 placeholder="Message"
                 label="Message"
                 style={[styles.message, styles.input]}
+                multiline
             />
             <ThemedView style={styles.sendMessage}>
             <ThemedButton onPress={() => router.navigate("Messagesent")}>Send Message</ThemedButton>
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: '#A53939',
+        borderColor: "#A53939",
         padding: 5,
         borderRadius: 7,
     },
@@ -111,17 +112,18 @@ const styles = StyleSheet.create({
         height:200,
         width:350,
         radius:40,
-        flexWrap: 'wrap',
+        flexWrap: "wrap",
         fontSize:16,
+        textAlignVertical: "top",
     },
     notifications: {
         fontSize: 18,
-        fontStyle: 'italic'
+        fontStyle: "italic"
     },
     notificationContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         marginVertical: 5,
     },
     sendMessage: {
