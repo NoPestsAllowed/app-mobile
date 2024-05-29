@@ -56,6 +56,7 @@ export function SessionProvider(props) {
         //     .then((res) => res.json())
         //     .then((registrationResult) => {
         //         console.log("logout", registrationResult);
+        props.onLogout();
         dispatch(clearUserState());
         router.push("/landing");
         // });

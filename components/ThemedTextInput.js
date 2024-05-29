@@ -4,7 +4,6 @@ import { ThemedText } from "./ThemedText";
 
 export function ThemedTextInput({ style, lightColor, darkColor, label = false, ...rest }) {
     const theme = useColorScheme();
-    console.log(rest);
     return (
         <>
             {label && (
