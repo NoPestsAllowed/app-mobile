@@ -84,8 +84,7 @@ export default function SearchPlace() {
         );
     }
     return (
-        <View>
-            <Text>SearchPlace</Text>
+        <ThemedView style={styles.container}>
             <ThemedTextInput
                 onChangeText={(value) => {
                     searchInfestedPlace(value);
@@ -95,11 +94,14 @@ export default function SearchPlace() {
                 style={styles.searchInput}
             />
             <Dropdown results={apiResults} onItemSelected={onItemSelected} />
-        </View>
+        </ThemedView>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     searchInput: {
         //
     },
