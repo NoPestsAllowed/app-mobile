@@ -9,6 +9,7 @@ import MapView from "react-native-maps";
 import { Link } from "expo-router";
 import Ant from "../../components/Ant";
 import { router } from "expo-router";
+import SearchPlace from "../../components/SearchPlace";
 
 export default function HomeTab() {
     const { logout } = useSession();
@@ -67,17 +68,17 @@ export default function HomeTab() {
                 <ThemedText type="title">Welcome</ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Connect to your account to verify the address</ThemedText>
+                {/* <ThemedText type="subtitle">Connect to your account to verify the address</ThemedText> */}
 
-                <ThemedView style={styles.home}>
+                {/* <ThemedView style={styles.home}>
                     <ThemedButton onPress={() => router.navigate("login")}>Connect</ThemedButton>
-                </ThemedView>
+                </ThemedView> */}
+                <SearchPlace />
             </ThemedView>
             <ThemedView style={styles.home}>
                 <ThemedText type="subtitle">Verify my currect location</ThemedText>
 
                 <ThemedButton onPress={() => router.navigate("login")}>Check</ThemedButton>
-
             </ThemedView>
             <ThemedView style={styles.home}>
                 {/* <ThemedView style={styles.alertContainer}> */}
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#A53939",
         fontSize: 18,
-        textDecorationLine: 'underline',
+        textDecorationLine: "underline",
     },
     stepContainerlast: {
         gap: 8,
@@ -168,5 +169,4 @@ const styles = StyleSheet.create({
     titleContainer: {
         alignItems: "center",
     },
-
 });
