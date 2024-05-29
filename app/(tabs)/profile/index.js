@@ -91,8 +91,8 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedText style={styles.label}>Email: </ThemedText>
             <ThemedText style={styles.input}>{user.email}</ThemedText>
 
-            <ThemedText style={styles.label}>Date of birth: </ThemedText>
-            <ThemedText style={styles.input}>{user.birthDate}</ThemedText>
+            {/* <ThemedText style={styles.label}>Date of birth: </ThemedText>
+            <ThemedText style={styles.input}>{user.birthDate}</ThemedText> */}
 
             <ThemedText style={styles.label}>Password </ThemedText>
             <ThemedText style={styles.input}>********</ThemedText>

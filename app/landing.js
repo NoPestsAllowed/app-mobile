@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import { useCallback, useState } from "react";
 import { ThemedView } from "../components/ThemedView";
+import SearchPlace from "../components/SearchPlace";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -65,19 +66,23 @@ export default function LandingPage() {
                     {/* <ThemedText>Tired of having a depressing vacation ? Start the fight ! </ThemedText> */}
                 </ThemedView>
 
+                {/* <ThemedView> */}
+                {/* <SearchPlace /> */}
+                {/* </ThemedView> */}
+
                 <ThemedView style={styles.btnContainer}>
                     <Link href="register" style={styles.btn}>
                         <ThemedText type="link">Register</ThemedText>
                     </Link>
-                    <Link href="login" style={ styles.btn}>
+                    <Link href="login" style={styles.btn}>
                         <ThemedText type="link">Login</ThemedText>
                     </Link>
                 </ThemedView>
             </View>
             <ThemedView>
-            <Link href="mentions">
-                <ThemedText type="link">Mentions legales</ThemedText>
-            </Link>
+                <Link href="mentions">
+                    <ThemedText type="link">Mentions legales</ThemedText>
+                </Link>
             </ThemedView>
         </SafeAreaView>
     );
