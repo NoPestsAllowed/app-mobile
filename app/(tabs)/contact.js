@@ -8,6 +8,7 @@ import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { router } from "expo-router";
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function ContactTab({ navigation }) {
     const [firstName, setFirstName] = useState("John");
@@ -18,8 +19,19 @@ export default function ContactTab({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
 
-    const handleSendMessage = () => {
-        navigation.navigate('Messagesent');
+    const handleSendMessage = async () => {
+        try {
+            await axios.post('http://localhost:3000/contact', {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                messageTitle: messageTitle,
+                message: message
+            });
+            console.log("Votre message a été bine envoyé!");
+        } catch (error) {
+            console.error("Error, votre message n'a pas été envoyé:", error);
+        }
     };
 
     return (
@@ -71,7 +83,7 @@ export default function ContactTab({ navigation }) {
                 multiline
             />
 
-            <ThemedButton onPress={() => router.navigate("Messagesent")}>Send Message</ThemedButton>
+            <ThemedButton onPress={handleSendMessage}>Send Message</ThemedButton>
            
         </ParallaxScrollView>
     );
