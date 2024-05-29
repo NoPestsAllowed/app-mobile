@@ -14,7 +14,7 @@ import { ThemedView } from "../components/ThemedView";
 import React, { useState } from "react";
 import { ThemedButton } from "../components/ThemedButton";
 import { useDispatch } from "react-redux";
-import { updateEmail, setToken } from "../reducers/user";
+import { updateEmail, setToken, updateUser } from "../reducers/user";
 import { router, Link } from "expo-router";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -47,8 +47,16 @@ export default function Register() {
             })
                 .then((res) => res.json())
                 .then((registrationResult) => {
+                    console.log(registrationResult);
                     dispatch(updateEmail(email));
                     dispatch(setToken(registrationResult.user.token));
+                    dispatch(
+                        updateUser({
+                            firstname: registrationResult.user.firstname,
+                            lastname: registrationResult.user.lastname,
+                            id: registrationResult.user._id,
+                        })
+                    );
                     router.push("/(tabs)");
                 })
                 .catch((err) => console.error(err));
@@ -116,16 +124,15 @@ export default function Register() {
                 style={[styles.profileInfo, styles.input]}
                 secureTextEntry={true}
             />
-              {errorPassword && <Text style={styles.error}>Le mot de passe n'est pas identique</Text>}
+            {errorPassword && <Text style={styles.error}>Le mot de passe n'est pas identique</Text>}
 
             <TouchableOpacity style={styles.button} onPress={() => handleRegistration()}>
                 <Text style={styles.buttonText}>S'inscrire</Text>
             </TouchableOpacity>
-            <Link  href="landing" asChild>
-            <TouchableOpacity style={styles.retourButton} >
-                <ThemedText style={styles.buttonText}>Retour</ThemedText>
+            <Link href="landing" asChild>
+                <TouchableOpacity style={styles.retourButton}>
+                    <ThemedText style={styles.buttonText}>Retour</ThemedText>
                 </TouchableOpacity>
-          
             </Link>
         </KeyboardAvoidingView>
     );
@@ -192,8 +199,7 @@ const styles = StyleSheet.create({
         width: 150,
         alignItems: "center",
     },
-    retourButton:{
-    
+    retourButton: {
         width: "90%",
         backgroundColor: "#A53939",
         padding: 10,
@@ -206,5 +212,4 @@ const styles = StyleSheet.create({
         shadowRadius: 7,
         elevation: 3,
     },
-    
 });

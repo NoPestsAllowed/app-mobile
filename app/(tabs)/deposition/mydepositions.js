@@ -35,8 +35,8 @@ export default function MydepositionsTab({ navigation }) {
     const depositions = [
         { title: 'Maison', address: '1 Rue de la Republique, Meudon', key: '1' },
         { title: 'AirBnb', address: '35 Louis Avenue, Nice', key: '2' },
-        { title: 'Bureau', address: '7 Manon Avenue, Metz', key: '2' },
-        { title: 'Crèche', address: '1 Rue de Lévis, Paris', key: '3' },
+        { title: 'Bureau', address: '7 Manon Avenue, Metz', key: '3' },
+        { title: 'Crèche', address: '1 Rue de Lévis, Paris', key: '4' },
     ];
 
     const renderItem = ({ item }) => (

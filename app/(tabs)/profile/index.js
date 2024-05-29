@@ -1,5 +1,6 @@
 import React, { useState,useCallback } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedButton } from "../../../components/ThemedButton";
@@ -24,7 +25,9 @@ export default function UpdateProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-   
+
+
+
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -33,7 +36,7 @@ export default function UpdateProfileTab({ navigation }) {
             [
                 {
                     text: "Annuler",
-                    style: "cancel"
+                    style: "cancel",
                 },
                 {
                     text: "Supprimer",
@@ -48,7 +51,7 @@ export default function UpdateProfileTab({ navigation }) {
                             if (data) {
                                 dispatch(deleteAccount(userId));
                                 dispatch(clearUserState());
-                                navigation.navigate('Home');
+                                navigation.navigate('landing');
                             } else {
                                 console.error(data.error);
                             }
@@ -73,7 +76,6 @@ export default function UpdateProfileTab({ navigation }) {
 
     return (
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
-     
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
                 <Image source={{ uri: `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
@@ -85,10 +87,8 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedText style={styles.label}>Nom: </ThemedText>
             <ThemedText style={styles.input}>{user.lastname}</ThemedText>
 
-
             <ThemedText style={styles.label}>Email: </ThemedText>
             <ThemedText style={styles.input}>{user.email}</ThemedText>
-
 
             <ThemedText style={styles.label}>Date of birth: </ThemedText>
             <ThemedText style={styles.input}>{user.birthDate}</ThemedText>
@@ -123,13 +123,11 @@ export default function UpdateProfileTab({ navigation }) {
                     <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
                 </TouchableOpacity>
             </ThemedView>
-           
+
             <ThemedView style={styles.buttonContainer}>
                 <ThemedButton onPress={() => router.navigate("profile/update")}>Modifier mon compte</ThemedButton>
                 <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
-                
             </ThemedView>
-           
         </ParallaxScrollView>
     );
 }
@@ -158,7 +156,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         gap: 8,
-       
     },
     profileInfo: {
         margin: 3,
@@ -206,15 +203,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     user: {
-        height:85,
-        width:85,
+        height: 85,
+        width: 85,
         borderRadius: 50,
-        
     },
     title: {
         fontSize: 26,
         shadowColor: "#888",
-        shadowOffset: {width: 0, height:2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 7,
         fontWeight: "bold",
