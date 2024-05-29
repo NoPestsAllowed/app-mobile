@@ -59,6 +59,7 @@ export default function Register() {
     };
 
     return (
+        
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding"} style={styles.container}>
             <ThemedView style={(styles.titleContainer, styles.bgTransparent)}>
                 <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />

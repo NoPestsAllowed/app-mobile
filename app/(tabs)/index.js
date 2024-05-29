@@ -93,11 +93,6 @@ export default function HomeTab() {
                     rapports d'insectes ont été ajoutés au cours des dernières 24 heures !
                 </ThemedText>
             </ThemedView>
-            <ThemedView style={styles.stepContainerlast}>
-                <Link href="mentions" style={styles.buttonText}>
-                    mentions legales
-                </Link>
-            </ThemedView>
         </ParallaxScrollView>
     );
 }
