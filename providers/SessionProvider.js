@@ -30,6 +30,7 @@ export function SessionProvider(props) {
                 return res.json();
             })
             .then((registrationResult) => {
+                console.log(registrationResult.user);
                 dispatch(updateEmail(email));
                 dispatch(
                     updateUser({
