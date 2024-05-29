@@ -87,9 +87,21 @@ export default function CreateDepositionTab({ navigation }) {
     //         }
     //     })();
     // }, []);
-
+    console.log(userLocation);
     useFocusEffect(
         useCallback(() => {
+            // setDepoLocation({
+            //     coords: {
+            //         accuracy: 5,
+            //         altitude: 0,
+            //         altitudeAccuracy: -1,
+            //         heading: -1,
+            //         latitude: 48.8932933,
+            //         longitude: 2.3340528,
+            //         speed: -1,
+            //     },
+            //     timestamp: 1716934525789.6218,
+            // });
             (async () => {
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status === "granted") {
@@ -230,7 +242,7 @@ export default function CreateDepositionTab({ navigation }) {
         return (
             <View key={i} style={styles.photoContainer}>
                 <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
-                    <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
+                    <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
                 </TouchableOpacity>
 
                 <Image source={{ uri: picture.uri }} style={styles.photo} />
@@ -262,10 +274,11 @@ export default function CreateDepositionTab({ navigation }) {
                         setDepoByPicture(true);
                         setDepoByHonnor(false);
                     }}
-                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", 
-                    { color: "yellow" }]}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", { color: "yellow" }]}
                 >
-                    J'ai une preuve
+                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
+                    <ThemedText style={{ fontWeight: "bold" }}>J'ai une preuve</ThemedText>
+                    {/* </ThemedView> */}
                 </ThemedButton>
 
                 <ThemedButton
@@ -277,7 +290,9 @@ export default function CreateDepositionTab({ navigation }) {
                     }}
                     style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
                 >
-                    Je veux déclarer sur l'honneur
+                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
+                    <ThemedText style={{ fontWeight: "bold" }}>Je veux déclarer sur l'honneur</ThemedText>
+                    {/* </ThemedView> */}
                 </ThemedButton>
             </ThemedView>
 
@@ -296,7 +311,13 @@ export default function CreateDepositionTab({ navigation }) {
 
             {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />}
 
-            {depoLocation && <SelectList depoLocation={depoLocation} itemSelected={(item) => itemSelected(item)} />}
+            {depoLocation && (
+                <SelectList
+                    userLocation={userLocation}
+                    depoLocation={depoLocation}
+                    itemSelected={(item) => itemSelected(item)}
+                />
+            )}
 
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
@@ -316,7 +337,10 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {photos}
+            <ThemedView style={styles.photosContainer}>
+
+                {photos}
+            </ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
                 <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
             </ThemedView>
@@ -332,13 +356,14 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
+        marginVertical: 10,
     },
     profileInfo: {
-        margin: 3,
+        // margin: 3,
         fontSize: 18,
     },
     input: {
-        marginVertical: 8,
+        marginVertical: 2,
     },
     snapContainer: {
         flex: 1,
@@ -393,13 +418,13 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
     },
-    title: {
-        // fontFamily: "Futura",
-        fontSize: 22,
-        marginTop: 10,
-        marginBottom: 10,
-    },
     deleteIcon: {
         marginRight: 10,
+    },
+    photosContainer: {
+        flex: 1,
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "center",
     },
 });

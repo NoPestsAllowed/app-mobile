@@ -82,8 +82,9 @@ export default function ContactTab({ navigation }) {
                 style={[styles.message, styles.input]}
                 multiline
             />
-
-            <ThemedButton onPress={handleSendMessage}>Send Message</ThemedButton>
+            <ThemedView style={styles.sendMessage}>
+            <ThemedButton onPress={() => router.navigate("Messagesent")}>Send Message</ThemedButton>
+            </ThemedView>
            
         </ParallaxScrollView>
     );
@@ -136,5 +137,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginVertical: 5,
+    },
+    sendMessage: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 20,
+       
+        
     }
 });

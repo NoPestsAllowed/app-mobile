@@ -8,12 +8,15 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation} from "@react-navigation/native";
+
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export default function UpdateProfileTab({ navigation }) {
+export default function UpdateProfileTab({ }) {
+    
     const user = useSelector((state) => state.user.value);
+    const navigation = useNavigation();
 
     const [firstName, setFirstName] = useState(user.firstname);
     const [lastName, setLastName] = useState(user.lastname);
@@ -62,6 +65,7 @@ export default function UpdateProfileTab({ navigation }) {
                 dispatch(updateAccount({ firstname: firstName, lastname: lastName }));
                 console.log("Mise à jour réussie");
                 setUpdate("Mise à jour réussie");
+                navigation.navigate("profile/index")
             } else {
                 console.error("Erreur lors de la mise à jour:", data);
                 setUpdate("Erreur lors de la mise à jour");
@@ -72,64 +76,8 @@ export default function UpdateProfileTab({ navigation }) {
         }
     };
 
-    const handleDeleteAccount = () => {
-        Alert.alert(
-            "Confirmation",
-            "Êtes-vous sûr de vouloir supprimer votre compte ?",
-            [
-                {
-                    text: "Annuler",
-                    style: "cancel",
-                },
-                {
-                    text: "Supprimer",
-                    onPress: () => {
-                        const userId = user.id;
-                        fetch(`${backendUrl}/users/delete/${userId}`, {
-                            method: "DELETE",
-                            headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
-                        })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                if (data) {
-                                    dispatch(deleteAccount(userId));
-                                    dispatch(clearUserState());
-                                    navigation.navigate("Home");
-                                } else {
-                                    console.error(data.error);
-                                }
-                            })
-                            .catch((error) => {
-                                console.error("Error:", error);
-                            });
-                    },
-                },
-            ],
-            { cancelable: true }
-        );
-    };
-    //     const userId = user.id;
-    //     console.log(userId);
-    //     fetch(`${backendUrl}/users/delete/${userId}`, {
-    //         method: "DELETE",
-    //         headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
-
-    //     })
-
-    //         .then((data) => {
-    //             console.log(data);
-    //             if (data) {
-    //                 dispatch(deleteAccount(userId));
-    //                 dispatch(clearUserState());
-    //             } else {
-    //                 console.error(data.error);
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error:", error);
-    //         });
-    // };
-
+    
+  
     const toggleModifyNotifications = () => {
         setModifyNotifications(!modifyNotifications);
     };
@@ -141,8 +89,8 @@ export default function UpdateProfileTab({ navigation }) {
     return (
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profil de {user.firstname}</ThemedText>
-                <Image source={require("../../../assets/images/user1.jpg")} style={styles.user} />
+                <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
+                <Image source={{ uri : `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
             </ThemedView>
             <ThemedView style={styles.modify}>
                 {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
@@ -180,14 +128,6 @@ export default function UpdateProfileTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {/* <ThemedTextInput
-                onChangeText={(value) => setPassword(value)}
-                value={password}
-                placeholder='Password'
-                label='Password'
-                style={[styles.profileInfo, styles.input]}
-            /> */}
-
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
                 <Text style={styles.notifications}>Activate</Text>
@@ -207,8 +147,9 @@ export default function UpdateProfileTab({ navigation }) {
                 </TouchableOpacity>
             </ThemedView>
 
-            <ThemedButton onPress={() => handleModification()}>Modifier mon compte</ThemedButton>
-            <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
+            <ThemedView style={styles.profilModification}>
+            <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }
@@ -243,6 +184,12 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 7,
         fontWeight: "bold",
+    },
+    user: {
+        height:85,
+        width:85,
+        borderRadius: 50,
+        marginRight: 20,
     },
     button: {
         backgroundColor: "#A53939",
@@ -279,4 +226,21 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    profilModification: {
+        
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    title: {
+        fontSize: 26,
+        shadowColor: "#888",
+        shadowOffset: {width: 0, height:2},
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        fontWeight: "bold",
+        margin: 1,
+    },
+
+
+ 
 });

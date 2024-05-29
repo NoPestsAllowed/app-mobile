@@ -1,5 +1,5 @@
 import { Link, useFocusEffect } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { ThemedText } from "../components/ThemedText";
 import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
@@ -30,7 +30,7 @@ export default function LandingPage() {
     );
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <MapView
                 initialRegion={{
                     latitude: 48.86667,
@@ -66,18 +66,20 @@ export default function LandingPage() {
                 </ThemedView>
 
                 <ThemedView style={styles.btnContainer}>
-                    <Link href="register" style={[styles.link, styles.btn]}>
+                    <Link href="register" style={styles.btn}>
                         <ThemedText type="link">Register</ThemedText>
                     </Link>
-                    <Link href="login" style={[styles.link, styles.btn]}>
+                    <Link href="login" style={ styles.btn}>
                         <ThemedText type="link">Login</ThemedText>
                     </Link>
                 </ThemedView>
             </View>
-            <Link href="mentions" style={styles.link}>
+            <ThemedView>
+            <Link href="mentions">
                 <ThemedText type="link">Mentions legales</ThemedText>
             </Link>
-        </View>
+            </ThemedView>
+        </SafeAreaView>
     );
 }
 
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         backgroundColor: "transparent",
+        marginTop: 50,
     },
     btn: {
         borderColor: "#cbd5e1",
