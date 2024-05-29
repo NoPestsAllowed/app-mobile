@@ -44,7 +44,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
     useEffect(() => {
         const changeBorderColor = () => {
-            setBorderColor(prevColor => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
+            setBorderColor((prevColor) => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
         };
 
         const borderColorInterval = setInterval(changeBorderColor, 4500);
@@ -100,19 +100,40 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
             >
                 <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
                     <View style={styles.popupMenu}>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/create")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/create");
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Create Depositions</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={() => router.navigate("deposition/mydepositions")}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/mydepositions");
+                            }}
                         >
                             <ThemedText style={styles.menuItemText}>My Depositions</ThemedText>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("contact")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("contact");
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Contact us</ThemedText>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => logout()}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                logout();
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Logout</ThemedText>
                         </TouchableOpacity>
                     </View>

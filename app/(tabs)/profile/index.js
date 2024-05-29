@@ -1,5 +1,4 @@
-import React, { useState,useCallback } from "react";
-import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import React, { useState, useCallback } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -10,7 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState } from "../../../reducers/user";
 import { router } from "expo-router";
-import { useFocusEffect, useNavigation} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -25,9 +24,6 @@ export default function UpdateProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-
-
-
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -46,21 +42,21 @@ export default function UpdateProfileTab({ navigation }) {
                             method: "DELETE",
                             headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
                         })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data) {
-                                dispatch(deleteAccount(userId));
-                                dispatch(clearUserState());
-                                navigation.navigate('landing');
-                            } else {
-                                console.error(data.error);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
-                    }
-                }
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data) {
+                                    dispatch(deleteAccount(userId));
+                                    dispatch(clearUserState());
+                                    navigation.navigate("landing");
+                                } else {
+                                    console.error(data.error);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error:", error);
+                            });
+                    },
+                },
             ],
             { cancelable: true }
         );
@@ -78,7 +74,12 @@ export default function UpdateProfileTab({ navigation }) {
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
-                <Image source={{ uri: `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
+                <Image
+                    source={{
+                        uri: `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF`,
+                    }}
+                    style={styles.user}
+                />
             </ThemedView>
 
             <ThemedText style={styles.label}>Prenom: </ThemedText>
