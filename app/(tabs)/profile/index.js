@@ -1,5 +1,5 @@
 import React, { useState,useCallback } from "react";
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedButton } from "../../../components/ThemedButton";
@@ -48,7 +48,7 @@ export default function UpdateProfileTab({ navigation }) {
                             if (data) {
                                 dispatch(deleteAccount(userId));
                                 dispatch(clearUserState());
-                                navigation.navigate('Home');
+                                navigation.navigate('landing');
                             } else {
                                 console.error(data.error);
                             }
