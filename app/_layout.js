@@ -29,7 +29,7 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
-// persistor.purge()
+// persistor.purge();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -80,10 +80,15 @@ export default function RootLayout() {
     if (!loaded) {
         return null;
     }
+
+    const onLogout = () => {
+        console.log("user logout : purging persistore");
+        persistor.purge();
+    };
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <SessionProvider>
+                <SessionProvider onLogout={onLogout}>
                     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
                         <Stack screenOptions={{ headerShown: false }}>{stacks}</Stack>
                     </ThemeProvider>

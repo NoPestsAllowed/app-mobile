@@ -75,6 +75,7 @@ export default function DepositionDetail() {
             </ThemedView>
             <ThemedView>
                 <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
+                <ThemedText>Status: {deposition.status}</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>

@@ -2,11 +2,13 @@ import { Link } from "expo-router";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { ThemedText } from "../components/ThemedText";
 import { useSelector } from "react-redux";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MentionsPage() {
     // const test = useSelector((state) => state.user.value.email);r
     return (
-        <ScrollView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+        <ScrollView >
             <View style={styles.main}>
                 <ThemedText type="title">Mentions Legales</ThemedText>
                 <View style={styles.section}>
@@ -221,6 +223,7 @@ export default function MentionsPage() {
                 <ThemedText type="link">Back to Home</ThemedText>
             </Link>
         </ScrollView>
+        </SafeAreaView>
     );
 }
 
