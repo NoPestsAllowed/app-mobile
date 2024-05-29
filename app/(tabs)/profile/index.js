@@ -77,7 +77,7 @@ export default function UpdateProfileTab({ navigation }) {
      
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
-                <Image source={{ uri : `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
+                <Image source={{ uri: `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
             </ThemedView>
 
             <ThemedText style={styles.label}>Prenom: </ThemedText>
