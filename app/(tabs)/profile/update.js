@@ -8,13 +8,11 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
-import { useFocusEffect, useNavigation} from "@react-navigation/native";
-
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export default function UpdateProfileTab({ }) {
-    
+export default function UpdateProfileTab({}) {
     const user = useSelector((state) => state.user.value);
     const navigation = useNavigation();
 
@@ -65,7 +63,7 @@ export default function UpdateProfileTab({ }) {
                 dispatch(updateAccount({ firstname: firstName, lastname: lastName }));
                 console.log("Mise à jour réussie");
                 setUpdate("Mise à jour réussie");
-                navigation.navigate("profile/index")
+                navigation.navigate("profile/index");
             } else {
                 console.error("Erreur lors de la mise à jour:", data);
                 setUpdate("Erreur lors de la mise à jour");
@@ -76,8 +74,6 @@ export default function UpdateProfileTab({ }) {
         }
     };
 
-    
-  
     const toggleModifyNotifications = () => {
         setModifyNotifications(!modifyNotifications);
     };
@@ -90,7 +86,12 @@ export default function UpdateProfileTab({ }) {
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
-                <Image source={{ uri : `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
+                <Image
+                    source={{
+                        uri: `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF`,
+                    }}
+                    style={styles.user}
+                />
             </ThemedView>
             <ThemedView style={styles.modify}>
                 {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
@@ -120,13 +121,13 @@ export default function UpdateProfileTab({ }) {
                 placeholder="Email"
                 style={[styles.profileInfo, styles.input]}
             />
-            <ThemedText style={styles.label}>Birth Date</ThemedText>
+            {/* <ThemedText style={styles.label}>Birth Date</ThemedText>
             <ThemedTextInput
                 onChangeText={(value) => setBirthDate(value)}
                 value={birthDate}
                 placeholder="Birth Date"
                 style={[styles.profileInfo, styles.input]}
-            />
+            /> */}
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
@@ -148,7 +149,7 @@ export default function UpdateProfileTab({ }) {
             </ThemedView>
 
             <ThemedView style={styles.profilModification}>
-            <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
+                <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -186,8 +187,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     user: {
-        height:85,
-        width:85,
+        height: 85,
+        width: 85,
         borderRadius: 50,
         marginRight: 20,
     },
@@ -227,20 +228,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     profilModification: {
-        
         alignItems: "center",
         justifyContent: "center",
     },
     title: {
         fontSize: 26,
         shadowColor: "#888",
-        shadowOffset: {width: 0, height:2},
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 1,
         shadowRadius: 7,
         fontWeight: "bold",
         margin: 1,
     },
-
-
- 
 });
