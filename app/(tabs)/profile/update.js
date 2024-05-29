@@ -8,12 +8,15 @@ import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation} from "@react-navigation/native";
+
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export default function UpdateProfileTab({ navigation }) {
+export default function UpdateProfileTab({ }) {
+    
     const user = useSelector((state) => state.user.value);
+    const navigation = useNavigation();
 
     const [firstName, setFirstName] = useState(user.firstname);
     const [lastName, setLastName] = useState(user.lastname);
@@ -62,6 +65,7 @@ export default function UpdateProfileTab({ navigation }) {
                 dispatch(updateAccount({ firstname: firstName, lastname: lastName }));
                 console.log("Mise à jour réussie");
                 setUpdate("Mise à jour réussie");
+                navigation.navigate("profile/index")
             } else {
                 console.error("Erreur lors de la mise à jour:", data);
                 setUpdate("Erreur lors de la mise à jour");

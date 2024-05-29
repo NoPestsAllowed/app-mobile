@@ -242,7 +242,7 @@ export default function CreateDepositionTab({ navigation }) {
         return (
             <View key={i} style={styles.photoContainer}>
                 <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
-                    <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
+                    <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
                 </TouchableOpacity>
 
                 <Image source={{ uri: picture.uri }} style={styles.photo} />
@@ -337,7 +337,10 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            {photos}
+            <ThemedView style={styles.photosContainer}>
+
+                {photos}
+            </ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
                 <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
             </ThemedView>
@@ -417,5 +420,11 @@ const styles = StyleSheet.create({
     },
     deleteIcon: {
         marginRight: 10,
+    },
+    photosContainer: {
+        flex: 1,
+        flexWrap: "wrap",
+        flexDirection: "row",
+        justifyContent: "center",
     },
 });

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useCallback } from "react";
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -9,6 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState } from "../../../reducers/user";
 import { router } from "expo-router";
+import { useFocusEffect, useNavigation} from "@react-navigation/native";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -23,6 +24,9 @@ export default function UpdateProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
+
+
+
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -146,7 +150,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
     },
-
+    message: {
+        color: "#008000",
+        fontSize: 20,
+        fontWeight: "bold",
+    },
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
