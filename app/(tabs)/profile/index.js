@@ -23,14 +23,9 @@ export default function UpdateProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-    // console.log(user)
-    //const userState = useSelector(state => state.user);
+   
 
-    // const handleLogout = () => {
-    //     navigation.navigate('Home');
-    // };
-
-    const handleModification = () => { };
+    
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -79,8 +74,10 @@ export default function UpdateProfileTab({ navigation }) {
 
     return (
         <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+     
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Profil de {user.firstname}</ThemedText>
+                <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
+                <Image source={{ uri : `https://ui-avatars.com/api/?name=${user.firstname}%20${user.lastname}&color=7F9CF5&background=EBF4FF` }} style={styles.user} />
             </ThemedView>
 
             <ThemedText style={styles.label}>Prenom: </ThemedText>
@@ -156,6 +153,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "space-between",
         gap: 8,
        
     },
@@ -203,5 +201,20 @@ const styles = StyleSheet.create({
     label: {
         color: "#A53939",
         fontWeight: "bold",
-    }
+    },
+    user: {
+        height:85,
+        width:85,
+        borderRadius: 50,
+        
+    },
+    title: {
+        fontSize: 26,
+        shadowColor: "#888",
+        shadowOffset: {width: 0, height:2},
+        shadowOpacity: 1,
+        shadowRadius: 7,
+        fontWeight: "bold",
+        margin: 1,
+    },
 });
