@@ -148,7 +148,7 @@ export default function MydepositionsTab({ navigation }) {
                                         params: { id: deposition._id },
                                     }}
                                 >
-                                    <ThemedView key={deposition._id}>
+                                    <ThemedView key={deposition._id} style={{ width: 250 }}>
                                         <ThemedView style={styles.rowContent}>
                                             <ThemedView style={styles.rowTextContainer}>
                                                 <ThemedText style={styles.line1}>Déposition: </ThemedText>
@@ -196,7 +196,7 @@ export default function MydepositionsTab({ navigation }) {
 
 const styles = StyleSheet.create({
     rowContainer: {
-        // backgroundColor: "transparent",
+        backgroundColor: "transparent",
         alignItems: "center",
         padding: 10,
         marginBottom: 10,
@@ -251,8 +251,9 @@ const styles = StyleSheet.create({
     rowTextContainer: {
         // marginLeft: 5,
         // marginRight: 10,
+        marginHorizontal: 5,
         flex: 1,
-        backgroundColor: "white",
+        // backgroundColor: "white",
         gap: 10,
     },
     actionButtonsContainer: {
@@ -270,9 +271,11 @@ const styles = StyleSheet.create({
     },
     line2: {
         fontSize: 18,
-        marginLeft: 25,
-        marginRight: 10,
+        // marginLeft: 25,
+        // marginRight: 10,
         // color: "black",
+        paddingHorizontal: 5,
+        paddingVertical: 10,
         flexWrap: "wrap",
         borderWidth: 1,
         borderRadius: 7,
