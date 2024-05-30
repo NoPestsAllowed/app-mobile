@@ -1,19 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, Platform, Image, View } from "react-native";
 import ParallaxScrollView from "../../components/ParallaxScrollView";
 import { ThemedText } from "../../components/ThemedText";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedButton } from "../../components/ThemedButton";
 import { useSession } from "../../hooks/useSession";
-import MapView from "react-native-maps";
-import { Link } from "expo-router";
+import MapView, { Marker } from "react-native-maps";
 import Ant from "../../components/Ant";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import SearchPlace from "../../components/SearchPlace";
 
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
+
 export default function HomeTab() {
-    const { logout } = useSession();
-    const [firstName, setFirstName] = useState("");
+    const [depositions, setDepositions] = useState([]);
+    useFocusEffect(
+        useCallback(() => {
+            fetch(`${backendUrl}/depositions`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    // Authorization: `Bearer ${user.token}`,
+                },
+            })
+                .then((res) => res.json())
+                .then((depositionsResponse) => {
+                    setDepositions(depositionsResponse.depositions);
+                });
+            return () => {
+                console.log("This route is now unfocused.");
+            };
+        }, [])
+    );
 
     return (
         <ParallaxScrollView
@@ -24,11 +42,25 @@ export default function HomeTab() {
                         initialRegion={{
                             latitude: 48.86667,
                             longitude: 2.333333,
-                            latitudeDelta: 0.000922,
-                            longitudeDelta: 0.000421,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
                         }}
                         style={{ flex: 1 }}
-                    />
+                    >
+                        {depositions.map((deposition) => {
+                            return (
+                                <Marker
+                                    key={deposition._id}
+                                    coordinate={{
+                                        latitude: deposition.placeId.geojson.coordinates[0],
+                                        longitude: deposition.placeId.geojson.coordinates[1],
+                                    }}
+                                    title={deposition.name}
+                                    description={deposition.description}
+                                />
+                            );
+                        })}
+                    </MapView>
                     <Ant
                         path={[
                             { x: 0, y: 0 },
