@@ -22,6 +22,7 @@ import {
     removeVisualProof,
     clearNewDeposition,
 } from "../../../reducers/depositions";
+import { Picker } from "@react-native-picker/picker";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -42,6 +43,7 @@ export default function CreateDepositionTab({ navigation }) {
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [visualProofs, setVisualProofs] = useState([]);
+    const [pestType, setPestType] = useState("");
 
     const user = useSelector((state) => state.user.value);
     const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
@@ -78,30 +80,8 @@ export default function CreateDepositionTab({ navigation }) {
     };
     const [mapLocation, setMapLocation] = useState(initialLocalisation);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const { status } = await Location.requestForegroundPermissionsAsync();
-    //         if (status === "granted") {
-    //             let location = await Location.getCurrentPositionAsync({});
-    //             setUserLocation(location);
-    //         }
-    //     })();
-    // }, []);
-    console.log(userLocation);
     useFocusEffect(
         useCallback(() => {
-            // setDepoLocation({
-            //     coords: {
-            //         accuracy: 5,
-            //         altitude: 0,
-            //         altitudeAccuracy: -1,
-            //         heading: -1,
-            //         latitude: 48.8932933,
-            //         longitude: 2.3340528,
-            //         speed: -1,
-            //     },
-            //     timestamp: 1716934525789.6218,
-            // });
             (async () => {
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status === "granted") {
@@ -132,14 +112,12 @@ export default function CreateDepositionTab({ navigation }) {
     };
 
     const handlePictureTaken = (picture) => {
-        // console.log(picture);
         setDepoLocation(userLocation);
         setVisualProofs((vproofs) => [...vproofs, picture]);
         dispatch(addVisualProofToNewDeposition(picture));
     };
 
     const itemSelected = (item) => {
-        // console.log("itemSelected", item);
         if (item.tags["contact:email"]) {
             setOwnerEmail(item.tags["contact:email"]);
         } else if (item.tags["email"]) {
@@ -167,8 +145,10 @@ export default function CreateDepositionTab({ navigation }) {
             placeOwnerEmail: ownerEmail,
             place: depoPlace,
             visualProofs: visualProofs,
+            pestType: pestType,
         };
 
+        console.log(deposition);
         const depositionFormData = new FormData();
         for (const key in deposition) {
             if (Object.hasOwnProperty.call(deposition, key) && key !== "visualProofs") {
@@ -210,8 +190,12 @@ export default function CreateDepositionTab({ navigation }) {
             .then((res) => res.json())
             .then((createDepositionResponse) => {
                 // console.log("createDepositionResponse", createDepositionResponse);
-                dispatch(clearNewDeposition());
-                clearInputs();
+                if (createDepositionResponse.result === true) {
+                    dispatch(clearNewDeposition());
+                    clearInputs();
+                } else {
+                    console.log(createDepositionResponse.error);
+                }
                 // Redirect user to deposition/index
                 // this does not work:
                 // router.navigate("deposition/index");
@@ -231,6 +215,7 @@ export default function CreateDepositionTab({ navigation }) {
         setCameraOpen(false);
         setSelectedImage(null);
         setVisualProofs([]);
+        setPestType("");
     };
 
     const handlePictureRemoval = (picture) => {
@@ -319,6 +304,14 @@ export default function CreateDepositionTab({ navigation }) {
                 />
             )}
 
+            <ThemedView style={styles.selectInput}>
+                <Picker selectedValue={pestType} onValueChange={(itemValue, itemIndex) => setPestType(itemValue)}>
+                    <Picker.Item label="Tique" value="tick" />
+                    <Picker.Item label="Punaise de lit" value="bedbug" />
+                    <Picker.Item label="Cafard" value="cockroach" />
+                </Picker>
+            </ThemedView>
+
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
                 value={ownerEmail}
@@ -337,10 +330,7 @@ export default function CreateDepositionTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedView style={styles.photosContainer}>
-
-                {photos}
-            </ThemedView>
+            <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
                 <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
             </ThemedView>
@@ -426,5 +416,11 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flexDirection: "row",
         justifyContent: "center",
+    },
+    selectInput: {
+        borderColor: "#d1d5db",
+        borderWidth: 1,
+        borderRadius: 8,
+        backgroundColor: "transparent",
     },
 });

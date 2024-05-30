@@ -8,7 +8,7 @@ import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
 import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import moment from "moment";
-import {router} from "expo-router";
+import { router } from "expo-router";
 import { ThemedButton } from "../../../components/ThemedButton";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -77,6 +77,7 @@ export default function DepositionDetail() {
             </ThemedView>
             <ThemedView>
                 <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
+                <ThemedText>Type: {deposition.type}</ThemedText>
                 <ThemedText>Status: {deposition.status}</ThemedText>
             </ThemedView>
 
@@ -101,10 +102,7 @@ export default function DepositionDetail() {
                             </View>
                         );
                     })}
-
                 </ThemedView>
-
-
             )}
         </ParallaxScrollView>
     );
