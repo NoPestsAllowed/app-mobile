@@ -123,6 +123,12 @@ export default function DepositionDetail() {
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">{deposition.name}</ThemedText>
             </ThemedView>
+            <ThemedView>
+                <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
+                <ThemedText>Type: {deposition.type}</ThemedText>
+                <ThemedText>Status: {deposition.status}</ThemedText>
+            </ThemedView>
+
             <ThemedView style={styles.rowContainer}>
                 <ThemedText style={styles.description}> Description: </ThemedText>
                 <ThemedText>{deposition.description}</ThemedText>

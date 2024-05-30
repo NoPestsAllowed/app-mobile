@@ -67,7 +67,6 @@ export default function Register() {
     };
 
     return (
-        
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "padding"} style={styles.container}>
             <ThemedView style={(styles.titleContainer, styles.bgTransparent)}>
                 <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
@@ -100,7 +99,7 @@ export default function Register() {
                 value={email}
                 placeholder="Email"
                 // label="Email"
-                keyboardType="email"
+                keyboardType="email-address"
                 style={[styles.profileInfo, styles.input]}
             />
             {emailError && <Text style={styles.error}>Adresse email non valide</Text>}
