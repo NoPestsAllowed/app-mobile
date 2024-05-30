@@ -91,35 +91,13 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedText style={styles.label}>Email: </ThemedText>
             <ThemedText style={styles.input}>{user.email}</ThemedText>
 
-            {/* <ThemedText style={styles.label}>Date of birth: </ThemedText>
-            <ThemedText style={styles.input}>{user.birthDate}</ThemedText> */}
 
-            <ThemedText style={styles.label}>Password </ThemedText>
+            <ThemedText style={styles.label}>Mot de passe </ThemedText>
             <ThemedText style={styles.input}>********</ThemedText>
 
-            {/* <ThemedText
-                onChangeText={(value) => setPassword(value)}
-                value={password}
-                placeholder="Password"
-                label="Password"
-                style={[styles.profileInfo, styles.input]}
-            /> */}
-
-            {/* <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
-                <TouchableOpacity onPress={toggleModifyNotifications}>
-                    <Icon
-                        name={modifyNotifications ? "bell" : "bell-o"}
-                        size={30}
-                        color={modifyNotifications ? "#A53939" : "grey"}
-                    />
-                </TouchableOpacity>
-            </ThemedView> */}
-
             <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <Text style={styles.notifications}>Activate</Text>
+                <ThemedText style={styles.profileInfo}>Autoriser la géolocation</ThemedText>
+                <Text style={styles.notifications}>Activer</Text>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
                     <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
                 </TouchableOpacity>
@@ -127,7 +105,7 @@ export default function UpdateProfileTab({ navigation }) {
 
             <ThemedView style={styles.buttonContainer}>
                 <ThemedButton onPress={() => router.navigate("profile/update")}>Modifier mon compte</ThemedButton>
-                <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
+                <ThemedButton onPress={() => handleDeleteAccount()}>Supprimer mon compte</ThemedButton>
             </ThemedView>
         </ThemedScrollView>
     );

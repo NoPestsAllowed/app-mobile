@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
         // marginLeft: 5,
         // marginRight: 10,
         flex: 1,
-        backgroundColor: "white",
+        // backgroundColor: "white",
         gap: 10,
     },
     actionButtonsContainer: {

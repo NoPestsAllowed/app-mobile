@@ -10,6 +10,45 @@ import Ant from "../../components/Ant";
 import { router, useFocusEffect } from "expo-router";
 import SearchPlace from "../../components/SearchPlace";
 
+// import { Picker } from '@react-native-picker/picker';
+
+// const nuisibles = [
+//   { label: "Tique", value: "tique" },
+//   { label: "Punaise de lit", value: "punaise_de_lit" },
+//   { label: "Cafard", value: "cafard" },
+//   { label: "Rat", value: "rat" },
+//   { label: "Souris", value: "souris" },
+//   { label: "Puce", value: "puce" },
+//   { label: "Araignée", value: "araignee" },
+//   { label: "Fourmi", value: "fourmi" },
+//   { label: "Mite alimentaire", value: "mite_alimentaire" },
+//   { label: "Punaise des bois", value: "punaise_des_bois" },
+//   { label: "Punaise verte", value: "punaise_verte" },
+//   { label: "Punaise grise", value: "punaise_grise" },
+//   { label: "Chenille processionnaire", value: "chenille_processionnaire" },
+//   { label: "Cloporte", value: "cloporte" },
+//   { label: "Termite", value: "termite" },
+//   { label: "Autres", value: "autres" }
+// ];
+
+// const generatePickerItems = (nuisibles) => {
+//   return nuisibles.map((nuisible, index) => (
+//     <Picker.Item key={index} label={nuisible.label} value={nuisible.value} />
+//   ));
+// };
+
+// const InsectPicker = () => {
+//   return (
+//     <Picker>
+//       <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
+//       {generatePickerItems(nuisibles)}
+//     </Picker>
+//   );
+// };
+
+// export default InsectPicker;
+
+
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeTab() {
@@ -97,20 +136,16 @@ export default function HomeTab() {
             }
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Welcome</ThemedText>
+                <ThemedText type="title">Bienvenue</ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-                {/* <ThemedText type="subtitle">Connect to your account to verify the address</ThemedText> */}
-
-                {/* <ThemedView style={styles.home}>
-                    <ThemedButton onPress={() => router.navigate("login")}>Connect</ThemedButton>
-                </ThemedView> */}
+             
                 <SearchPlace />
             </ThemedView>
             <ThemedView style={styles.home}>
-                <ThemedText type="subtitle">Verify my currect location</ThemedText>
+                <ThemedText type="subtitle">Vérifier ma localisation</ThemedText>
 
-                <ThemedButton onPress={() => router.navigate("login")}>Check</ThemedButton>
+                <ThemedButton onPress={() => router.navigate("login")}>C'est parti !!</ThemedButton>
             </ThemedView>
             <ThemedView style={styles.home}>
                 {/* <ThemedView style={styles.alertContainer}> */}
