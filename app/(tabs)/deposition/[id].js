@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, TouchableOpacity, ActivityIndicator, View } from "react-native";
+import {
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+    ActivityIndicator,
+    View,
+    Alert
+} from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -8,8 +15,9 @@ import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
 import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import moment from "moment";
-import {router} from "expo-router";
+import { router } from "expo-router";
 import { ThemedButton } from "../../../components/ThemedButton";
+import { ThemedButtonEdit } from "../../../components/ThemedButtonEdit";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -19,6 +27,46 @@ export default function DepositionDetail() {
     // console.log("here", id);
     const [deposition, setDeposition] = useState(null);
     console.log("dep", deposition);
+
+    const handleDeleteDeposition = (deposition) => {
+        Alert.alert(
+            "Confirmation",
+            "Êtes-vous sûr de vouloir supprimer votre déposition ?",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel",
+                },
+                {
+                    text: "Supprimer",
+                    onPress: () => {
+                        fetch(`${backendUrl}/depositions/delete`, {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${user.token}`,
+                            },
+                            body: JSON.stringify({ depositionId: deposition._id }),
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.result) {
+                                    router.navigate("deposition/mydepositions");
+                                    // Optionally navigate or update state here
+                                    console.log("Deposition supprimée");
+                                } else {
+                                    console.error(data.error);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error:", error);
+                            });
+                    },
+                },
+            ],
+            { cancelable: true }
+        );
+    };
 
     useEffect(() => {
         fetch(`${backendUrl}/depositions/${id}`, {
@@ -75,12 +123,8 @@ export default function DepositionDetail() {
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">{deposition.name}</ThemedText>
             </ThemedView>
-            <ThemedView>
-                <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
-                <ThemedText>Status: {deposition.status}</ThemedText>
-            </ThemedView>
-
             <ThemedView style={styles.rowContainer}>
+                <ThemedText style={styles.description}> Description: </ThemedText>
                 <ThemedText>{deposition.description}</ThemedText>
             </ThemedView>
 
@@ -89,23 +133,34 @@ export default function DepositionDetail() {
                     {deposition.visualProofs.map((visualProof, index) => {
                         console.log(visualProof);
                         return (
-                            <View key={index} style={styles.photoContainer}>
-                                {/* <TouchableOpacity onPress={() => handlePictureRemoval(visualProof)}>
-                                    <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
-                                </TouchableOpacity> */}
-
+                            <ThemedView key={index} style={styles.photosContainer}>
                                 <Image source={{ uri: visualProof.url }} style={styles.photo} />
-                                <ThemedButton onPress={() => router.navigate("deposition/mydepositions")}>
-                                    Retour
-                                </ThemedButton>
-                            </View>
+
+                            </ThemedView>
                         );
                     })}
-
                 </ThemedView>
-
-
             )}
+            <ThemedView>
+                <ThemedText style={styles.createdAt}>
+                    Déposition faite le: {moment(deposition.createdAt).format("L")}
+                </ThemedText>
+                <ThemedText style={styles.createdAt}>Status: {deposition.status}</ThemedText>
+            </ThemedView>
+            <ThemedView style={styles.backButton}>
+                <ThemedButtonEdit
+                    onPress={() =>
+                        handleDeleteDeposition(deposition)
+                    }
+                >
+                    Supprimer
+                </ThemedButtonEdit>
+                <ThemedButton
+                    onPress={() => router.navigate("deposition/mydepositions")}
+                >
+                    Retour
+                </ThemedButton>
+            </ThemedView>
         </ParallaxScrollView>
     );
 }
@@ -156,6 +211,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
         gap: 8,
     },
     profileInfo: {
@@ -189,7 +245,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     rowContainer: {
-        flexDirection: "row",
+        // flexDirection: "row",
         alignItems: "center",
     },
     line1: {
@@ -230,7 +286,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
     },
-    photoContainer: {
-        alignItems: "flex-end",
+    createdAt: {
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: 14,
     },
+    backButton: {
+        alignItems: "center",
+    },
+    description: {
+        fontWeight: "bold",
+    }
 });

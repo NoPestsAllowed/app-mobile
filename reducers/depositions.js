@@ -49,6 +49,7 @@ export const depositionsSlice = createSlice({
             state.value.newDeposition.visualProofs = [];
             state.value.newDeposition.termsAccepted = false;
         },
+       
     },
 });
 
