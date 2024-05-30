@@ -33,52 +33,52 @@ export default function CreateDepositionTab({ navigation }) {
     const [description, setDescription] = useState("");
     const [userLocation, setUserLocation] = useState(null);
 
-const [depoLocation, setDepoLocation] = useState(null);
-const [depoPlace, setDepoPlace] = useState(null);
+    const [depoLocation, setDepoLocation] = useState(null);
+    const [depoPlace, setDepoPlace] = useState(null);
 
-const [depoByPicture, setDepoByPicture] = useState(true);
-const [depoByHonnor, setDepoByHonnor] = useState(false);
-// const [hasCameraPermission, setHasCameraPermission] = useState(false);
-const [cameraOpen, setCameraOpen] = useState(false);
+    const [depoByPicture, setDepoByPicture] = useState(true);
+    const [depoByHonnor, setDepoByHonnor] = useState(false);
+    // const [hasCameraPermission, setHasCameraPermission] = useState(false);
+    const [cameraOpen, setCameraOpen] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(null);
     const [visualProofs, setVisualProofs] = useState([]);
     const [pestType, setPestType] = useState("");
 
-const user = useSelector((state) => state.user.value);
-const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
-// console.log("pictures", pictures);
-const router = useRouter();
-const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
+    const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
+    // console.log("pictures", pictures);
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-const pickImage = async () => {
-    if (Platform.OS !== "web") {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-            alert("Désolé, nous avons besoin des permissions pour accéder à la galerie!");
-            return;
+    const pickImage = async () => {
+        if (Platform.OS !== "web") {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== "granted") {
+                alert("Désolé, nous avons besoin des permissions pour accéder à la galerie!");
+                return;
+            }
         }
-    }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-    });
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
 
-    if (!result.cancelled) {
-        setSelectedImage(result.uri);
-    }
-};
+        if (!result.cancelled) {
+            setSelectedImage(result.uri);
+        }
+    };
 
-const initialLocalisation = {
-    latitude: 48.86667,
-    longitude: 2.333333,
-    latitudeDelta: 0.000922,
-    longitudeDelta: 0.000421,
-};
-const [mapLocation, setMapLocation] = useState(initialLocalisation);
+    const initialLocalisation = {
+        latitude: 48.86667,
+        longitude: 2.333333,
+        latitudeDelta: 0.000922,
+        longitudeDelta: 0.000421,
+    };
+    const [mapLocation, setMapLocation] = useState(initialLocalisation);
 
     useFocusEffect(
         useCallback(() => {
@@ -96,20 +96,20 @@ const [mapLocation, setMapLocation] = useState(initialLocalisation);
         }, [])
     );
 
-useEffect(() => {
-    if (userLocation) {
-        setMapLocation({
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-            latitudeDelta: 0.000922,
-            longitudeDelta: 0.000421,
-        });
-    }
-}, [userLocation]);
+    useEffect(() => {
+        if (userLocation) {
+            setMapLocation({
+                latitude: userLocation.coords.latitude,
+                longitude: userLocation.coords.longitude,
+                latitudeDelta: 0.000922,
+                longitudeDelta: 0.000421,
+            });
+        }
+    }, [userLocation]);
 
-const openCamera = () => {
-    setCameraOpen(true);
-};
+    const openCamera = () => {
+        setCameraOpen(true);
+    };
 
     const handlePictureTaken = (picture) => {
         setDepoLocation(userLocation);
@@ -126,17 +126,17 @@ const openCamera = () => {
         setDepoPlace(item);
     };
 
-if (cameraOpen) {
-    return (
-        <CameraComponent
-            closeCamera={() => {
-                console.log("closing cam");
-                setCameraOpen(false);
-            }}
-            handlePictureTaken={(picture) => handlePictureTaken(picture)}
-        />
-    );
-}
+    if (cameraOpen) {
+        return (
+            <CameraComponent
+                closeCamera={() => {
+                    console.log("closing cam");
+                    setCameraOpen(false);
+                }}
+                handlePictureTaken={(picture) => handlePictureTaken(picture)}
+            />
+        );
+    }
 
     const submitDeposition = () => {
         const deposition = {
@@ -148,7 +148,7 @@ if (cameraOpen) {
             pestType: pestType,
         };
 
-        console.log(deposition);
+        // console.log(deposition);
         const depositionFormData = new FormData();
         for (const key in deposition) {
             if (Object.hasOwnProperty.call(deposition, key) && key !== "visualProofs") {
@@ -171,7 +171,7 @@ if (cameraOpen) {
 
         visualProofs.map((proof, index) => {
             const photoName = proof.uri?.substring(proof.uri?.lastIndexOf("/") + 1, proof.uri?.length);
-            console.log(proof.uri);
+            // console.log(proof.uri);
             depositionFormData.append(`visualProofs`, {
                 uri: proof.uri,
                 name: photoName,
@@ -182,23 +182,19 @@ if (cameraOpen) {
         fetch(`${backendUrl}/depositions/create`, {
             method: "POST",
             headers: {
-                // "Content-Type": "application/json",
                 Authorization: `Bearer ${user.token}`,
             },
             body: depositionFormData,
         })
             .then((res) => res.json())
             .then((createDepositionResponse) => {
-                // console.log("createDepositionResponse", createDepositionResponse);
-                if (createDepositionResponse.result === true) {
+                if (createDepositionResponse.result) {
                     dispatch(clearNewDeposition());
                     clearInputs();
+                    router.replace("/deposition");
                 } else {
-                    console.log(createDepositionResponse.error);
+                    console.error(createDepositionResponse.error);
                 }
-                // Redirect user to deposition/index
-                // this does not work:
-                // router.navigate("deposition/index");
             })
             .catch((err) => console.error(err));
     };
@@ -218,83 +214,83 @@ if (cameraOpen) {
         setPestType("");
     };
 
-const handlePictureRemoval = (picture) => {
-    // console.log("removing", picture);
-    dispatch(removeVisualProof(picture));
-};
+    const handlePictureRemoval = (picture) => {
+        // console.log("removing", picture);
+        dispatch(removeVisualProof(picture));
+    };
 
-const photos = pictures.map((picture, i) => {
+    const photos = pictures.map((picture, i) => {
+        return (
+            <View key={i} style={styles.photoContainer}>
+                <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
+                    <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
+                </TouchableOpacity>
+
+                <Image source={{ uri: picture.uri }} style={styles.photo} />
+            </View>
+        );
+    });
     return (
-        <View key={i} style={styles.photoContainer}>
-            <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
-                <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
-            </TouchableOpacity>
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
+            headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
+        >
+            <ThemedView style={styles.titleContainer}>
+                <ThemedText type="title">Créer une déposition</ThemedText>
+            </ThemedView>
 
-            <Image source={{ uri: picture.uri }} style={styles.photo} />
-        </View>
-    );
-});
-return (
-    <ParallaxScrollView
-        headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-        headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
-    >
-        <ThemedView style={styles.titleContainer}>
-            <ThemedText type="title">Créer une déposition</ThemedText>
-        </ThemedView>
+            <ThemedTextInput
+                onChangeText={(value) => setDepositionName(value)}
+                value={depositionName}
+                placeholder="Deposition Name"
+                label="Deposition Name"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedTextInput
-            onChangeText={(value) => setDepositionName(value)}
-            value={depositionName}
-            placeholder="Deposition Name"
-            label="Deposition Name"
-            style={[styles.profileInfo, styles.input]}
-        />
-
-        <ThemedView style={styles.btnContainer}>
-            <ThemedButton
-                colored={false}
-                elevated={false}
-                onPress={() => {
-                    setDepoByPicture(true);
-                    setDepoByHonnor(false);
-                }}
-                style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", { color: "yellow" }]}
-            >
-                {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
-                <ThemedText style={{ fontWeight: "bold" }}>J'ai une preuve</ThemedText>
-                {/* </ThemedView> */}
-            </ThemedButton>
-
-            <ThemedButton
-                colored={false}
-                elevated={false}
-                onPress={() => {
-                    setDepoByPicture(false);
-                    setDepoByHonnor(true);
-                }}
-                style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
-            >
-                {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
-                <ThemedText style={{ fontWeight: "bold" }}>Je veux déclarer sur l'honneur</ThemedText>
-                {/* </ThemedView> */}
-            </ThemedButton>
-        </ThemedView>
-
-        {depoByPicture && (
-            <ThemedView style={styles.pictureBtn}>
-                <ThemedButton onPress={openCamera} style={styles.button}>
-                    <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
+            <ThemedView style={styles.btnContainer}>
+                <ThemedButton
+                    colored={false}
+                    elevated={false}
+                    onPress={() => {
+                        setDepoByPicture(true);
+                        setDepoByHonnor(false);
+                    }}
+                    style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", { color: "yellow" }]}
+                >
+                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
+                    <ThemedText style={{ fontWeight: "bold" }}>J'ai une preuve</ThemedText>
+                    {/* </ThemedView> */}
                 </ThemedButton>
 
-                {/* <ThemedButton style={styles.button} onPress={pickImage}>
+                <ThemedButton
+                    colored={false}
+                    elevated={false}
+                    onPress={() => {
+                        setDepoByPicture(false);
+                        setDepoByHonnor(true);
+                    }}
+                    style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
+                >
+                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
+                    <ThemedText style={{ fontWeight: "bold" }}>Je veux déclarer sur l'honneur</ThemedText>
+                    {/* </ThemedView> */}
+                </ThemedButton>
+            </ThemedView>
+
+            {depoByPicture && (
+                <ThemedView style={styles.pictureBtn}>
+                    <ThemedButton onPress={openCamera} style={styles.button}>
+                        <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
+                    </ThemedButton>
+
+                    {/* <ThemedButton style={styles.button} onPress={pickImage}>
                     <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
                 </ThemedButton> */}
-                {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
-            </ThemedView>
-        )}
+                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
+                </ThemedView>
+            )}
 
-        {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />}
+            {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />}
 
             {depoLocation && (
                 <SelectList
@@ -306,29 +302,30 @@ return (
 
             <ThemedView style={styles.selectInput}>
                 <Picker selectedValue={pestType} onValueChange={(itemValue, itemIndex) => setPestType(itemValue)}>
+                    <Picker.Item label="Select pest type" enabled={false} />
                     <Picker.Item label="Tique" value="tick" />
                     <Picker.Item label="Punaise de lit" value="bedbug" />
                     <Picker.Item label="Cafard" value="cockroach" />
                 </Picker>
             </ThemedView>
 
-        <ThemedTextInput
-            onChangeText={(value) => setOwnerEmail(value)}
-            value={ownerEmail}
-            placeholder="Owner Email"
-            label="Owner Email"
-            keyboardType="email-address"
-            inputMode="email"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput
+                onChangeText={(value) => setOwnerEmail(value)}
+                value={ownerEmail}
+                placeholder="Owner Email"
+                label="Owner Email"
+                keyboardType="email-address"
+                inputMode="email"
+                style={[styles.profileInfo, styles.input]}
+            />
 
-        <ThemedTextInput
-            onChangeText={(value) => setDescription(value)}
-            value={description}
-            placeholder="Description"
-            label="Description"
-            style={[styles.profileInfo, styles.input]}
-        />
+            <ThemedTextInput
+                onChangeText={(value) => setDescription(value)}
+                value={description}
+                placeholder="Description"
+                label="Description"
+                style={[styles.profileInfo, styles.input]}
+            />
 
             <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
