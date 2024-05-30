@@ -25,7 +25,7 @@ export default function Register() {
         let user = {
             firstname: firstName,
             lastname: lastName,
-            email,
+            email:email,
             password,
         };
         if (EMAIL_REGEX.test(email)){

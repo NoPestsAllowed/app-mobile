@@ -9,8 +9,10 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { router } from "expo-router";
 import { useDispatch, useSelector } from 'react-redux';
 
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
+
 export default function ContactTab({ navigation }) {
-    const [firstName, setFirstName] = useState("John");
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [messageTitle, setMessageTitle] = useState("");
@@ -18,8 +20,32 @@ export default function ContactTab({ navigation }) {
 
     const user = useSelector((state) => state.user.value);
 
-    const handleSendMessage = () => {
-        navigation.navigate('Messagesent');
+    const handleSendMessage = async () => {
+        console.log(firstName, lastName, email, messageTitle, message, JSON.stringify({
+            firstname: firstName,
+            lastname: lastName,
+            email: email,
+            title: messageTitle,
+            message
+        }));
+        console.log(backendUrl)
+        fetch(`http://192.168.100.197:3000/mail/contact-us`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                firstname: firstName,
+                lastname: lastName,
+                email: email,
+                title: messageTitle,
+                message: message,
+            })
+        }).then(res => {
+            console.log(res)
+            return res.json()
+        })
+        .then(data => {
+            console.log(data)
+        })
     };
 
     return (
@@ -33,7 +59,8 @@ export default function ContactTab({ navigation }) {
 
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)} 
-                value={user.firstname}
+                // value={user.firstname}
+                value={firstName}
                 placeholder="First Name"
                 label="First Name"
                 style={[styles.profileInfo, styles.input]}
@@ -41,15 +68,17 @@ export default function ContactTab({ navigation }) {
 
             <ThemedTextInput 
                 onChangeText={(value) => setLastName(value)} 
-                value={user.lastname}
+                // value={user.lastname}
+                value={lastName}
                 placeholder="Last Name"
                 label="Last Name"
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedTextInput 
-                onChangeText={(value) => setEmailAddress(value)} 
-                value={user.email}
+                onChangeText={(value) => setEmail(value)} 
+                // value={user.email}
+                value={email}
                 placeholder="Email address"
                 label="Email address"
                 style={[styles.profileInfo, styles.input]}
@@ -71,7 +100,7 @@ export default function ContactTab({ navigation }) {
                 multiline
             />
 
-            <ThemedButton onPress={() => router.navigate("Messagesent")}>Send Message</ThemedButton>
+            <ThemedButton onPress={handleSendMessage}>Send Message</ThemedButton>
            
         </ParallaxScrollView>
     );
