@@ -8,6 +8,8 @@ import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
 import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import moment from "moment";
+import {router} from "expo-router";
+import { ThemedButton } from "../../../components/ThemedButton";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -93,10 +95,16 @@ export default function DepositionDetail() {
                                 </TouchableOpacity> */}
 
                                 <Image source={{ uri: visualProof.url }} style={styles.photo} />
+                                <ThemedButton onPress={() => router.navigate("deposition/mydepositions")}>
+                                    Retour
+                                </ThemedButton>
                             </View>
                         );
                     })}
+
                 </ThemedView>
+
+
             )}
         </ParallaxScrollView>
     );

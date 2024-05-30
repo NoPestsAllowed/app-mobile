@@ -1,4 +1,4 @@
-import React, { useState,useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState } from "../../../reducers/user";
 import { router } from "expo-router";
-import { useFocusEffect, useNavigation} from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -24,9 +24,6 @@ export default function UpdateProfileTab({ navigation }) {
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.value);
-
-
-
 
     const handleDeleteAccount = () => {
         Alert.alert(
@@ -45,21 +42,21 @@ export default function UpdateProfileTab({ navigation }) {
                             method: "DELETE",
                             headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
                         })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data) {
-                                dispatch(deleteAccount(userId));
-                                dispatch(clearUserState());
-                                navigation.navigate('landing');
-                            } else {
-                                console.error(data.error);
-                            }
-                        })
-                        .catch((error) => {
-                            console.error("Error:", error);
-                        });
-                    }
-                }
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data) {
+                                    dispatch(deleteAccount(userId));
+                                    dispatch(clearUserState());
+                                    navigation.navigate("landing");
+                                } else {
+                                    console.error(data.error);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error:", error);
+                            });
+                    },
+                },
             ],
             { cancelable: true }
         );
@@ -94,8 +91,8 @@ export default function UpdateProfileTab({ navigation }) {
             <ThemedText style={styles.label}>Email: </ThemedText>
             <ThemedText style={styles.input}>{user.email}</ThemedText>
 
-            <ThemedText style={styles.label}>Date of birth: </ThemedText>
-            <ThemedText style={styles.input}>{user.birthDate}</ThemedText>
+            {/* <ThemedText style={styles.label}>Date of birth: </ThemedText>
+            <ThemedText style={styles.input}>{user.birthDate}</ThemedText> */}
 
             <ThemedText style={styles.label}>Password </ThemedText>
             <ThemedText style={styles.input}>********</ThemedText>
