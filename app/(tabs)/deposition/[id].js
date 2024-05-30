@@ -3,18 +3,22 @@ import { Image, StyleSheet, TouchableOpacity, ActivityIndicator, View } from "re
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
 import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import moment from "moment";
+import {router} from "expo-router";
+import { ThemedButton } from "../../../components/ThemedButton";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function DepositionDetail() {
     const { id } = useLocalSearchParams();
     const user = useSelector((state) => state.user.value);
-    console.log("here", id);
+    // console.log("here", id);
     const [deposition, setDeposition] = useState(null);
+    console.log("dep", deposition);
 
     useEffect(() => {
         fetch(`${backendUrl}/depositions/${id}`, {
@@ -26,8 +30,8 @@ export default function DepositionDetail() {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log("////////");
-                console.log(data.deposition.placeId);
+                // console.log("////////");
+                // console.log(data.deposition.placeId);
                 setDeposition(data.deposition);
             })
             .catch((err) => console.log(err));
@@ -73,17 +77,35 @@ export default function DepositionDetail() {
             </ThemedView>
             <ThemedView>
                 <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
+                <ThemedText>Status: {deposition.status}</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.rowContainer}>
                 <ThemedText>{deposition.description}</ThemedText>
             </ThemedView>
 
-            {/* <ThemedView style={styles.notificationContainer}>
-                <TouchableOpacity onPress={toggleAuthorizeNotifications}></TouchableOpacity>
-            </ThemedView> */}
+            {deposition.visualProofs.length > 0 && (
+                <ThemedView style={styles.photosContainer}>
+                    {deposition.visualProofs.map((visualProof, index) => {
+                        console.log(visualProof);
+                        return (
+                            <View key={index} style={styles.photoContainer}>
+                                {/* <TouchableOpacity onPress={() => handlePictureRemoval(visualProof)}>
+                                    <FontAwesome name="times" size={20} color="#000000" style={styles.deleteIcon} />
+                                </TouchableOpacity> */}
 
-            {/* <ThemedView style={styles.photosContainer}>{photos}</ThemedView> */}
+                                <Image source={{ uri: visualProof.url }} style={styles.photo} />
+                                <ThemedButton onPress={() => router.navigate("deposition/mydepositions")}>
+                                    Retour
+                                </ThemedButton>
+                            </View>
+                        );
+                    })}
+
+                </ThemedView>
+
+
+            )}
         </ParallaxScrollView>
     );
 }
@@ -195,17 +217,20 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         backgroundColor: "lightgrey",
     },
-    photos: {
+    photo: {
         margin: 10,
         width: 150,
         height: 150,
-        borderWidth: 2,
-        borderColor: "#ca8035",
+        // borderWidth: 2,
+        // borderColor: "#ca8035",
     },
     photosContainer: {
         flex: 1,
         flexWrap: "wrap",
         flexDirection: "row",
         justifyContent: "center",
+    },
+    photoContainer: {
+        alignItems: "flex-end",
     },
 });

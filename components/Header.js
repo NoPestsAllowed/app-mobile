@@ -14,10 +14,10 @@ import {
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
 import { ThemedText } from "./ThemedText";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 export function Header({ style, lightColor, darkColor, children, ...rest }) {
-    const { session } = useSession();
+    const { session, logout } = useSession();
     const [menuVisible, setMenuVisible] = useState(false);
     const [borderColor, setBorderColor] = useState("#c17829");
 
@@ -44,7 +44,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
     useEffect(() => {
         const changeBorderColor = () => {
-            setBorderColor(prevColor => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
+            setBorderColor((prevColor) => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
         };
 
         const borderColorInterval = setInterval(changeBorderColor, 4500);
@@ -100,19 +100,40 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
             >
                 <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
                     <View style={styles.popupMenu}>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/create")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/create");
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Create Depositions</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={() => router.navigate("deposition/mydepositions")}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/mydepositions");
+                            }}
                         >
                             <ThemedText style={styles.menuItemText}>My Depositions</ThemedText>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("contact")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("contact");
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Contact us</ThemedText>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("login")}>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                logout();
+                            }}
+                        >
                             <ThemedText style={styles.menuItemText}>Logout</ThemedText>
                         </TouchableOpacity>
                     </View>
@@ -172,16 +193,17 @@ const styles = StyleSheet.create({
     },
     popupMenu: {
         position: "absolute",
-        top: 200,
-        right: 20,
+        top: 110,
+        right: 10,
         height: 225,
-        backgroundColor: "#ca8035",
+        backgroundColor: "#A53939",
         borderRadius: 20,
-        padding: 25,
+        padding: 15,
         elevation: 4,
         color: "black",
         elevation: 10,
         zIndex: 10,
+        alignItems: "center",
     },
     menuItem: {
         paddingVertical: 8,

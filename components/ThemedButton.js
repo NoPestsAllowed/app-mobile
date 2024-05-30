@@ -9,7 +9,7 @@ export const ThemedButton = forwardRef(function ThemedButton(
 ) {
     const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, "background");
     const colorText = useThemeColor({ light: lightColor, dark: darkColor }, "text");
-    console.log(backgroundColor);
+    // console.log(backgroundColor);
     return (
         <TouchableOpacity
             style={[
@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     btnContainer: {
         width: "80%",
         borderWidth: 1,
-        borderColor: "#A53939",
+        borderColor: "#0a7ea4",
+        // backgroundColor: "#A53939",
         borderRadius: 5,
         flexDirection: "row",
         justifyContent: "center",
@@ -56,8 +57,7 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     buttonText: {
-        // color: "#f5f5f5",
+        color: "#f5f5f5",
         fontSize: 18,
-        fontWeight: "800",
     },
 });

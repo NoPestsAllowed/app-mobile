@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
@@ -7,71 +7,59 @@ import { ThemedView } from "../../../components/ThemedView";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
+import { deleteAccount, userState, clearUserState } from "../../../reducers/user";
+import { router } from "expo-router";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export default function UpdateProfileTab({}) {
-    const user = useSelector((state) => state.user.value);
-    const navigation = useNavigation();
-
-    const [firstName, setFirstName] = useState(user.firstname);
-    const [lastName, setLastName] = useState(user.lastname);
+export default function UpdateProfileTab({ navigation }) {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [modifyNotifications, setModifyNotifications] = useState(false);
     const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
-    const [update, setUpdate] = useState(false);
 
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
 
-    useEffect(() => {
-        setFirstName(user.firstname);
-        setLastName(user.lastname);
-        setEmail(user.email);
-    }, [user]);
-
-    useFocusEffect(
-        useCallback(() => {
-            // Clear the update message when the screen is focused
-            setUpdate("");
-        }, [])
-    );
-
-    const handleModification = async () => {
-        const userId = user.id;
-        try {
-            const response = await fetch(`${backendUrl}/users/update/${userId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
-                body: JSON.stringify({
-                    firstname: firstName,
-                    lastname: lastName,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log(data); // Pour déboguer la réponse
-
-            if (data.result) {
-                dispatch(updateAccount({ firstname: firstName, lastname: lastName }));
-                console.log("Mise à jour réussie");
-                setUpdate("Mise à jour réussie");
-                navigation.navigate("profile/index");
-            } else {
-                console.error("Erreur lors de la mise à jour:", data);
-                setUpdate("Erreur lors de la mise à jour");
-            }
-        } catch (error) {
-            console.error("Erreur de modification:", error);
-            setUpdate("Erreur de modification");
-        }
+    const handleDeleteAccount = () => {
+        Alert.alert(
+            "Confirmation",
+            "Êtes-vous sûr de vouloir supprimer votre compte ?",
+            [
+                {
+                    text: "Annuler",
+                    style: "cancel",
+                },
+                {
+                    text: "Supprimer",
+                    onPress: () => {
+                        const userId = user.id;
+                        fetch(`${backendUrl}/users/delete/${userId}`, {
+                            method: "DELETE",
+                            headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
+                        })
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data) {
+                                    dispatch(deleteAccount(userId));
+                                    dispatch(clearUserState());
+                                    navigation.navigate("landing");
+                                } else {
+                                    console.error(data.error);
+                                }
+                            })
+                            .catch((error) => {
+                                console.error("Error:", error);
+                            });
+                    },
+                },
+            ],
+            { cancelable: true }
+        );
     };
 
     const toggleModifyNotifications = () => {
@@ -93,39 +81,27 @@ export default function UpdateProfileTab({}) {
                     style={styles.user}
                 />
             </ThemedView>
-            <ThemedView style={styles.modify}>
-                {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
-            </ThemedView>
 
-            <ThemedText style={styles.label}>Prénom</ThemedText>
-            <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)}
-                value={firstName}
-                placeholder="First Name"
-                style={[styles.profileInfo, styles.input]}
-            />
+            <ThemedText style={styles.label}>Prenom: </ThemedText>
+            <ThemedText style={styles.input}>{user.firstname}</ThemedText>
 
-            <ThemedText style={styles.label}>Nom</ThemedText>
-            <ThemedTextInput
-                onChangeText={(value) => setLastName(value)}
-                value={lastName}
-                placeholder="Last Name"
-                labelStyle={styles.label}
-                style={[styles.profileInfo, styles.input]}
-            />
+            <ThemedText style={styles.label}>Nom: </ThemedText>
+            <ThemedText style={styles.input}>{user.lastname}</ThemedText>
 
-            <ThemedText style={styles.label}>Email</ThemedText>
-            <ThemedTextInput
-                onChangeText={(value) => setEmail(value)}
-                value={user.email}
-                placeholder="Email"
-                style={[styles.profileInfo, styles.input]}
-            />
-            {/* <ThemedText style={styles.label}>Birth Date</ThemedText>
-            <ThemedTextInput
-                onChangeText={(value) => setBirthDate(value)}
-                value={birthDate}
-                placeholder="Birth Date"
+            <ThemedText style={styles.label}>Email: </ThemedText>
+            <ThemedText style={styles.input}>{user.email}</ThemedText>
+
+            {/* <ThemedText style={styles.label}>Date of birth: </ThemedText>
+            <ThemedText style={styles.input}>{user.birthDate}</ThemedText> */}
+
+            <ThemedText style={styles.label}>Password </ThemedText>
+            <ThemedText style={styles.input}>********</ThemedText>
+
+            {/* <ThemedText
+                onChangeText={(value) => setPassword(value)}
+                value={password}
+                placeholder="Password"
+                label="Password"
                 style={[styles.profileInfo, styles.input]}
             /> */}
 
@@ -143,13 +119,15 @@ export default function UpdateProfileTab({}) {
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
+                <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}>
                     <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
                 </TouchableOpacity>
             </ThemedView>
 
-            <ThemedView style={styles.profilModification}>
-                <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
+            <ThemedView style={styles.buttonContainer}>
+                <ThemedButton onPress={() => router.navigate("profile/update")}>Modifier mon compte</ThemedButton>
+                <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -164,11 +142,16 @@ const styles = StyleSheet.create({
         elevation: 1,
         zIndex: 1,
     },
+
     rightHeader: {
         flexDirection: "row",
         alignItems: "center",
     },
-
+    message: {
+        color: "#008000",
+        fontSize: 20,
+        fontWeight: "bold",
+    },
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
@@ -185,12 +168,6 @@ const styles = StyleSheet.create({
         padding: 5,
         borderRadius: 7,
         fontWeight: "bold",
-    },
-    user: {
-        height: 85,
-        width: 85,
-        borderRadius: 50,
-        marginRight: 20,
     },
     button: {
         backgroundColor: "#A53939",
@@ -218,18 +195,18 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginVertical: 5,
     },
+    buttonContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
     label: {
         color: "#A53939",
         fontWeight: "bold",
     },
-    message: {
-        color: "#008000",
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    profilModification: {
-        alignItems: "center",
-        justifyContent: "center",
+    user: {
+        height: 85,
+        width: 85,
+        borderRadius: 50,
     },
     title: {
         fontSize: 26,

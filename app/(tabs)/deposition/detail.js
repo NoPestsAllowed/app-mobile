@@ -63,9 +63,9 @@ export default function MydepositionsTab({ navigation }) {
             <ThemedView style={styles.notificationContainer}>
                 <TouchableOpacity onPress={toggleAuthorizeNotifications}></TouchableOpacity>
             </ThemedView>
-            
+
             <ThemedView style={styles.photosContainer}>
-              
+
                 {photos}
             </ThemedView>
         </ParallaxScrollView>

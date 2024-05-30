@@ -20,7 +20,7 @@ export default function DepositionTab() {
 
     useFocusEffect(
         useCallback(() => {
-            fetch(`${backendUrl}/depositions`, {
+            fetch(`${backendUrl}/users/depositions`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -29,6 +29,7 @@ export default function DepositionTab() {
             })
                 .then((res) => res.json())
                 .then((depositionsResponse) => {
+                    console.log(depositionsResponse.depositions.length);
                     setDepositions(depositionsResponse.depositions);
                 });
             return () => {
@@ -96,8 +97,8 @@ export default function DepositionTab() {
                 )}
 
                 {depositions.length > 0 &&
-                    depositions.map((deposition) => {
-                        console.log(deposition._id);
+                    depositions.map((deposition, index) => {
+                        // console.log(deposition._id, index);
                         return (
                             <Link
                                 style={{ marginVertical: 5 }}
@@ -107,77 +108,18 @@ export default function DepositionTab() {
                                     params: { id: deposition._id },
                                 }}
                             >
-                                <DepositionCard deposition={deposition} />
+                                <DepositionCard key={deposition._id} deposition={deposition} />
                             </Link>
                         );
                     })}
             </ThemedView>
-            <ThemedView style={styles.bottomBtnContainer}>
-                <Link href="/deposition/create" asChild>
-                    <ThemedButton elevated={false}>Create Deposition</ThemedButton>
-                </Link>
-            </ThemedView>
-            {/* {depos} */}
-            {/* <ThemedText>This app includes example code to help you get started.</ThemedText>
-            <Collapsible title="File-based routing">
-                <ThemedText>
-                    This app has two screens: <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{" "}
-                    <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-                </ThemedText>
-                <ThemedText>
-                    The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText> sets up
-                    the tab navigator.
-                </ThemedText>
-                <ExternalLink href="https://docs.expo.dev/router/introduction">
-                    <ThemedText type="link">Learn more</ThemedText>
-                </ExternalLink>
-            </Collapsible>
-            <Collapsible title="Android, iOS, and web support">
-                <ThemedText>
-                    You can open this project on Android, iOS, and the web. To open the web version, press{" "}
-                    <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-                </ThemedText>
-            </Collapsible>
-            <Collapsible title="Images">
-                <ThemedText>
-                    For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{" "}
-                    <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for different screen
-                    densities
-                </ThemedText>
-                <Image source={require("../../../assets/images/icon.png")} style={{ alignSelf: "center" }} />
-                <ExternalLink href="https://reactnative.dev/docs/images">
-                    <ThemedText type="link">Learn more</ThemedText>
-                </ExternalLink>
-            </Collapsible>
-            <Collapsible title="Custom fonts">
-                <ThemedText>
-                    Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{" "}
-                    <ThemedText style={{ fontFamily: "SpaceMono" }}>custom fonts such as this one.</ThemedText>
-                </ThemedText>
-                <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-                    <ThemedText type="link">Learn more</ThemedText>
-                </ExternalLink>
-            </Collapsible>
-            <Collapsible title="Light and dark mode components">
-                <ThemedText>
-                    This template has light and dark mode support. The{" "}
-                    <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect what the
-                    user's current color scheme is, and so you can adjust UI colors accordingly.
-                </ThemedText>
-                <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-                    <ThemedText type="link">Learn more</ThemedText>
-                </ExternalLink>
-            </Collapsible>
-            <Collapsible title="Animations">
-                {Platform.select({
-                    ios: (
-                        <ThemedText>
-                            The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{" "}
-                            component provides a parallax effect for the header image.
-                        </ThemedText>
-                    ),
-                })}
-            </Collapsible> */}
+            {depositions.length > 0 && (
+                <ThemedView style={styles.bottomBtnContainer}>
+                    <Link href="/deposition/create" asChild>
+                        <ThemedButton elevated={false}>Create Deposition</ThemedButton>
+                    </Link>
+                </ThemedView>
+            )}
         </ParallaxScrollView>
     );
 }

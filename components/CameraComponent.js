@@ -21,7 +21,9 @@ export default function CameraComponent(props) {
         return (
             <ThemedView style={styles.container}>
                 <ThemedText style={{ textAlign: "center" }}>We need your permission to show the camera</ThemedText>
-                <ThemedButton onPress={requestPermission} title="grant permission"></ThemedButton>
+                <ThemedButton onPress={requestPermission} title="grant permission">
+                    Authorize NoPestsAllowed to access your camera
+                </ThemedButton>
             </ThemedView>
         );
     }
@@ -32,7 +34,7 @@ export default function CameraComponent(props) {
 
     const takePicture = async () => {
         if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync();
+            const photo = await cameraRef.current.takePictureAsync({ quality: 0.3, imageType: "jpg" });
             props.handlePictureTaken(photo);
             props.closeCamera();
         }
