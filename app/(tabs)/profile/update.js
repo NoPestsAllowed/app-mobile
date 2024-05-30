@@ -85,14 +85,7 @@ export default function UpdateProfileTab({}) {
     };
 
     const toggleAuthorizeGeolocation = () => {
-        // setAuthorizeGeolocation(!authorizeNotifications);
-        console.log(authorizeGeolocation);
-        // if (authorizeGeolocation) {
-        //     Location.stopLocationUpdatesAsync();
-        // } else {
-        //     Location.requestForegroundPermissionsAsync();
-        // }
-        Location.requestForegroundPermissionsAsync();
+        console.log("Can not revoke permission from app.");
     };
 
     return (
