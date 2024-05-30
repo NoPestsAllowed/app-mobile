@@ -72,14 +72,14 @@ export default function LandingPage() {
 
                 <ThemedView style={styles.btnContainer}>
                     <Link href="register" style={styles.btn}>
-                        <ThemedText type="link">Register</ThemedText>
+                        <ThemedText type="link">Inscription</ThemedText>
                     </Link>
                     <Link href="login" style={styles.btn}>
-                        <ThemedText type="link">Login</ThemedText>
+                        <ThemedText type="link">Connection</ThemedText>
                     </Link>
                 </ThemedView>
             </View>
-            <ThemedView>
+            <ThemedView style={{ backgroundColor: "transparent" }}>
                 <Link href="mentions">
                     <ThemedText type="link">Mentions legales</ThemedText>
                 </Link>

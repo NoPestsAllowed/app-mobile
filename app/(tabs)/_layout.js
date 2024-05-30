@@ -32,7 +32,7 @@ export default function TabLayout() {
                         <Tabs.Screen
                             name="index"
                             options={{
-                                title: "Home",
+                                title: "Accueil",
                                 tabBarIcon: ({ color, focused }) => (
                                     <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
                                 ),
@@ -41,7 +41,7 @@ export default function TabLayout() {
                         <Tabs.Screen
                             name="deposition/index"
                             options={{
-                                title: "My depositions",
+                                title: "Mes dépositions",
                                 tabBarIcon: ({ color, focused }) => (
                                     <TabBarIcon name={focused ? "folder" : "folder-outline"} color={color} />
                                 ),
@@ -88,7 +88,7 @@ export default function TabLayout() {
                         <Tabs.Screen
                             name="deposition/mydepositions"
                             options={{
-                                title: "Deposition Detail",
+                                title: "MyDeposition",
                                 href: null,
                             }}
                         />
@@ -97,7 +97,7 @@ export default function TabLayout() {
                             options={{
                                 title: "Contact",
                                 tabBarIcon: ({ color, focused }) => (
-                                    <TabBarIcon name={focused ? "library" : "mail"} color={color} />
+                                    <TabBarIcon name={focused ? "mail" : "mail-outline"} color={color} />
                                 ),
                             }}
                         />

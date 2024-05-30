@@ -9,6 +9,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAccount, userState, clearUserState, updateAccount } from "../../../reducers/user";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -22,7 +23,7 @@ export default function UpdateProfileTab({}) {
     const [password, setPassword] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [modifyNotifications, setModifyNotifications] = useState(false);
-    const [authorizeNotifications, setAuthorizeNotifications] = useState(false);
+    const [authorizeGeolocation, setAuthorizeGeolocation] = useState(false);
     const [update, setUpdate] = useState(false);
 
     const dispatch = useDispatch();
@@ -36,6 +37,11 @@ export default function UpdateProfileTab({}) {
     useFocusEffect(
         useCallback(() => {
             // Clear the update message when the screen is focused
+            (async () => {
+                const locationEnabled = await Location.hasServicesEnabledAsync();
+                // alert(locationEnabled);
+                setAuthorizeGeolocation(locationEnabled);
+            })();
             setUpdate("");
         }, [])
     );
@@ -78,9 +84,16 @@ export default function UpdateProfileTab({}) {
         setModifyNotifications(!modifyNotifications);
     };
 
-    // const toggleAuthorizeGeolocation = () => {
-    //     setAuthorizeGeolocation(!authorizeNotifications);
-    // };
+    const toggleAuthorizeGeolocation = () => {
+        // setAuthorizeGeolocation(!authorizeNotifications);
+        console.log(authorizeGeolocation);
+        // if (authorizeGeolocation) {
+        //     Location.stopLocationUpdatesAsync();
+        // } else {
+        //     Location.requestForegroundPermissionsAsync();
+        // }
+        Location.requestForegroundPermissionsAsync();
+    };
 
     return (
         <ThemedScrollView>
@@ -142,10 +155,10 @@ export default function UpdateProfileTab({}) {
             </ThemedView> */}
 
             <ThemedView style={styles.notificationContainer}>
-                <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                {/* <TouchableOpacity onPress={toggleAuthorizeGeolocation}>
+                <ThemedText style={styles.profileInfo}>Autoriser la géolocation</ThemedText>
+                <TouchableOpacity onPress={toggleAuthorizeGeolocation}>
                     <Icon name="globe" size={30} color={authorizeGeolocation ? "#A53939" : "grey"} />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </ThemedView>
 
             <ThemedView style={styles.profilModification}>

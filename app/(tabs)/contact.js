@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import ThemedScrollView from "../../components/ThemedScrollView";
 import { ThemedText } from "../../components/ThemedText";
@@ -6,19 +6,30 @@ import { ThemedButton } from "../../components/ThemedButton";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedTextInput } from "../../components/ThemedTextInput";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function ContactTab({ navigation }) {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
+    const user = useSelector((state) => state.user.value);
+    const [firstName, setFirstName] = useState(user.firstname);
+    const [lastName, setLastName] = useState(user.lastname);
+    const [email, setEmail] = useState(user.email);
     const [messageTitle, setMessageTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [msgSend, setMsgSend] = useState(false);
 
-    const user = useSelector((state) => state.user.value);
+    useFocusEffect(
+        useCallback(() => {
+            // Clear the update message when the screen is focused
+            return () => {
+                setMsgSend(false);
+                setMessage("");
+                setMessageTitle("");
+            };
+        }, [])
+    );
 
     const handleSendMessage = async () => {
         console.log(
@@ -36,7 +47,7 @@ export default function ContactTab({ navigation }) {
             })
         );
         console.log(backendUrl);
-        fetch(`http://192.168.100.197:3000/mail/contact-us`, {
+        fetch(`${backendUrl}/mail/contact-us`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -53,6 +64,7 @@ export default function ContactTab({ navigation }) {
             })
             .then((data) => {
                 console.log(data);
+                setMsgSend(true);
             });
     };
 
@@ -62,51 +74,58 @@ export default function ContactTab({ navigation }) {
                 <ThemedText type="title">Nous contacter</ThemedText>
             </ThemedView>
 
-            <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)}
-                value={user.firstname}
-                // value={firstName}
-                placeholder="Prénom"
-                label="Votre prénom"
-                style={[styles.profileInfo, styles.input]}
-            />
+            {msgSend ? (
+                <ThemedView>
+                    <ThemedText>Votre message à bien été envoyé.</ThemedText>
+                </ThemedView>
+            ) : (
+                <>
+                    <ThemedView>
+                        <ThemedTextInput
+                            onChangeText={(value) => setFirstName(value)}
+                            value={firstName}
+                            placeholder="Prénom"
+                            label="Votre prénom"
+                            style={[styles.profileInfo, styles.input]}
+                        />
 
-            <ThemedTextInput
-                onChangeText={(value) => setLastName(value)}
-                value={user.lastname}
-                // value={lastName}
-                placeholder="Nom"
-                label="Votre nom"
-                style={[styles.profileInfo, styles.input]}
-            />
+                        <ThemedTextInput
+                            onChangeText={(value) => setLastName(value)}
+                            value={lastName}
+                            placeholder="Nom"
+                            label="Votre nom"
+                            style={[styles.profileInfo, styles.input]}
+                        />
 
-            <ThemedTextInput
-                onChangeText={(value) => setEmail(value)}
-                value={user.email}
-                // value={email}
-                placeholder="Adresse email valide"
-                label="Votre email"
-                style={[styles.profileInfo, styles.input]}
-            />
+                        <ThemedTextInput
+                            onChangeText={(value) => setEmail(value)}
+                            value={email}
+                            placeholder="Adresse email valide"
+                            label="Votre email"
+                            style={[styles.profileInfo, styles.input]}
+                        />
 
-            <ThemedTextInput
-                onChangeText={(value) => setMessageTitle(value)}
-                value={messageTitle}
-                placeholder="Titre de votre message"
-                label="Titre de votre message"
-                style={[styles.profileInfo, styles.input]}
-            />
-            <ThemedTextInput
-                onChangeText={(value) => setMessage(value)}
-                value={message}
-                placeholder="Message"
-                label="Votre message"
-                style={[styles.message, styles.input]}
-                multiline
-            />
-            <ThemedView style={styles.sendButton}>
-            <ThemedButton onPress={handleSendMessage}>Envoyer un message</ThemedButton>
-            </ThemedView>
+                        <ThemedTextInput
+                            onChangeText={(value) => setMessageTitle(value)}
+                            value={messageTitle}
+                            placeholder="Titre de votre message"
+                            label="Titre de votre message"
+                            style={[styles.profileInfo, styles.input]}
+                        />
+                        <ThemedTextInput
+                            onChangeText={(value) => setMessage(value)}
+                            value={message}
+                            placeholder="Message"
+                            label="Votre message"
+                            style={[styles.message, styles.input]}
+                            multiline
+                        />
+                    </ThemedView>
+                    <ThemedView style={styles.sendButton}>
+                        <ThemedButton onPress={handleSendMessage}>Envoyer un message</ThemedButton>
+                    </ThemedView>
+                </>
+            )}
         </ThemedScrollView>
     );
 }
@@ -143,7 +162,7 @@ const styles = StyleSheet.create({
     },
     message: {
         height: 200,
-        width: 350,
+        // width: 350,
         radius: 40,
         flexWrap: "wrap",
         fontSize: 16,
@@ -161,5 +180,5 @@ const styles = StyleSheet.create({
     },
     sendButton: {
         alignItems: "center",
-    }
+    },
 });
