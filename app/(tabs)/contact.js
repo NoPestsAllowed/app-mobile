@@ -59,53 +59,54 @@ export default function ContactTab({ navigation }) {
     return (
         <ThemedScrollView>
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Contact us</ThemedText>
+                <ThemedText type="title">Nous contacter</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)}
-                // value={user.firstname}
-                value={firstName}
-                placeholder="First Name"
-                label="First Name"
+                value={user.firstname}
+                // value={firstName}
+                placeholder="Prénom"
+                label="Votre prénom"
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedTextInput
                 onChangeText={(value) => setLastName(value)}
-                // value={user.lastname}
-                value={lastName}
-                placeholder="Last Name"
-                label="Last Name"
+                value={user.lastname}
+                // value={lastName}
+                placeholder="Nom"
+                label="Votre nom"
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedTextInput
                 onChangeText={(value) => setEmail(value)}
-                // value={user.email}
-                value={email}
-                placeholder="Email address"
-                label="Email address"
+                value={user.email}
+                // value={email}
+                placeholder="Adresse email valide"
+                label="Votre email"
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedTextInput
                 onChangeText={(value) => setMessageTitle(value)}
                 value={messageTitle}
-                placeholder="Message title"
-                label="Message title"
+                placeholder="Titre de votre message"
+                label="Titre de votre message"
                 style={[styles.profileInfo, styles.input]}
             />
             <ThemedTextInput
                 onChangeText={(value) => setMessage(value)}
                 value={message}
                 placeholder="Message"
-                label="Message"
+                label="Votre message"
                 style={[styles.message, styles.input]}
                 multiline
             />
-
-            <ThemedButton onPress={handleSendMessage}>Send Message</ThemedButton>
+            <ThemedView style={styles.sendButton}>
+            <ThemedButton onPress={handleSendMessage}>Envoyer un message</ThemedButton>
+            </ThemedView>
         </ThemedScrollView>
     );
 }
@@ -158,4 +159,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginVertical: 5,
     },
+    sendButton: {
+        alignItems: "center",
+    }
 });

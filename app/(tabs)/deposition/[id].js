@@ -123,13 +123,14 @@ export default function DepositionDetail() {
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">{deposition.name}</ThemedText>
             </ThemedView>
-            <ThemedView>
-                <ThemedText>Created at: {moment(deposition.createdAt).format("L")}</ThemedText>
-                <ThemedText>Type: {deposition.type}</ThemedText>
-                <ThemedText>Status: {deposition.status}</ThemedText>
-            </ThemedView>
 
+            <ThemedView style={styles.typeContainer}>
+                <ThemedText style={styles.description}>Type :</ThemedText>
+                <ThemedText> {deposition.type}</ThemedText>
+                </ThemedView>
             <ThemedView style={styles.rowContainer}>
+            
+            
                 <ThemedText style={styles.description}> Description: </ThemedText>
                 <ThemedText>{deposition.description}</ThemedText>
             </ThemedView>
@@ -151,16 +152,20 @@ export default function DepositionDetail() {
                 <ThemedText style={styles.createdAt}>
                     Déposition faite le: {moment(deposition.createdAt).format("L")}
                 </ThemedText>
+                <ThemedView>
+
+                    
+
+                </ThemedView>
                 <ThemedText style={styles.createdAt}>Status: {deposition.status}</ThemedText>
             </ThemedView>
             <ThemedView style={styles.backButton}>
-                <ThemedButtonEdit
-                    onPress={() =>
+                <ThemedButton onPress={() =>
                         handleDeleteDeposition(deposition)
                     }
                 >
                     Supprimer
-                </ThemedButtonEdit>
+                </ThemedButton>
                 <ThemedButton
                     onPress={() => router.navigate("deposition/mydepositions")}
                 >
@@ -302,5 +307,13 @@ const styles = StyleSheet.create({
     },
     description: {
         fontWeight: "bold",
+    },
+    typeContainer: {
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    supprimer: {
+        color: "ca8035",
     }
 });

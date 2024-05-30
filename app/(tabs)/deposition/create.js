@@ -302,10 +302,27 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.selectInput}>
                 <Picker selectedValue={pestType} onValueChange={(itemValue, itemIndex) => setPestType(itemValue)}>
-                    <Picker.Item label="Select pest type" enabled={false} />
-                    <Picker.Item label="Tique" value="tick" />
-                    <Picker.Item label="Punaise de lit" value="bedbug" />
-                    <Picker.Item label="Cafard" value="cockroach" />
+                    <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
+                    <Picker.Item label="Tique" value="tique" />
+                    <Picker.Item label="Punaise de lit" value="punaise_de_lit" />
+                    <Picker.Item label="Cafard" value="cafard" />
+                    <Picker.Item label="Rat" value="rat" />
+                    <Picker.Item label="Souris" value="souris" />
+                    <Picker.Item label="Puce" value="puce" />
+                    <Picker.Item label="Araignée" value="araignee" />
+                    <Picker.Item label="Fourmi" value="fourmi" />
+                    <Picker.Item label="Mite alimentaire" value="mite_alimentaire" />
+                    <Picker.Item label="Punaise des bois" value="punaise_des_bois" />
+                    <Picker.Item label="Punaise verte" value="punaise_verte" />
+                    <Picker.Item label="Punaise grise" value="punaise_grise" />
+                    <Picker.Item label="Chenille processionnaire" value="chenille_processionnaire" />
+                    <Picker.Item label="Cloporte" value="cloporte" />
+                    <Picker.Item label="Termite" value="termite" />
+                    <Picker.Item label="Autres" value="autres" />
+
+
+
+
                 </Picker>
             </ThemedView>
 

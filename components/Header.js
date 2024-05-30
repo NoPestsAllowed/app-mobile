@@ -113,7 +113,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                                 router.navigate("deposition/create");
                             }}
                         >
-                            <ThemedText style={styles.menuItemText}>Create Depositions</ThemedText>
+                            <ThemedText style={styles.menuItemText}>Créer une Déposition</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
@@ -122,7 +122,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                                 router.navigate("deposition/mydepositions");
                             }}
                         >
-                            <ThemedText style={styles.menuItemText}>My Depositions</ThemedText>
+                            <ThemedText style={styles.menuItemText}>Ma Déposition</ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
@@ -131,7 +131,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                                 router.navigate("contact");
                             }}
                         >
-                            <ThemedText style={styles.menuItemText}>Contact us</ThemedText>
+                            <ThemedText style={styles.menuItemText}>Nous contacter </ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
@@ -140,7 +140,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                                 logout();
                             }}
                         >
-                            <ThemedText style={styles.menuItemText}>Logout</ThemedText>
+                            <ThemedText style={styles.menuItemText}>Déconnection</ThemedText>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>

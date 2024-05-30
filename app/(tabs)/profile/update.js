@@ -78,9 +78,9 @@ export default function UpdateProfileTab({}) {
         setModifyNotifications(!modifyNotifications);
     };
 
-    const toggleAuthorizeGeolocation = () => {
-        setAuthorizeGeolocation(!authorizeNotifications);
-    };
+    // const toggleAuthorizeGeolocation = () => {
+    //     setAuthorizeGeolocation(!authorizeNotifications);
+    // };
 
     return (
         <ThemedScrollView>
@@ -143,9 +143,9 @@ export default function UpdateProfileTab({}) {
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <TouchableOpacity onPress={toggleAuthorizeGeolocation}>
+                {/* <TouchableOpacity onPress={toggleAuthorizeGeolocation}>
                     <Icon name="globe" size={30} color={authorizeGeolocation ? "#A53939" : "grey"} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </ThemedView>
 
             <ThemedView style={styles.profilModification}>
