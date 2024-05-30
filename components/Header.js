@@ -80,12 +80,18 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
     return (
         <View style={styles.headerContainer}>
-            <View style={styles.logoContainer}>
+            <TouchableOpacity
+                style={styles.logoContainer}
+                onPress={() => {
+                    console.log("pressed");
+                    router.navigate("/");
+                }}
+            >
                 <Animated.Image
                     source={require("../assets/images/icon.png")}
                     style={[styles.noPestsAllowedLogo, { transform: [{ rotateY }] }]}
                 />
-            </View>
+            </TouchableOpacity>
             <View style={styles.rightHeader}>
                 <ThemedText style={styles.welcomeText}>Welcome, {user.firstname}</ThemedText>
                 <TouchableOpacity style={[styles.avatarContainer, { borderColor }]} onPress={handleAvatarPress}>

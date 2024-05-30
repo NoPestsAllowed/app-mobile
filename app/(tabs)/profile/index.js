@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../../components/ParallaxScrollView";
+import ThemedScrollView from "../../../components/ThemedScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedView } from "../../../components/ThemedView";
@@ -71,7 +71,7 @@ export default function UpdateProfileTab({ navigation }) {
     };
 
     return (
-        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+        <ThemedScrollView>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
                 <Image
@@ -105,7 +105,7 @@ export default function UpdateProfileTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             /> */}
 
-            <ThemedView style={styles.notificationContainer}>
+            {/* <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
                 <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleModifyNotifications}>
@@ -115,7 +115,7 @@ export default function UpdateProfileTab({ navigation }) {
                         color={modifyNotifications ? "#A53939" : "grey"}
                     />
                 </TouchableOpacity>
-            </ThemedView>
+            </ThemedView> */}
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
@@ -129,7 +129,7 @@ export default function UpdateProfileTab({ navigation }) {
                 <ThemedButton onPress={() => router.navigate("profile/update")}>Modifier mon compte</ThemedButton>
                 <ThemedButton onPress={() => handleDeleteAccount()}>Delete account</ThemedButton>
             </ThemedView>
-        </ParallaxScrollView>
+        </ThemedScrollView>
     );
 }
 

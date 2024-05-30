@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../components/ParallaxScrollView";
+import ThemedScrollView from "../../components/ThemedScrollView";
 import { ThemedText } from "../../components/ThemedText";
 import { ThemedButton } from "../../components/ThemedButton";
 import { ThemedView } from "../../components/ThemedView";
 import { ThemedTextInput } from "../../components/ThemedTextInput";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from "react-native-vector-icons/FontAwesome";
 import { router } from "expo-router";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -21,14 +21,21 @@ export default function ContactTab({ navigation }) {
     const user = useSelector((state) => state.user.value);
 
     const handleSendMessage = async () => {
-        console.log(firstName, lastName, email, messageTitle, message, JSON.stringify({
-            firstname: firstName,
-            lastname: lastName,
-            email: email,
-            title: messageTitle,
-            message
-        }));
-        console.log(backendUrl)
+        console.log(
+            firstName,
+            lastName,
+            email,
+            messageTitle,
+            message,
+            JSON.stringify({
+                firstname: firstName,
+                lastname: lastName,
+                email: email,
+                title: messageTitle,
+                message,
+            })
+        );
+        console.log(backendUrl);
         fetch(`http://192.168.100.197:3000/mail/contact-us`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -38,27 +45,25 @@ export default function ContactTab({ navigation }) {
                 email: email,
                 title: messageTitle,
                 message: message,
+            }),
+        })
+            .then((res) => {
+                console.log(res);
+                return res.json();
             })
-        }).then(res => {
-            console.log(res)
-            return res.json()
-        })
-        .then(data => {
-            console.log(data)
-        })
+            .then((data) => {
+                console.log(data);
+            });
     };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
-        >
-            
+        <ThemedScrollView>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Contact us</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
-                onChangeText={(value) => setFirstName(value)} 
+                onChangeText={(value) => setFirstName(value)}
                 // value={user.firstname}
                 value={firstName}
                 placeholder="First Name"
@@ -66,8 +71,8 @@ export default function ContactTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setLastName(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setLastName(value)}
                 // value={user.lastname}
                 value={lastName}
                 placeholder="Last Name"
@@ -75,8 +80,8 @@ export default function ContactTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setEmail(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setEmail(value)}
                 // value={user.email}
                 value={email}
                 placeholder="Email address"
@@ -84,15 +89,15 @@ export default function ContactTab({ navigation }) {
                 style={[styles.profileInfo, styles.input]}
             />
 
-            <ThemedTextInput 
-                onChangeText={(value) => setMessageTitle(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setMessageTitle(value)}
                 value={messageTitle}
                 placeholder="Message title"
                 label="Message title"
                 style={[styles.profileInfo, styles.input]}
             />
-                <ThemedTextInput 
-                onChangeText={(value) => setMessage(value)} 
+            <ThemedTextInput
+                onChangeText={(value) => setMessage(value)}
                 value={message}
                 placeholder="Message"
                 label="Message"
@@ -101,24 +106,23 @@ export default function ContactTab({ navigation }) {
             />
 
             <ThemedButton onPress={handleSendMessage}>Send Message</ThemedButton>
-           
-        </ParallaxScrollView>
+        </ThemedScrollView>
     );
 }
 
 const styles = StyleSheet.create({
     headerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         padding: 16,
-        elevation: 1, 
-        zIndex: 1, 
+        elevation: 1,
+        zIndex: 1,
     },
 
     rightHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
     },
 
     titleContainer: {
@@ -137,21 +141,21 @@ const styles = StyleSheet.create({
         borderRadius: 7,
     },
     message: {
-        height:200,
-        width:350,
-        radius:40,
+        height: 200,
+        width: 350,
+        radius: 40,
         flexWrap: "wrap",
-        fontSize:16,
+        fontSize: 16,
         textAlignVertical: "top",
     },
     notifications: {
         fontSize: 18,
-        fontStyle: "italic"
+        fontStyle: "italic",
     },
     notificationContainer: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         marginVertical: 5,
-    }
+    },
 });

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Alert, Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
-import ParallaxScrollView from "../../../components/ParallaxScrollView";
+import ThemedScrollView from "../../../components/ThemedScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedView } from "../../../components/ThemedView";
@@ -78,12 +78,12 @@ export default function UpdateProfileTab({}) {
         setModifyNotifications(!modifyNotifications);
     };
 
-    const toggleAuthorizeNotifications = () => {
-        setAuthorizeNotifications(!authorizeNotifications);
+    const toggleAuthorizeGeolocation = () => {
+        setAuthorizeGeolocation(!authorizeNotifications);
     };
 
     return (
-        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+        <ThemedScrollView>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText style={styles.title}>Profil de {user.firstname}</ThemedText>
                 <Image
@@ -129,7 +129,7 @@ export default function UpdateProfileTab({}) {
                 style={[styles.profileInfo, styles.input]}
             /> */}
 
-            <ThemedView style={styles.notificationContainer}>
+            {/* <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Modify notifications</ThemedText>
                 <Text style={styles.notifications}>Activate</Text>
                 <TouchableOpacity onPress={toggleModifyNotifications}>
@@ -139,19 +139,19 @@ export default function UpdateProfileTab({}) {
                         color={modifyNotifications ? "#A53939" : "grey"}
                     />
                 </TouchableOpacity>
-            </ThemedView>
+            </ThemedView> */}
 
             <ThemedView style={styles.notificationContainer}>
                 <ThemedText style={styles.profileInfo}>Authorize geolocation</ThemedText>
-                <TouchableOpacity onPress={toggleAuthorizeNotifications}>
-                    <Icon name="globe" size={30} color={authorizeNotifications ? "#A53939" : "grey"} />
+                <TouchableOpacity onPress={toggleAuthorizeGeolocation}>
+                    <Icon name="globe" size={30} color={authorizeGeolocation ? "#A53939" : "grey"} />
                 </TouchableOpacity>
             </ThemedView>
 
             <ThemedView style={styles.profilModification}>
                 <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
             </ThemedView>
-        </ParallaxScrollView>
+        </ThemedScrollView>
     );
 }
 

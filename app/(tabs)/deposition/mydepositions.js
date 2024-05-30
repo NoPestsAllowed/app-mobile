@@ -1,14 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-    StyleSheet,
-    TouchableOpacity,
-    Text,
-    View,
-    FlatList,
-    Platform,
-    TouchableHighlight,
-    Alert
-} from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View, FlatList, Platform, TouchableHighlight, Alert } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -62,7 +53,7 @@ export default function MydepositionsTab({ navigation }) {
                                 if (data.result) {
                                     // Optionally navigate or update state here
                                     console.log("Deposition supprimée");
-                                    fetchDepositions()
+                                    fetchDepositions();
                                 } else {
                                     console.error(data.error);
                                 }
@@ -76,8 +67,7 @@ export default function MydepositionsTab({ navigation }) {
             { cancelable: true }
         );
     };
-    
-    
+
     const handleLogout = () => {
         navigation.navigate("Home");
     };
@@ -98,7 +88,7 @@ export default function MydepositionsTab({ navigation }) {
 
     useFocusEffect(
         useCallback(() => {
-            fetchDepositions()
+            fetchDepositions();
             return () => {
                 console.log("This route is now unfocused.");
             };
@@ -118,12 +108,10 @@ export default function MydepositionsTab({ navigation }) {
                 console.log(depositionsResponse.depositions.length);
                 setDepositions(depositionsResponse.depositions);
             });
-    }
+    };
 
     return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
-        >
+        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
             <View style={styles.headerContainer}>
                 <View style={styles.thinLine} />
             </View>
@@ -151,7 +139,7 @@ export default function MydepositionsTab({ navigation }) {
                 {depositions.length > 0 &&
                     depositions.map((deposition, index) => {
                         return (
-                            <ThemedView style={styles.rowContainer}>
+                            <ThemedView style={styles.rowContainer} key={deposition._id}>
                                 <Link
                                     style={{ marginVertical: 5 }}
                                     key={deposition._id}
@@ -163,12 +151,8 @@ export default function MydepositionsTab({ navigation }) {
                                     <ThemedView key={deposition._id}>
                                         <ThemedView style={styles.rowContent}>
                                             <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}>
-                                                    Déposition:{" "}
-                                                </ThemedText>
-                                                <ThemedText style={styles.line2}>
-                                                    {deposition.name}
-                                                </ThemedText>
+                                                <ThemedText style={styles.line1}>Déposition: </ThemedText>
+                                                <ThemedText style={styles.line2}>{deposition.name}</ThemedText>
                                             </ThemedView>
                                             <ThemedView style={styles.rowTextContainer}>
                                                 <ThemedText style={styles.line1}> Adresse: </ThemedText>
@@ -177,13 +161,8 @@ export default function MydepositionsTab({ navigation }) {
                                                 </ThemedText>
                                             </ThemedView>
                                             <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}>
-                                                    Description:{" "}
-                                                </ThemedText>
-                                                <ThemedText style={styles.line2}>
-                                                    {" "}
-                                                    {deposition.description}
-                                                </ThemedText>
+                                                <ThemedText style={styles.line1}>Description: </ThemedText>
+                                                <ThemedText style={styles.line2}> {deposition.description}</ThemedText>
                                             </ThemedView>
                                         </ThemedView>
                                         <ThemedView style={styles.date}>
@@ -195,16 +174,8 @@ export default function MydepositionsTab({ navigation }) {
                                     </ThemedView>
                                 </Link>
                                 <ThemedView style={styles.actionButtonsContainer}>
-                                    <ThemedButtonEdit
-                                      
-                                    >
-                                        Modifier
-                                    </ThemedButtonEdit>
-                                    <ThemedButtonEdit
-                                        onPress={() =>
-                                            handleDeleteDeposition(deposition)
-                                        }
-                                    >
+                                    <ThemedButtonEdit>Modifier</ThemedButtonEdit>
+                                    <ThemedButtonEdit onPress={() => handleDeleteDeposition(deposition)}>
                                         Supprimer
                                     </ThemedButtonEdit>
                                 </ThemedView>
@@ -215,13 +186,8 @@ export default function MydepositionsTab({ navigation }) {
 
             <ThemedView style={styles.rowContainerTable}></ThemedView>
 
-            <ThemedText style={styles.profileInfo}>
-                Vous avez {depositions.length} déposition(s)
-            </ThemedText>
-            <ThemedButton
-                style={styles.buttonCreate}
-                onPress={() => router.navigate("deposition/create")}
-            >
+            <ThemedText style={styles.profileInfo}>Vous avez {depositions.length} déposition(s)</ThemedText>
+            <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("deposition/create")}>
                 Create deposition
             </ThemedButton>
         </ParallaxScrollView>
