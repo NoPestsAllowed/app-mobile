@@ -9,62 +9,35 @@ import MapView, { Marker } from "react-native-maps";
 import Ant from "../../components/Ant";
 import { router, useFocusEffect } from "expo-router";
 import SearchPlace from "../../components/SearchPlace";
-
-// import { Picker } from '@react-native-picker/picker';
-
-// const nuisibles = [
-//   { label: "Tique", value: "tique" },
-//   { label: "Punaise de lit", value: "punaise_de_lit" },
-//   { label: "Cafard", value: "cafard" },
-//   { label: "Rat", value: "rat" },
-//   { label: "Souris", value: "souris" },
-//   { label: "Puce", value: "puce" },
-//   { label: "Araignée", value: "araignee" },
-//   { label: "Fourmi", value: "fourmi" },
-//   { label: "Mite alimentaire", value: "mite_alimentaire" },
-//   { label: "Punaise des bois", value: "punaise_des_bois" },
-//   { label: "Punaise verte", value: "punaise_verte" },
-//   { label: "Punaise grise", value: "punaise_grise" },
-//   { label: "Chenille processionnaire", value: "chenille_processionnaire" },
-//   { label: "Cloporte", value: "cloporte" },
-//   { label: "Termite", value: "termite" },
-//   { label: "Autres", value: "autres" }
-// ];
-
-// const generatePickerItems = (nuisibles) => {
-//   return nuisibles.map((nuisible, index) => (
-//     <Picker.Item key={index} label={nuisible.label} value={nuisible.value} />
-//   ));
-// };
-
-// const InsectPicker = () => {
-//   return (
-//     <Picker>
-//       <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
-//       {generatePickerItems(nuisibles)}
-//     </Picker>
-//   );
-// };
-
-// export default InsectPicker;
-
+import { SafetyButton } from "../../components/SafetyButton";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function HomeTab() {
     const [depositions, setDepositions] = useState([]);
+    const [lastDepositionCount, setLastDepositionCount] = useState(0);
     useFocusEffect(
         useCallback(() => {
             fetch(`${backendUrl}/depositions`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    // Authorization: `Bearer ${user.token}`,
                 },
             })
                 .then((res) => res.json())
                 .then((depositionsResponse) => {
                     setDepositions(depositionsResponse.depositions);
+                });
+
+            fetch(`${backendUrl}/depositions/last-day`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((LastDepositionResponse) => {
+                    setLastDepositionCount(LastDepositionResponse.depositions.length);
                 });
             return () => {
                 console.log("This route is now unfocused.");
@@ -139,13 +112,13 @@ export default function HomeTab() {
                 <ThemedText type="title">Bienvenue</ThemedText>
             </ThemedView>
             <ThemedView style={styles.stepContainer}>
-             
                 <SearchPlace />
             </ThemedView>
             <ThemedView style={styles.home}>
                 <ThemedText type="subtitle">Vérifier ma localisation</ThemedText>
 
-                <ThemedButton onPress={() => router.navigate("login")}>C'est parti !!</ThemedButton>
+                <SafetyButton />
+                {/* <ThemedButton onPress={() => router.navigate("login")}>C'est parti !!</ThemedButton> */}
             </ThemedView>
             <ThemedView style={styles.home}>
                 {/* <ThemedView style={styles.alertContainer}> */}
@@ -156,7 +129,7 @@ export default function HomeTab() {
                 {/* </ThemedView> */}
                 <ThemedText style={styles.paragraph}>
                     <ThemedText type="defaultSemiBold" style={styles.firstWord}>
-                        3{/* {lastDepositions} */}
+                        {lastDepositionCount}
                     </ThemedText>{" "}
                     rapports d'insectes ont été ajoutés au cours des dernières 24 heures !
                 </ThemedText>

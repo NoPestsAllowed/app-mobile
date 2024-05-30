@@ -216,6 +216,9 @@ export default function CreateDepositionTab({ navigation }) {
 
     const handlePictureRemoval = (picture) => {
         // console.log("removing", picture);
+        setVisualProofs((vproofs) => {
+            vproofs.filter((proof) => proof.uri !== picture.uri ?? []);
+        });
         dispatch(removeVisualProof(picture));
     };
 
@@ -319,10 +322,6 @@ export default function CreateDepositionTab({ navigation }) {
                     <Picker.Item label="Cloporte" value="cloporte" />
                     <Picker.Item label="Termite" value="termite" />
                     <Picker.Item label="Autres" value="autres" />
-
-
-
-
                 </Picker>
             </ThemedView>
 
