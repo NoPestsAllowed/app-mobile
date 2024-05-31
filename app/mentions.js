@@ -220,7 +220,7 @@ export default function MentionsPage() {
                 </View>
             </View>
             <Link href="landing" style={styles.link}>
-                <ThemedText type="link">Back to Home</ThemedText>
+                <ThemedText type="link">Accueil</ThemedText>
             </Link>
         </ScrollView>
         </SafeAreaView>

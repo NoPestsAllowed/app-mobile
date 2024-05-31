@@ -39,7 +39,7 @@ export default function TabLayout() {
                             }}
                         />
                         <Tabs.Screen
-                            name="deposition/index"
+                            name="deposition/mydepositions"
                             options={{
                                 title: "Mes dépositions",
                                 tabBarIcon: ({ color, focused }) => (
@@ -85,13 +85,13 @@ export default function TabLayout() {
                                 href: null,
                             }}
                         />
-                        <Tabs.Screen
+                        {/* <Tabs.Screen
                             name="deposition/mydepositions"
                             options={{
                                 title: "MyDeposition",
                                 href: null,
                             }}
-                        />
+                        /> */}
                         <Tabs.Screen
                             name="contact"
                             options={{

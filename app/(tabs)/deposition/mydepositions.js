@@ -111,7 +111,32 @@ export default function MydepositionsTab({ navigation }) {
     };
 
     return (
-        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}>
+        <ParallaxScrollView headerBackgroundColor={{ light: "#9f4634", dark: "#1D3D47" }}
+        headerImage={
+            <MapView
+                initialRegion={{
+                    latitude: 48.86667,
+                    longitude: 2.333333,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                style={{ flex: 1 }}
+            >
+                {depositions.map((deposition) => {
+                    return (
+                        <Marker
+                            key={deposition._id}
+                            coordinate={{
+                                latitude: deposition.placeId.geojson.coordinates[0],
+                                longitude: deposition.placeId.geojson.coordinates[1],
+                            }}
+                            title={deposition.name}
+                            description={deposition.description}
+                        />
+                    );
+                })}
+            </MapView>
+        }>
             <View style={styles.headerContainer}>
                 <View style={styles.thinLine} />
             </View>
@@ -188,7 +213,7 @@ export default function MydepositionsTab({ navigation }) {
 
             <ThemedText style={styles.profileInfo}>Vous avez {depositions.length} déposition(s)</ThemedText>
             <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("deposition/create")}>
-                Create deposition
+                Créer une déposition
             </ThemedButton>
         </ParallaxScrollView>
     );
