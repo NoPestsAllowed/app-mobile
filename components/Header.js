@@ -115,7 +115,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                         >
                             <ThemedText style={styles.menuItemText}>Créer une Déposition</ThemedText>
                         </TouchableOpacity>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={styles.menuItem}
                             onPress={() => {
                                 setMenuVisible(false);
@@ -123,7 +123,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                             }}
                         >
                             <ThemedText style={styles.menuItemText}>Ma Déposition</ThemedText>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         <TouchableOpacity
                             style={styles.menuItem}
                             onPress={() => {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 110,
         right: 10,
-        height: 225,
+        // height: 225,
         backgroundColor: "#A53939",
         borderRadius: 20,
         padding: 15,

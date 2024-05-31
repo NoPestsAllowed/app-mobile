@@ -14,6 +14,7 @@ export default function SearchPlace() {
     const [apiResults, setApiResults] = useState([]);
     const [depositions, setDepositions] = useState([]);
     const user = useSelector((state) => state.user.value);
+    const [isInfected, setIsInfected] = useState(false);
 
     const [resultMsg, setResultMsg] = useState("");
 
@@ -56,11 +57,22 @@ export default function SearchPlace() {
                 );
             });
     };
+
     const onItemSelected = (item) => {
         const depo = depositions.filter((deposition) => {
             return deposition.placeId._id === item.key;
         });
-        if (depo.status === "accepted") {
+        console.log("depo", depo);
+        depo.map((el) => {
+            // console.log(el);
+            if (el.status === "accepted") {
+                setIsInfected(isInfected);
+                return;
+            }
+        });
+
+        // console.log(isInfected);
+        if (isInfected) {
             // alert("This place is infected ! Move away.");
             setResultMsg("Ce lieu est infecter ! Prenez garde.");
         } else {
@@ -79,7 +91,7 @@ export default function SearchPlace() {
     if (resultMsg !== "") {
         return (
             <ThemedView>
-                <ThemedText style={{ color: "red" }}>{resultMsg}</ThemedText>
+                <ThemedText style={{ color: isInfected ? "red" : "green" }}>{resultMsg}</ThemedText>
             </ThemedView>
         );
     }

@@ -88,7 +88,7 @@ export default function Register() {
             <ThemedTextInput
                 onChangeText={(value) => setLastName(value)}
                 value={lastName}
-                placeholder="nom"
+                placeholder="Nom"
                 // label="Lastname"
                 keyboardType="family-name"
                 style={[styles.profileInfo, styles.input]}

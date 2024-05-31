@@ -11,6 +11,7 @@ const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function LandingPage() {
     const [depositions, setDepositions] = useState([]);
+    const [lastDepositionCount, setLastDepositionCount] = useState(0);
     useFocusEffect(
         useCallback(() => {
             fetch(`${backendUrl}/depositions`, {
@@ -24,6 +25,19 @@ export default function LandingPage() {
                 .then((depositionsResponse) => {
                     setDepositions(depositionsResponse.depositions);
                 });
+            fetch(`${backendUrl}/depositions/last-day`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((LastDepositionResponse) => {
+                    setLastDepositionCount(LastDepositionResponse.depositions.length);
+                });
+            return () => {
+                console.log("This route is now unfocused.");
+            };
             return () => {
                 console.log("This route is now unfocused.");
             };
@@ -79,7 +93,13 @@ export default function LandingPage() {
                     </Link>
                 </ThemedView>
             </View>
-            <ThemedView style={{ backgroundColor: "transparent" }}>
+            <ThemedText style={styles.paragraph}>
+                <ThemedText type="defaultSemiBold" style={styles.firstWord}>
+                    {lastDepositionCount}
+                </ThemedText>{" "}
+                rapports d'insectes ont été ajoutés au cours des dernières 24 heures !
+            </ThemedText>
+            <ThemedView style={{ backgroundColor: "transparent", paddingVertical: 8 }}>
                 <Link href="mentions">
                     <ThemedText type="link">Mentions legales</ThemedText>
                 </Link>
@@ -125,5 +145,9 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: 15,
         paddingVertical: 5,
+    },
+    paragraph: {
+        width: "80%",
+        marginBottom: 24,
     },
 });

@@ -114,12 +114,11 @@ export default function HomeTab() {
             <ThemedView style={styles.stepContainer}>
                 <SearchPlace />
             </ThemedView>
-            <ThemedView style={styles.home}>
+            {/* <ThemedView style={styles.home}>
                 <ThemedText type="subtitle">Vérifier ma localisation</ThemedText>
 
                 <SafetyButton />
-                {/* <ThemedButton onPress={() => router.navigate("login")}>C'est parti !!</ThemedButton> */}
-            </ThemedView>
+            </ThemedView> */}
             <ThemedView style={styles.home}>
                 {/* <ThemedView style={styles.alertContainer}> */}
                 <Image source={require("../../assets/images/alert.png")} style={styles.alertLogo} />
