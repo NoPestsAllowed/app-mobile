@@ -178,6 +178,20 @@ export default function DepositionTab() {
                                                 <ThemedText style={styles.line1}>Description: </ThemedText>
                                                 <ThemedText style={styles.line2}> {deposition.description}</ThemedText>
                                             </ThemedView>
+                                            <ThemedView style={styles.rowTextContainer}>
+                                                <ThemedText style={styles.line1}>Status: </ThemedText>
+                                                <ThemedText
+                                                    style={[
+                                                        styles.line2,
+                                                        {
+                                                            fontWeight: "bold",
+                                                            color: deposition.status === "accepted" ? "green" : "red",
+                                                        },
+                                                    ]}
+                                                >
+                                                    {deposition.status}
+                                                </ThemedText>
+                                            </ThemedView>
                                         </ThemedView>
                                         <ThemedView style={styles.date}>
                                             <ThemedText>

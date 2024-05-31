@@ -17,6 +17,9 @@ import user from "../reducers/user";
 import { useSession } from "../hooks/useSession";
 import depositions from "../reducers/depositions";
 
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs();
+
 const storage = createSecureStore();
 
 const reducers = combineReducers({ user, depositions });
