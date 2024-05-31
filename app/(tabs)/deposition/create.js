@@ -242,8 +242,8 @@ export default function CreateDepositionTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setDepositionName(value)}
                 value={depositionName}
-                placeholder="Deposition Name"
-                label="Deposition Name"
+                placeholder="Nom de la déposition"
+                label="Nom de la déposition"
                 style={[styles.profileInfo, styles.input]}
             />
 
@@ -280,7 +280,7 @@ export default function CreateDepositionTab({ navigation }) {
             {depoByPicture && (
                 <ThemedView style={styles.pictureBtn}>
                     <ThemedButton onPress={openCamera} style={styles.button}>
-                        <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
+                        <ThemedText style={styles.buttonText}>Camera</ThemedText>
                     </ThemedButton>
 
                     {/* <ThemedButton style={styles.button} onPress={pickImage}>
@@ -329,8 +329,8 @@ export default function CreateDepositionTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
                 value={ownerEmail}
-                placeholder="Owner Email"
-                label="Owner Email"
+                placeholder="Email du propriétaire"
+                label="Email du propriétaire"
                 keyboardType="email-address"
                 inputMode="email"
                 style={[styles.profileInfo, styles.input]}
@@ -346,7 +346,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
-                <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
+                <ThemedButton onPress={submitDeposition}>Envoyer</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );

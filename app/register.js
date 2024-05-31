@@ -79,7 +79,7 @@ export default function Register() {
             <ThemedTextInput
                 onChangeText={(value) => setFirstName(value)}
                 value={firstName}
-                placeholder="Firstname"
+                placeholder="Prenom"
                 // label="Firstname"
                 keyboardType="given-name"
                 style={[styles.profileInfo, styles.input]}
@@ -88,7 +88,7 @@ export default function Register() {
             <ThemedTextInput
                 onChangeText={(value) => setLastName(value)}
                 value={lastName}
-                placeholder="Lastname"
+                placeholder="nom"
                 // label="Lastname"
                 keyboardType="family-name"
                 style={[styles.profileInfo, styles.input]}

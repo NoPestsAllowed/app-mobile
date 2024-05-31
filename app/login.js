@@ -28,7 +28,7 @@ export default function register() {
             <ThemedView style={[styles.titleContainer, styles.bgTransparent]}>
                 <Image source={require("../assets/images/icon.png")} style={styles.noPestsAllowedLogo} />
                 <ThemedText type="title" style={styles.title}>
-                    Login
+                    Se connecter
                 </ThemedText>
             </ThemedView>
 
@@ -47,7 +47,7 @@ export default function register() {
             <ThemedTextInput
                 onChangeText={(value) => setPassword(value)}
                 value={password}
-                placeholder="Password"
+                placeholder="Mot de passe"
                 // label="Password"
                 keyboardType="current-password"
                 style={[styles.profileInfo, styles.input]}
