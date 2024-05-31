@@ -89,6 +89,19 @@ export default function CreateDepositionTab({ navigation }) {
                     setUserLocation(location);
                 }
             })();
+            let lat = 48.887553;
+            let lon = 2.303709;
+            fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=1500&key=AIzaSyBgG5sxkZoQYq9mpaX6SJz737Axroga9Ho
+          `)
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(
+                        "gg",
+                        data.results.map((item) => {
+                            return item.name;
+                        })
+                    );
+                });
             return () => {
                 dispatch(clearNewDeposition());
                 clearInputs();
@@ -245,13 +258,13 @@ export default function CreateDepositionTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setDepositionName(value)}
                 value={depositionName}
-                placeholder="Deposition Name"
-                label="Deposition Name"
+                placeholder="Donner un nom à votre déposition"
+                label="Titre"
                 style={[styles.profileInfo, styles.input]}
             />
 
             <ThemedView style={styles.btnContainer}>
-                <ThemedButton
+                {/* <ThemedButton
                     colored={false}
                     elevated={false}
                     onPress={() => {
@@ -260,12 +273,10 @@ export default function CreateDepositionTab({ navigation }) {
                     }}
                     style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", { color: "yellow" }]}
                 >
-                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
                     <ThemedText style={{ fontWeight: "bold" }}>J'ai une preuve</ThemedText>
-                    {/* </ThemedView> */}
-                </ThemedButton>
+                </ThemedButton> */}
 
-                <ThemedButton
+                {/* <ThemedButton
                     colored={false}
                     elevated={false}
                     onPress={() => {
@@ -274,16 +285,14 @@ export default function CreateDepositionTab({ navigation }) {
                     }}
                     style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
                 >
-                    {/* <ThemedView style={{ backgroundColor: "transparent" }}> */}
                     <ThemedText style={{ fontWeight: "bold" }}>Je veux déclarer sur l'honneur</ThemedText>
-                    {/* </ThemedView> */}
-                </ThemedButton>
+                </ThemedButton> */}
             </ThemedView>
 
             {depoByPicture && (
                 <ThemedView style={styles.pictureBtn}>
                     <ThemedButton onPress={openCamera} style={styles.button}>
-                        <ThemedText style={styles.buttonText}>Open Camera</ThemedText>
+                        <ThemedText style={styles.buttonText}>Ajouter une preuve</ThemedText>
                     </ThemedButton>
 
                     {/* <ThemedButton style={styles.button} onPress={pickImage}>
@@ -303,7 +312,7 @@ export default function CreateDepositionTab({ navigation }) {
                 />
             )}
 
-            <ThemedView style={styles.selectInput}>
+            <ThemedView style={[styles.selectInput, styles.global]}>
                 <Picker selectedValue={pestType} onValueChange={(itemValue, itemIndex) => setPestType(itemValue)}>
                     <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
                     <Picker.Item label="Tique" value="tique" />
@@ -364,6 +373,15 @@ const styles = StyleSheet.create({
     profileInfo: {
         // margin: 3,
         fontSize: 18,
+    },
+    global: {
+        borderWidth: 1,
+        borderColor: "#0a7ea4",
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        // paddingVertical: 5,
+        // marginVertical: 2,
+        backgroundColor: "transparent",
     },
     input: {
         marginVertical: 2,
@@ -430,10 +448,10 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
     },
-    selectInput: {
-        borderColor: "#d1d5db",
-        borderWidth: 1,
-        borderRadius: 8,
-        backgroundColor: "transparent",
-    },
+    // selectInput: {
+    //     borderColor: "#d1d5db",
+    //     borderWidth: 1,
+    //     borderRadius: 8,
+    //     backgroundColor: "transparent",
+    // },
 });

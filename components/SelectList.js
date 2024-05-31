@@ -110,17 +110,9 @@ export default function SelectList({ userLocation, depoLocation, itemSelected })
             // (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
             // (item.tags["addr:street"] || item.tags["contact:street"])
         ) {
-            // console.log(item.tags["amenity"], typeof item.tags["name"] !== "undefined", item.tags["name"]);
             let resultText =
                 item.tags["amenity"] + " " + typeof item.tags["name"] !== "undefined" ? item.tags["name"] : "";
-            // console.log(resultText);
             if (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) {
-                // console.log(item.tags["addr:housenumber"], item.tags["contact:housenumber"]);
-                // console.log(
-                //     typeof item.tags["addr:housenumber"] !== "undefined"
-                //         ? item.tags["addr:housenumber"]
-                //         : item.tags["contact:housenumber"]
-                // );
                 resultText += ", ";
                 resultText +=
                     typeof item.tags["addr:housenumber"] !== "undefined"
