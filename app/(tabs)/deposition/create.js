@@ -297,33 +297,6 @@ export default function CreateDepositionTab({ navigation }) {
                 </ThemedButton> */}
             </ThemedView>
 
-            {depoByPicture && (
-                <ThemedView style={styles.pictureBtn}>
-                    <ThemedButton onPress={openCamera} style={styles.button}>
-                        <ThemedText style={styles.buttonText}>Ajouter une preuve</ThemedText>
-                    </ThemedButton>
-
-                    {/* <ThemedButton style={styles.button} onPress={pickImage}>
-                    <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
-                </ThemedButton> */}
-                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
-                </ThemedView>
-            )}
-
-            {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />}
-
-            {depoLocation && (
-                <SelectList
-                    userLocation={userLocation}
-                    depoLocation={depoLocation}
-                    itemSelected={(item) => itemSelected(item)}
-                />
-                // <Picker
-                //     selectedValue={location}
-                //     onValueChange={(itemValue, itemIndex) => itemSelected(itemValue)}
-                // ></Picker>
-            )}
-
             <ThemedView style={[styles.selectInput, styles.global]}>
                 <Picker selectedValue={pestType} onValueChange={(itemValue, itemIndex) => setPestType(itemValue)}>
                     <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
@@ -345,6 +318,33 @@ export default function CreateDepositionTab({ navigation }) {
                     <Picker.Item label="Autres" value="autres" />
                 </Picker>
             </ThemedView>
+
+            {depoByPicture && (
+                <ThemedView style={styles.pictureBtn}>
+                    <ThemedButton onPress={openCamera} style={styles.button}>
+                        <ThemedText style={styles.buttonText}>Ajouter une preuve</ThemedText>
+                    </ThemedButton>
+
+                    {/* <ThemedButton style={styles.button} onPress={pickImage}>
+                    <ThemedText style={styles.buttonText}>Upload images from phone</ThemedText>
+                </ThemedButton> */}
+                    {selectedImage && <Image source={{ uri: selectedImage }} style={styles.image} />}
+                </ThemedView>
+            )}
+
+            {/* {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />} */}
+
+            {depoLocation && (
+                <SelectList
+                    userLocation={userLocation}
+                    depoLocation={depoLocation}
+                    itemSelected={(item) => itemSelected(item)}
+                />
+                // <Picker
+                //     selectedValue={location}
+                //     onValueChange={(itemValue, itemIndex) => itemSelected(itemValue)}
+                // ></Picker>
+            )}
 
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
