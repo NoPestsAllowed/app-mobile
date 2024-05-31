@@ -89,19 +89,9 @@ export default function CreateDepositionTab({ navigation }) {
                     setUserLocation(location);
                 }
             })();
-            let lat = 48.887553;
-            let lon = 2.303709;
-            fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lon}&radius=1500&key=AIzaSyBgG5sxkZoQYq9mpaX6SJz737Axroga9Ho
-          `)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(
-                        "gg",
-                        data.results.map((item) => {
-                            return item.name;
-                        })
-                    );
-                });
+            // let lat = 48.887553;
+            // let lon = 2.303709;
+
             return () => {
                 dispatch(clearNewDeposition());
                 clearInputs();
@@ -111,12 +101,30 @@ export default function CreateDepositionTab({ navigation }) {
 
     useEffect(() => {
         if (userLocation) {
+            // console.log(userLocation);
             setMapLocation({
                 latitude: userLocation.coords.latitude,
                 longitude: userLocation.coords.longitude,
                 latitudeDelta: 0.000922,
                 longitudeDelta: 0.000421,
             });
+            // console.log(
+            //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${userLocation.coords.latitude},${userLocation.coords.longitude}&radius=1500&key=AIzaSyBgG5sxkZoQYq9mpaX6SJz737Axroga9Ho`
+            // );
+            // fetch(
+            //     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=establishment,food&location=${userLocation.coords.latitude},${userLocation.coords.longitude}&radius=1500&key=AIzaSyBgG5sxkZoQYq9mpaX6SJz737Axroga9Ho`
+            // )
+            //     .then((res) => res.json())
+            //     .then((data) => {
+            //         console.log(
+            //             "gg",
+            //             // data
+            //             data.results.map((item) => {
+            //                 // console.log(item);
+            //                 return item.name;
+            //             })
+            //         );
+            //     });
         }
     }, [userLocation]);
 
@@ -310,6 +318,10 @@ export default function CreateDepositionTab({ navigation }) {
                     depoLocation={depoLocation}
                     itemSelected={(item) => itemSelected(item)}
                 />
+                // <Picker
+                //     selectedValue={location}
+                //     onValueChange={(itemValue, itemIndex) => itemSelected(itemValue)}
+                // ></Picker>
             )}
 
             <ThemedView style={[styles.selectInput, styles.global]}>
