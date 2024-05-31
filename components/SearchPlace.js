@@ -6,6 +6,7 @@ import { Dropdown } from "./Dropdown";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { useFocusEffect } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -16,13 +17,17 @@ export default function SearchPlace() {
     const user = useSelector((state) => state.user.value);
     const [isInfected, setIsInfected] = useState(false);
 
-    const [resultMsg, setResultMsg] = useState("");
+    const [showResult, setShowResult] = useState(false);
+
+    const [resultMsg, setResultMsg] = useState("Ce lieu n'est pas infecter.");
 
     useFocusEffect(
         useCallback(() => {
             return () => {
                 clearState();
-                setResultMsg("");
+                setIsInfected(false);
+                setResultMsg("Ce lieu n'est pas infecter.");
+                setShowResult(false);
             };
         }, [])
     );
@@ -59,14 +64,18 @@ export default function SearchPlace() {
     };
 
     const onItemSelected = (item) => {
+        console.log("item", item);
         const depo = depositions.filter((deposition) => {
-            return deposition.placeId._id === item.key;
+            console.log(depositions.map((dep) => dep.placeId._id));
+
+            return deposition.placeId._id === item;
         });
         console.log("depo", depo);
         depo.map((el) => {
-            // console.log(el);
+            console.log(el.status);
             if (el.status === "accepted") {
-                setIsInfected(isInfected);
+                setIsInfected((infected) => true);
+                setResultMsg("Ce lieu est infecter ! Prenez garde.");
                 return;
             }
         });
@@ -79,7 +88,7 @@ export default function SearchPlace() {
             // alert("This place is safe.");
             setResultMsg("Ce lieu n'est pas infecter.");
         }
-
+        setShowResult(true);
         clearState();
     };
 
@@ -88,10 +97,12 @@ export default function SearchPlace() {
         setApiResults([]);
         setDepositions([]);
     };
-    if (resultMsg !== "") {
+    if (showResult !== false) {
         return (
             <ThemedView>
-                <ThemedText style={{ color: isInfected ? "red" : "green" }}>{resultMsg}</ThemedText>
+                <ThemedText style={{ color: isInfected ? "red" : "green" }}>
+                    {isInfected ? "Ce lieu est infecter ! Prenez garde." : "Ce lieu n'est pas infecter."}
+                </ThemedText>
             </ThemedView>
         );
     }
@@ -105,7 +116,20 @@ export default function SearchPlace() {
                 placeholder="Rechercher une adresse"
                 style={styles.searchInput}
             />
-            <Dropdown results={apiResults} onItemSelected={onItemSelected} />
+            {/* <Dropdown results={apiResults} onItemSelected={onItemSelected} /> */}
+            {apiResults.length > 0 && (
+                <Picker
+                    onValueChange={(itemValue, itemIndex) => {
+                        console.log(itemValue);
+                        onItemSelected(itemValue);
+                    }}
+                >
+                    <Picker.Item label="Sélectionner votre nuisible" enabled={false} />
+                    {apiResults.map((result) => {
+                        return <Picker.Item key={result.key} label={result.value} value={result.key} />;
+                    })}
+                </Picker>
+            )}
         </ThemedView>
     );
 }

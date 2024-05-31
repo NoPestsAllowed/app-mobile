@@ -133,9 +133,11 @@ export default function CreateDepositionTab({ navigation }) {
     };
 
     const handlePictureTaken = (picture) => {
-        setDepoLocation(userLocation);
-        setVisualProofs((vproofs) => [...vproofs, picture]);
-        dispatch(addVisualProofToNewDeposition(picture));
+        if (picture) {
+            setDepoLocation(userLocation);
+            setVisualProofs((vproofs) => [...(vproofs ?? []), picture]);
+            dispatch(addVisualProofToNewDeposition(picture));
+        }
     };
 
     const itemSelected = (item) => {

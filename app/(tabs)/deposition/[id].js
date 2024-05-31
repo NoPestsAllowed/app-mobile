@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    Image,
-    StyleSheet,
-    TouchableOpacity,
-    ActivityIndicator,
-    View,
-    Alert
-} from "react-native";
+import { Image, StyleSheet, TouchableOpacity, ActivityIndicator, View, Alert } from "react-native";
 import ParallaxScrollView from "../../../components/ParallaxScrollView";
 import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
@@ -127,10 +120,8 @@ export default function DepositionDetail() {
             <ThemedView style={styles.typeContainer}>
                 <ThemedText style={styles.description}>Type :</ThemedText>
                 <ThemedText> {deposition.type}</ThemedText>
-                </ThemedView>
+            </ThemedView>
             <ThemedView style={styles.rowContainer}>
-            
-            
                 <ThemedText style={styles.description}> Description: </ThemedText>
                 <ThemedText>{deposition.description}</ThemedText>
             </ThemedView>
@@ -142,7 +133,6 @@ export default function DepositionDetail() {
                         return (
                             <ThemedView key={index} style={styles.photosContainer}>
                                 <Image source={{ uri: visualProof.url }} style={styles.photo} />
-
                             </ThemedView>
                         );
                     })}
@@ -152,25 +142,12 @@ export default function DepositionDetail() {
                 <ThemedText style={styles.createdAt}>
                     Déposition faite le: {moment(deposition.createdAt).format("L")}
                 </ThemedText>
-                <ThemedView>
-
-                    
-
-                </ThemedView>
+                <ThemedView></ThemedView>
                 <ThemedText style={styles.createdAt}>Status: {deposition.status}</ThemedText>
             </ThemedView>
             <ThemedView style={styles.backButton}>
-                <ThemedButton onPress={() =>
-                        handleDeleteDeposition(deposition)
-                    }
-                >
-                    Supprimer
-                </ThemedButton>
-                <ThemedButton
-                    onPress={() => router.navigate("deposition/mydepositions")}
-                >
-                    Retour
-                </ThemedButton>
+                <ThemedButton onPress={() => handleDeleteDeposition(deposition)}>Supprimer</ThemedButton>
+                <ThemedButton onPress={() => router.navigate("/deposition")}>Retour</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );
@@ -315,5 +292,5 @@ const styles = StyleSheet.create({
     },
     supprimer: {
         color: "ca8035",
-    }
+    },
 });
