@@ -93,7 +93,7 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
                 />
             </TouchableOpacity>
             <View style={styles.rightHeader}>
-                <ThemedText style={styles.welcomeText}>Welcome, {user.firstname}</ThemedText>
+                <ThemedText style={styles.welcomeText}>Bienvenue {user.firstname}</ThemedText>
                 <TouchableOpacity style={[styles.avatarContainer, { borderColor }]} onPress={handleAvatarPress}>
                     <Image source={require("../assets/images/avatar1.png")} style={styles.avatar} />
                 </TouchableOpacity>

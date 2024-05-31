@@ -349,8 +349,8 @@ export default function CreateDepositionTab({ navigation }) {
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
                 value={ownerEmail}
-                placeholder="Owner Email"
-                label="Owner Email"
+                placeholder="Email du propriétaire"
+                label="Email du propriétaire"
                 keyboardType="email-address"
                 inputMode="email"
                 style={[styles.profileInfo, styles.input]}
@@ -366,7 +366,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
-                <ThemedButton onPress={submitDeposition}>Submit</ThemedButton>
+                <ThemedButton onPress={submitDeposition}>Envoyer</ThemedButton>
             </ThemedView>
         </ParallaxScrollView>
     );

@@ -62,10 +62,10 @@ export default function SearchPlace() {
         });
         if (depo.status === "accepted") {
             // alert("This place is infected ! Move away.");
-            setResultMsg("This place is infected ! Move away.");
+            setResultMsg("Ce lieu est infecter ! Prenez garde.");
         } else {
             // alert("This place is safe.");
-            setResultMsg("This place is safe.");
+            setResultMsg("Ce lieu n'est pas infecter.");
         }
 
         clearState();
@@ -90,7 +90,7 @@ export default function SearchPlace() {
                     searchInfestedPlace(value);
                 }}
                 value={searchTerm}
-                placeholder="Search place"
+                placeholder="Rechercher une adresse"
                 style={styles.searchInput}
             />
             <Dropdown results={apiResults} onItemSelected={onItemSelected} />
