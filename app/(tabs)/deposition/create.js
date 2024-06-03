@@ -5,7 +5,7 @@ import { ThemedText } from "../../../components/ThemedText";
 import { ThemedView } from "../../../components/ThemedView";
 import { ThemedButton } from "../../../components/ThemedButton";
 import { ThemedTextInput } from "../../../components/ThemedTextInput";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 // import { Camera, CameraView } from "expo-camera";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -33,8 +33,9 @@ export default function CreateDepositionTab({ navigation }) {
     const [description, setDescription] = useState("");
     const [userLocation, setUserLocation] = useState(null);
 
-    const [depoLocation, setDepoLocation] = useState(null);
-    const [depoPlace, setDepoPlace] = useState(null);
+    const [depoLocation, setDepoLocation] = useState(null); // where the pictures are taken.
+    const [depoPlace, setDepoPlace] = useState(null); // nwr from overpass
+    const [depoPlaceLocation, setDepoPlaceLocation] = useState(null);
 
     const [depoByPicture, setDepoByPicture] = useState(true);
     const [depoByHonnor, setDepoByHonnor] = useState(false);
@@ -44,6 +45,8 @@ export default function CreateDepositionTab({ navigation }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [visualProofs, setVisualProofs] = useState([]);
     const [pestType, setPestType] = useState("");
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const user = useSelector((state) => state.user.value);
     const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
@@ -94,6 +97,7 @@ export default function CreateDepositionTab({ navigation }) {
 
             return () => {
                 dispatch(clearNewDeposition());
+                setIsSubmitting(false);
                 clearInputs();
             };
         }, [])
@@ -101,7 +105,7 @@ export default function CreateDepositionTab({ navigation }) {
 
     useEffect(() => {
         if (userLocation) {
-            // console.log(userLocation);
+            console.log("userLocation", userLocation);
             setMapLocation({
                 latitude: userLocation.coords.latitude,
                 longitude: userLocation.coords.longitude,
@@ -147,6 +151,14 @@ export default function CreateDepositionTab({ navigation }) {
             setOwnerEmail(item.tags["email"]);
         }
         setDepoPlace(item);
+        console.log(
+            "item.center",
+            item.center,
+            item.center ? { lat: item.center.lat, lon: item.center.lon } : { lat: item.lat, lon: item.lon }
+        );
+        setDepoPlaceLocation(
+            item.center ? { lat: item.center.lat, lon: item.center.lon } : { lat: item.lat, lon: item.lon }
+        );
     };
 
     if (cameraOpen) {
@@ -170,7 +182,7 @@ export default function CreateDepositionTab({ navigation }) {
             visualProofs: visualProofs,
             pestType: pestType,
         };
-
+        setIsSubmitting(true);
         // console.log(deposition);
         const depositionFormData = new FormData();
         for (const key in deposition) {
@@ -212,6 +224,7 @@ export default function CreateDepositionTab({ navigation }) {
             .then((res) => res.json())
             .then((createDepositionResponse) => {
                 if (createDepositionResponse.result) {
+                    setIsSubmitting(false);
                     dispatch(clearNewDeposition());
                     clearInputs();
                     router.replace("/deposition");
@@ -219,7 +232,10 @@ export default function CreateDepositionTab({ navigation }) {
                     console.error(createDepositionResponse.error);
                 }
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                setIsSubmitting(false);
+                console.error(err);
+            });
     };
 
     const clearInputs = () => {
@@ -229,6 +245,7 @@ export default function CreateDepositionTab({ navigation }) {
         // setUserLocation(null);
         setDepoLocation(null);
         setDepoPlace(null);
+        setDepoPlaceLocation(null);
         setDepoByPicture(true);
         setDepoByHonnor(false);
         setCameraOpen(false);
@@ -240,7 +257,7 @@ export default function CreateDepositionTab({ navigation }) {
     const handlePictureRemoval = (picture) => {
         // console.log("removing", picture);
         setVisualProofs((vproofs) => {
-            vproofs.filter((proof) => proof.uri !== picture.uri ?? []);
+            vproofs ? vproofs.filter((proof) => proof.uri !== picture.uri ?? []) : [];
         });
         dispatch(removeVisualProof(picture));
     };
@@ -259,7 +276,33 @@ export default function CreateDepositionTab({ navigation }) {
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
-            headerImage={<MapView region={mapLocation} style={{ flex: 1 }} />}
+            headerImage={
+                <MapView region={mapLocation} style={{ flex: 1 }}>
+                    {userLocation && (
+                        <Marker
+                            key="userLocation"
+                            coordinate={{
+                                latitude: userLocation.coords.latitude,
+                                longitude: userLocation.coords.longitude,
+                            }}
+                            title={`${user.firstname} location`}
+                            pinColor={"teal"}
+                        />
+                    )}
+
+                    {depoPlaceLocation && depoPlace && (
+                        <Marker
+                            key="depoPlaceLocation"
+                            coordinate={{
+                                latitude: depoPlaceLocation.lat,
+                                longitude: depoPlaceLocation.lon,
+                            }}
+                            title={`${depoPlace.tags["name"]}`}
+                            pinColor={"tomato"}
+                        />
+                    )}
+                </MapView>
+            }
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Créer une déposition</ThemedText>
@@ -368,7 +411,11 @@ export default function CreateDepositionTab({ navigation }) {
 
             <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
-                <ThemedButton onPress={submitDeposition}>Envoyer</ThemedButton>
+                {isSubmitting === false ? (
+                    <ThemedButton onPress={submitDeposition}>Envoyer</ThemedButton>
+                ) : (
+                    <ThemedText>Déposition en cours de traitement.</ThemedText>
+                )}
             </ThemedView>
         </ParallaxScrollView>
     );

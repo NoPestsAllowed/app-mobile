@@ -7,7 +7,6 @@ import { StyleSheet } from "react-native";
 const { fetchOverpass } = require("../modules/overpassApi");
 
 export default function SelectList({ userLocation, depoLocation, itemSelected }) {
-    // console.log("depoLocation", depoLocation);
     const [overpassResult, setOverpassResult] = useState([]);
     const [displayLocationName, setDisplayLocationName] = useState("");
     const [showResult, setShowResult] = useState(false);
@@ -15,82 +14,83 @@ export default function SelectList({ userLocation, depoLocation, itemSelected })
     const { latitude, longitude } = depoLocation.coords;
 
     const loadLocation = async (value) => {
-        const distance = 25;
+        const distance = 125;
 
+        // console.log(`
+        //     [out:json];
+        //     (
+        //         nwr["type"="associatedStreet"](around:${distance},${latitude},${longitude});
+        //         way["highway"="residential"]["name"]["addr:housenumber"](around:${distance},${latitude},${longitude});
+        //     );
+        //     out center;
+        //     (
+        //         nwr[building](around:${distance},${latitude},${longitude});
+        //         nwr["addr:housenumber"][!"communication:*"](around:${distance},${latitude},${longitude});
+        //         nwr["name"](around:${distance},${latitude},${longitude});
+        //         nwr["amenity"](around:${distance},${latitude},${longitude});
+        //     );
+        //     out center;
+        // `);
         const overpassQueryResult = await fetchOverpass(`
             [out:json];
             (
-                nwr["type"="associatedStreet"](around:50,${latitude},${longitude});
-                way["highway"="residential"]["name"]["addr:housenumber"](around:50,${latitude},${longitude});
+                nwr["type"="associatedStreet"](around:${distance},${latitude},${longitude});
+                way["highway"="residential"]["name"]["addr:housenumber"](around:${distance},${latitude},${longitude});
             );
             out center;
             (
-                nwr[building]["addr:housenumber"](around:150,${latitude},${longitude});
-                nwr["addr:housenumber"][!"communication:*"](around:150,${latitude},${longitude});
-                nwr["tourism"](around:150,${latitude},${longitude});
-                nwr["station"](around:150,${latitude},${longitude});
-                nwr["amenity"](around:150,${latitude},${longitude});
-                nwr["shop"](around:150,${latitude},${longitude});
-                nwr["name"](around:150,${latitude},${longitude});
-                nwr["cuisine"](around:150,${latitude},${longitude});
-                nwr["bar"](around:150,${latitude},${longitude});
+                nwr["name"](around:${distance},${latitude},${longitude});
+                nwr["amenity"](around:${distance},${latitude},${longitude});
+                nwr["building"](around:${distance},${latitude},${longitude});
+                nwr["addr:housenumber"][!"communication:*"](around:${distance},${latitude},${longitude});
             );
-            out meta;
+            out center;
         `);
-        // before out meta (._;>;);
+
+        // Original query
+        // nwr[building](around:${distance},${latitude},${longitude});
+        // nwr["addr:housenumber"][!"communication:*"](around:${distance},${latitude},${longitude});
+        // nwr["tourism"](around:${distance},${latitude},${longitude});
+        // nwr["station"](around:${distance},${latitude},${longitude});
+        // nwr["amenity"](around:${distance},${latitude},${longitude});
+        // nwr["shop"](around:${distance},${latitude},${longitude});
+        // nwr["name"](around:${distance},${latitude},${longitude});
+        // nwr["cuisine"](around:${distance},${latitude},${longitude});
+        // nwr["bar"](around:${distance},${latitude},${longitude});
+
         if (overpassQueryResult) {
-            // console.log("overpassQueryResult.features", overpassQueryResult);
-            const result = overpassQueryResult.flat(1);
-            const filtered = result
-                .filter((item, idx) => result.indexOf(item) === idx && item !== null && (item?.tags || item?.street))
-                .filter((item) => {
-                    // console.log("here", item);
-                    return (
-                        item.street ||
-                        ((item?.tags["amenity"] || item?.tags["tourism"] || item?.tags["name"]) &&
-                            (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
-                            (item.tags["addr:street"] || item.tags["contact:street"]))
-                    );
+            const sorted = overpassQueryResult
+                .map((item) => {
+                    if (item.center) {
+                        item["distanceFromUser"] = Math.sqrt(
+                            Math.pow(item.center.lat - userLocation.coords.latitude, 2) +
+                                Math.pow(item.center.lon - userLocation.coords.longitude, 2)
+                        );
+                    } else if (item.lat && item.lon) {
+                        item["distanceFromUser"] = Math.sqrt(
+                            Math.pow(item.lat - userLocation.coords.latitude, 2) +
+                                Math.pow(item.lon - userLocation.coords.longitude, 2)
+                        );
+                    }
+                    return item;
                 })
-                // .map((item) => {
-                //     // console.log(userLocation);
-                //     if (item.lat && item.lon) {
-                //         item["distanceFromUser"] = Math.sqrt(
-                //             Math.pow(item.lat - userLocation.coords.latitude, 2) +
-                //                 Math.pow(item.lon - userLocation.coords.longitude, 2)
-                //         );
-                //     }
-                //     return item;
-                // })
                 .sort((a, b) => {
-                    // console.log(typeof a);
-                    // if (!a.lat) {
-                    //     console.log(a);
-                    // }
-                    if (
-                        !Object.hasOwnProperty(a, "distanceFromUser") &&
-                        !Object.hasOwnProperty(b, "distanceFromUser")
-                    ) {
-                        // console.log("same", a, b);
+                    if (!a.hasOwnProperty("distanceFromUser") && !b.hasOwnProperty("distanceFromUser")) {
                         return 0;
                     }
-                    if (Object.hasOwnProperty(a, "distanceFromUser") && !Object.hasOwnProperty(b, "distanceFromUser")) {
-                        // console.log("a has but not b");
+                    if (a.hasOwnProperty("distanceFromUser") && !b.hasOwnProperty("distanceFromUser")) {
                         return -1;
                     }
-                    if (!Object.hasOwnProperty(a, "distanceFromUser") && Object.hasOwnProperty(b, "distanceFromUser")) {
-                        // console.log("b has but not a");
+                    if (!a.hasOwnProperty("distanceFromUser") && b.hasOwnProperty("distanceFromUser")) {
                         return 1;
                     }
                     return a.distanceFromUser - b.distanceFromUser;
                 })
                 .slice(0, 250);
-            console.log(filtered.length, result.length);
-            setOverpassResult(
-                // overpassQueryResult.features.filter((item, idx) => overpassQueryResult.features.indexOf(item) === idx)
-                filtered
-            );
+
+            setOverpassResult(sorted);
             setShowResult(true);
+            console.log("DONE");
         } else {
             console.log("in else");
         }
@@ -102,16 +102,11 @@ export default function SelectList({ userLocation, depoLocation, itemSelected })
     const displayableItem = (item) => {
         // console.log(item);
         if (item?.street) {
-            return `${item.tags["addr:housenumber"]} ${item.street}`;
-        } else if (
-            item?.tags["amenity"] ||
-            item?.tags["tourism"] ||
-            item?.tags["station"]
-            // (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) &&
-            // (item.tags["addr:street"] || item.tags["contact:street"])
-        ) {
-            let resultText =
-                item.tags["amenity"] + " " + typeof item.tags["name"] !== "undefined" ? item.tags["name"] : "";
+            return `${item?.tags["name"] ? item?.tags["name"] + ", " : ""}${item.tags["addr:housenumber"]} ${
+                item.street
+            }`;
+        } else if (item?.tags["amenity"] || item?.tags["name"]) {
+            let resultText = item.tags["name"] ?? "";
             if (item.tags["addr:housenumber"] || item.tags["contact:housenumber"]) {
                 resultText += ", ";
                 resultText +=
@@ -121,12 +116,6 @@ export default function SelectList({ userLocation, depoLocation, itemSelected })
             }
 
             if (item.tags["addr:street"] || item.tags["contact:street"]) {
-                // console.log(
-                //     item,
-                //     "-" + typeof item.tags["addr:street"] !== "undefined"
-                //         ? item.tags["addr:street"]
-                //         : item.tags["contact:street"]
-                // );
                 resultText += " ";
                 resultText +=
                     typeof item.tags["addr:street"] !== "undefined"
@@ -134,6 +123,8 @@ export default function SelectList({ userLocation, depoLocation, itemSelected })
                         : item.tags["contact:street"];
             }
             return resultText;
+        } else {
+            console.log("item in else", item);
         }
     };
 
