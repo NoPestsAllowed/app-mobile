@@ -14,11 +14,12 @@ import {
 import { useSession } from "../hooks/useSession";
 import { router } from "expo-router";
 import { ThemedText } from "./ThemedText";
-import {  useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 export function Header({ style, lightColor, darkColor, children, ...rest }) {
-    const { session } = useSession();
+    const { session, logout } = useSession();
     const [menuVisible, setMenuVisible] = useState(false);
+    const [borderColor, setBorderColor] = useState("#c17829");
 
     const rotation = useRef(new Animated.Value(0)).current;
     const user = useSelector((state) => state.user.value);
@@ -40,6 +41,16 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
         return () => clearInterval(interval);
     }, [rotation]);
+
+    useEffect(() => {
+        const changeBorderColor = () => {
+            setBorderColor((prevColor) => (prevColor === "#c17829" ? "#470a07" : "#c17829"));
+        };
+
+        const borderColorInterval = setInterval(changeBorderColor, 4500);
+
+        return () => clearInterval(borderColorInterval);
+    }, []);
 
     const handleAvatarPress = () => {
         setMenuVisible(!menuVisible);
@@ -69,16 +80,22 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
 
     return (
         <View style={styles.headerContainer}>
-            <View style={styles.logoContainer}>
+            <TouchableOpacity
+                style={styles.logoContainer}
+                onPress={() => {
+                    console.log("pressed");
+                    router.navigate("/");
+                }}
+            >
                 <Animated.Image
                     source={require("../assets/images/icon.png")}
                     style={[styles.noPestsAllowedLogo, { transform: [{ rotateY }] }]}
                 />
-            </View>
+            </TouchableOpacity>
             <View style={styles.rightHeader}>
-                <ThemedText style={styles.welcomeText}>Welcome, {user.firstname}</ThemedText>
-                <TouchableOpacity style={styles.avatarContainer} onPress={handleAvatarPress}>
-                    <Image source={require("../assets/images/avatar1.jpg")} style={styles.avatar} />
+                <ThemedText style={styles.welcomeText}>Bienvenue {user.firstname}</ThemedText>
+                <TouchableOpacity style={[styles.avatarContainer, { borderColor }]} onPress={handleAvatarPress}>
+                    <Image source={require("../assets/images/avatar1.png")} style={styles.avatar} />
                 </TouchableOpacity>
             </View>
             <Modal
@@ -89,20 +106,41 @@ export function Header({ style, lightColor, darkColor, children, ...rest }) {
             >
                 <TouchableOpacity style={styles.modalOverlay} onPress={() => setMenuVisible(false)}>
                     <View style={styles.popupMenu}>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("deposition/create")}>
-                            <ThemedText style={styles.menuItemText}>Create Depositions</ThemedText>
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/create");
+                            }}
+                        >
+                            <ThemedText style={styles.menuItemText}>Créer une Déposition</ThemedText>
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("deposition/mydepositions");
+                            }}
+                        >
+                            <ThemedText style={styles.menuItemText}>Ma Déposition</ThemedText>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                            style={styles.menuItem}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                router.navigate("contact");
+                            }}
+                        >
+                            <ThemedText style={styles.menuItemText}>Nous contacter </ThemedText>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.menuItem}
-                            onPress={() => router.navigate("deposition/mydepositions")}
+                            onPress={() => {
+                                setMenuVisible(false);
+                                logout();
+                            }}
                         >
-                            <ThemedText style={styles.menuItemText}>My Depositions</ThemedText>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("contact")}>
-                            <ThemedText style={styles.menuItemText}>Contact us</ThemedText>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.menuItem} onPress={() => router.navigate("login")}>
-                            <ThemedText style={styles.menuItemText}>Logout</ThemedText>
+                            <ThemedText style={styles.menuItemText}>Déconnection</ThemedText>
                         </TouchableOpacity>
                     </View>
                 </TouchableOpacity>
@@ -118,12 +156,12 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         padding: 16,
         backgroundColor: "#9f4634",
-        height: 130,
+        height: 100,
     },
     logoContainer: {
         height: 77,
         width: 77,
-        top: 15,
+        top: 3,
         borderRadius: 50,
         borderWidth: 1,
         borderColor: "#c17829",
@@ -139,21 +177,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     welcomeText: {
-        marginRight: 25,
-        fontSize: 24,
+        marginRight: 5,
+        fontSize: 16,
         color: "white",
-        top: 15,
-        fontWeight: 800,
+        top: 7,
+        fontWeight: "800",
     },
     avatarContainer: {
         height: 77,
         width: 77,
         borderRadius: 50,
-        borderWidth: 2,
-        borderColor: "#c17829",
+        borderWidth: 3,
         justifyContent: "center",
         alignItems: "center",
-        top: 15,
+        top: 3,
     },
     avatar: {
         height: 75,
@@ -162,16 +199,17 @@ const styles = StyleSheet.create({
     },
     popupMenu: {
         position: "absolute",
-        top: 200,
-        right: 20,
-        height: 225,
-        backgroundColor: "#ca8035",
+        top: 110,
+        right: 10,
+        // height: 225,
+        backgroundColor: "#A53939",
         borderRadius: 20,
-        padding: 25,
+        padding: 15,
         elevation: 4,
         color: "black",
         elevation: 10,
         zIndex: 10,
+        alignItems: "center",
     },
     menuItem: {
         paddingVertical: 8,
@@ -180,7 +218,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         margin: 5,
         color: "white",
-        fontWeight: 700,
+        fontWeight: "700",
     },
     modalOverlay: {
         flex: 1,

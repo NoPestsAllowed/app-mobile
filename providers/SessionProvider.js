@@ -30,8 +30,15 @@ export function SessionProvider(props) {
                 return res.json();
             })
             .then((registrationResult) => {
+                console.log(registrationResult.user);
                 dispatch(updateEmail(email));
-                dispatch(updateUser({firstname : registrationResult.user.firstname, lastname: registrationResult.user.lastname, id: registrationResult.user._id}))
+                dispatch(
+                    updateUser({
+                        firstname: registrationResult.user.firstname,
+                        lastname: registrationResult.user.lastname,
+                        id: registrationResult.user._id,
+                    })
+                );
                 dispatch(setToken(registrationResult.token));
                 router.push("/(tabs)");
             })
@@ -50,6 +57,7 @@ export function SessionProvider(props) {
         //     .then((res) => res.json())
         //     .then((registrationResult) => {
         //         console.log("logout", registrationResult);
+        props.onLogout();
         dispatch(clearUserState());
         router.push("/landing");
         // });
@@ -59,6 +67,7 @@ export function SessionProvider(props) {
         <AuthContext.Provider
             value={{
                 login: (email, password) => {
+                    // console.log("hheerr", email, password);
                     signIn(email, password);
                 },
                 logout: () => {

@@ -15,10 +15,14 @@ import createSecureStore from "redux-persist-expo-securestore";
 import { SessionProvider } from "../providers/SessionProvider";
 import user from "../reducers/user";
 import { useSession } from "../hooks/useSession";
+import depositions from "../reducers/depositions";
+
+// import { LogBox } from "react-native";
+// LogBox.ignoreAllLogs();
 
 const storage = createSecureStore();
 
-const reducers = combineReducers({ user });
+const reducers = combineReducers({ user, depositions });
 
 const persistConfig = { key: "noPestsAllowed", storage };
 
@@ -28,7 +32,7 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
-//persistor.purge()
+// persistor.purge();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -62,7 +66,7 @@ export default function RootLayout() {
         if (loaded && isSignedUser) {
             setStacks((stacks) => {
                 if (!stacks.some((stack) => stack.props.name === "(tabs)")) {
-                    return [<Stack.Screen key="(tabs)" name="(tabs)" options={{ headerShown: false }} />, ...stacks];
+                    return [<Stack.Screen key="(tabs)" name="(tabs)" />, ...stacks];
                 }
                 return stacks;
             });
@@ -79,12 +83,17 @@ export default function RootLayout() {
     if (!loaded) {
         return null;
     }
+
+    const onLogout = () => {
+        console.log("user logout : purging persistore");
+        persistor.purge();
+    };
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <SessionProvider>
+                <SessionProvider onLogout={onLogout}>
                     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-                        <Stack>{stacks}</Stack>
+                        <Stack screenOptions={{ headerShown: false }}>{stacks}</Stack>
                     </ThemeProvider>
                 </SessionProvider>
             </PersistGate>

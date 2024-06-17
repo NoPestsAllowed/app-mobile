@@ -46,12 +46,19 @@ const makeResultDisplayable = (arrayOfObjectFromOverpass) => {
             keyedNodes[item.id] = item;
             return item;
         });
-    console.log("keyedNodes count : ", keyedNodes.length);
+    // console.log("keyedNodes count : ", keyedNodes.length);
 
     const amenityNodes = arrayOfObjectFromOverpass.elements
         .filter((item) => {
-            // console.log(item);
-            return item.tags && item.tags["amenity"];
+            console.log(item);
+            return (
+                item.tags &&
+                item.tags["name"] &&
+                item.tags["type"] !== "relation" &&
+                item.tags["type"] !== "associatedStreet" &&
+                !item.tags["highway"] &&
+                !item.tags["power"]
+            );
         })
         .map((item, index) => {
             // console.log(item);
@@ -59,7 +66,7 @@ const makeResultDisplayable = (arrayOfObjectFromOverpass) => {
             return item;
         });
     // keyedNodes["amenities"] = amenityNodes;
-    console.log("amenityNodes count : ", amenityNodes.length);
+    // console.log("amenityNodes count : ", amenityNodes);
 
     const relationsNodes = {};
     relations.map((item) => {
@@ -92,10 +99,7 @@ const makeResultDisplayable = (arrayOfObjectFromOverpass) => {
             );
         }
     }
-
-    console.log("Data will be returned");
-    // console.log("elements count : ", nodesWithStreet.length, amenityNodes);
-    return [...amenityNodes, ...nodesWithStreet];
+    return [...amenityNodes, ...nodesWithStreet].flat(Infinity).filter((i) => i);
 };
 
 const toGeoJSON = (data) => {

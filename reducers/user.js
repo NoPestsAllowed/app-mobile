@@ -34,9 +34,13 @@ export const userSlice = createSlice({
             if (state.value.id === action.payload) {
                 state.value = { token: null, id: null, firstname: null, lastname: null, photo: []};
             }
-        }
+        },
+        updateAccount: (state, action) => {
+            state.value.firstname = action.payload.firstname,
+            state.value.lastname = action.payload.lastname;
+        },
     },
 });
 
-export const { updateEmail, setToken, removeToken, clearUserState, deleteAccount , updatePhoto, updateUser } = userSlice.actions;
+export const { updateEmail, setToken, removeToken, clearUserState, deleteAccount , updatePhoto, updateUser, updateAccount } = userSlice.actions;
 export default userSlice.reducer;
