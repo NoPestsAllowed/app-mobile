@@ -1,4 +1,4 @@
-import { authReducer, AuthAction, AuthState } from "@/reducers/auth";
+// import { authReducer, AuthAction, AuthState } from "@/reducers/auth";
 import { createContext, PropsWithChildren, ReducerAction, useEffect, useMemo, useReducer, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import {
@@ -16,17 +16,19 @@ import { Alert } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 
 interface AuthContextType {
-    signIn: () => Promise<void>;
+    authenticate: () => Promise<void>;
     // signUp: () => Promise<AuthSessionResult | void>;
     signOut: () => void;
+    isLoggedIn: boolean;
     user: any;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-    signIn: async () => {},
+    authenticate: async () => {},
     // signUp: async () => {},
     signOut: () => {},
-    user: {},
+    isLoggedIn: false,
+    user: false,
 });
 
 if (!process.env.EXPO_PUBLIC_OIDC_CLIENT) {
@@ -37,7 +39,7 @@ const clientId = process.env.EXPO_PUBLIC_OIDC_CLIENT;
 WebBrowser.maybeCompleteAuthSession();
 
 export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocument } & PropsWithChildren) => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState<object | false>(false);
     const { getItemAsync: getCachedToken, setItemAsync: setToken } = SecureStore;
     const redirectUri = makeRedirectUri({
         scheme: "com.anonymous.no-pests-allowed",
@@ -50,6 +52,12 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         },
         discovery
     );
+    // const [state, dispatch] = useReducer(authReducer, {
+    //     isLoading: true,
+    //     isSignout: false,
+    //     userToken: null,
+    // });
+
     const readTokenFromStorage = async () => {
         const tokenString = await getCachedToken("jwtToken");
         const tokenConfig: TokenResponseConfig = tokenString ? JSON.parse(tokenString) : null;
@@ -57,7 +65,6 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         if (tokenConfig) {
             let tokenResponse = new TokenResponse(tokenConfig);
             if (tokenResponse.shouldRefresh()) {
-                console.log("REFRESHING");
                 const refreshConfig: RefreshTokenRequestConfig = {
                     clientId,
                     refreshToken: tokenConfig.refreshToken,
@@ -67,7 +74,6 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                     console.log("No discovery");
                     // throw new Error("No discovery");
                 }
-                console.log("before refreshAsync");
 
                 try {
                     tokenResponse = await tokenResponse.refreshAsync(refreshConfig, discovery);
@@ -75,7 +81,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                     console.error("error", error);
                 }
                 // tokenResponse = await exchangeCodeAsync(refreshConfig, userConnection.discovery);
-                console.log("tokenResponse.refreshAsync()", tokenResponse);
+                // console.log("tokenResponse.refreshAsync()", tokenResponse);
             }
             setToken("jwtToken", JSON.stringify(tokenResponse.getRequestConfig()));
             // console.log("tokenResponse.getRequestConfig()", JSON.stringify(tokenResponse.getRequestConfig(), null, 2));
@@ -89,6 +95,8 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         readTokenFromStorage();
         if (result) {
             if (result.type === "error" && result.error) {
+                console.log("ALERT ALERT ALERT ALERT ALERT ALERT");
+
                 Alert.alert("Authentication error", result.params.error_description || "something went wrong");
                 return;
             }
@@ -111,35 +119,29 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                             },
                             discovery
                         );
-                        console.log("codeRes", codeRes);
+                        // console.log("codeRes", codeRes);
 
                         const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
                         const jwtToken = tokenConfig.accessToken;
                         setToken("jwtToken", JSON.stringify(tokenConfig));
                         const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
                         setUser({ jwtToken, decoded });
+                        console.log("before dispatch");
+                        // dispatch({ type: "SIGN_IN", token: jwtToken });
+                        console.log("after dispatch");
                     };
                     getToken();
                 }
             }
         }
     }, [result]);
-    // console.log("result result result result result result result result");
-    // console.log(result);
 
     ////////////////////////////////////////////////////////////////////////////
-    const [state, dispatch] = useReducer(authReducer, {
-        isLoading: true,
-        isSignout: false,
-        userToken: null,
-    });
+    // console.log("USER FROM CONTEXT", user);
+    // console.log("loggedIn cases :  ", "!!user", !!user, "!user", !user, "user", user);
 
     const authContext = {
-        signIn: async () => {
-            // In a production app, we need to send some data (usually username, password) to server and get a token
-            // We will also need to handle errors if sign in failed
-            // After getting token, we need to persist the token using `SecureStore`
-            // In the example, we'll use a dummy token
+        authenticate: async () => {
             try {
                 promptAsync();
             } catch (error) {
@@ -147,10 +149,13 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 console.error(error);
                 throw error;
             }
-
-            dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
         },
-        signOut: () => dispatch({ type: "SIGN_OUT" }),
+        signOut: () => {
+            alert("sign out");
+            SecureStore.deleteItemAsync("jwtToken");
+            setUser(false);
+        },
+        isLoggedIn: !!user,
         user: user,
         // signUp: async (data: any) => {
         //     // In a production app, we need to send user data to server and get a token

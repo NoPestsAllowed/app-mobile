@@ -20,6 +20,8 @@ const authReducer = (prevState: AuthState, action: AuthAction) => {
             isLoading: false,
             };
         case 'SIGN_IN':
+            console.log('reducer signin case');
+
             return {
             ...prevState,
             isSignout: false,

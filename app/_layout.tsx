@@ -7,15 +7,18 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuhtProvider } from "@/contexts/auth";
-import { authReducer } from "@/reducers/auth";
 import * as SecureStore from "expo-secure-store";
 import { Text, View } from "react-native";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
+import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-const ISSUER_ENDPOINT = "http://192.168.1.17:3000/oidc";
+if (!process.env.EXPO_PUBLIC_OIDC_ISSUER) {
+    throw new Error("OIDC Issuer is not defined");
+}
+const ISSUER_ENDPOINT = process.env.EXPO_PUBLIC_OIDC_ISSUER;
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
@@ -24,15 +27,11 @@ export default function RootLayout() {
         Boogaloo: require("../assets/fonts/Boogaloo-Regular.ttf"),
         Carme: require("../assets/fonts/Carme-Regular.ttf"),
     });
-
-    const [state, dispatch] = useReducer(authReducer, {
-        isLoading: true,
-        isSignout: false,
-        userToken: null,
-    });
     const [stack, setStack] = useState([<Stack.Screen name="login" />]);
-    console.log(state);
-    console.log(state.userToken === null);
+    // console.log("state", state);
+    // console.log(state.userToken === null);
+    const { isLoggedIn } = useOIDCAuth();
+    // console.log("my OIDC user is : ", user);
 
     useEffect(() => {
         if (loaded) {
@@ -41,7 +40,7 @@ export default function RootLayout() {
     }, [loaded]);
 
     const stakc = () => {
-        if (state.userToken) {
+        if (isLoggedIn) {
             return [
                 <Stack.Screen key="(tabs)" name="(tabs)" options={{ headerShown: false }} />,
                 <Stack.Screen key="+not-found" name="+not-found" />,
@@ -51,21 +50,6 @@ export default function RootLayout() {
     };
 
     useEffect(() => {
-        // Fetch the token from storage then navigate to our appropriate place
-        // const bootstrapAsync = async () => {
-        //     let userToken;
-        //     try {
-        //         userToken = state.userToken;
-        //         console.log("hhhhh", userToken);
-        //     } catch (e) {
-        //         // Restoring token failed
-        //     }
-        //     // After restoring token, we may need to validate it in production apps
-        //     // This will switch to the App screen or Auth screen and this loading
-        //     // screen will be unmounted and thrown away.
-        //     // dispatch({ type: "RESTORE_TOKEN", token: userToken });
-        // };
-        // bootstrapAsync();
         setStack((stack) => stakc());
     }, []);
 
@@ -87,10 +71,14 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             {discovery !== null ? (
                 <>
-                    {/* <Text>{JSON.stringify(discovery)}</Text> */}
                     <AuhtProvider discovery={discovery}>
+                        {/* <Stack>{stakc()}</Stack> */}
                         <Stack>
-                            <Stack.Screen key="login" name="login" />
+                            {isLoggedIn ? (
+                                <Stack.Screen key="(tabs)/private" name="(tabs)/private" />
+                            ) : (
+                                <Stack.Screen key="register" name="register" />
+                            )}
                         </Stack>
                     </AuhtProvider>
                 </>
