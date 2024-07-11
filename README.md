@@ -1,50 +1,29 @@
-# Welcome to your Expo app 👋
+# NoPestsAllowed : Say stop to bedbugs, flea, bettles...
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## About NoPestsAllowed
 
-## Get started
+NoPestsAllowed aim to provide worldwide application to centralize deposition about pests. Each deposition is verified by picture and user location. The Picture is geolocalised in order to define the deposition location. The picture must be a visual proof showing pests or many depositions against a place.
 
-1. Install dependencies
+## Roadmap for NoPestsAllowed
 
-   ```bash
-   npm install
-   ```
+Currently rebuilding mobile app using Typescript.
 
-2. Start the app
+<!-- ## NoPestsAllowed Sponsors
 
-   ```bash
-    npx expo start
-   ```
+We are a small community, we dedicate as much time as we can to improve NoPestsAllowed. You can support us throught sponsorship. -->
 
-In the output, you'll find options to open the app in a
+## Code of Conduct
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+We hate pests but we love people. If you don't share our mind go away !
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Security Vulnerabilities
 
-## Get a fresh project
+If you discover a security vulnerability within NoPestsAllowed, please send an e-mail. All security vulnerabilities will be promptly addressed.
 
-When you're ready, run:
+## License
 
-```bash
-npm run reset-project
-```
+NoPestsAllowed is closed source at this moment, we will opensource codebase when we have enough customers.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Thanks
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+We are gratefull to all OSS mainteners.
