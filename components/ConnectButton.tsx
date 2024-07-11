@@ -1,33 +1,22 @@
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-    DiscoveryDocument,
-    exchangeCodeAsync,
-    makeRedirectUri,
-    RefreshTokenRequestConfig,
-    TokenResponse,
-    TokenResponseConfig,
-    useAuthRequest,
-} from "expo-auth-session";
-import * as SecureStore from "expo-secure-store";
-import { jwtDecode } from "jwt-decode";
+import { Button, StyleSheet, ViewStyle } from "react-native";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { ThemedView } from "./ThemedView";
 
-// const CLIENT_ID = "oidc_client";
-
-// const clientId = CLIENT_ID;
-
-export default function ConnectButton() {
-    const { authenticate } = useOIDCAuth();
+export default function ConnectButton({ style }: { style?: ViewStyle }) {
+    const { authenticate, signOut, isLoggedIn } = useOIDCAuth();
     const handleRegistration = async () => {
         console.log("ready to connect");
         const result = await authenticate();
+        // router.replace("/");
         console.log(result);
     };
     return (
-        <ThemedView style={[styles.container]}>
-            <Button title="Connect" onPress={handleRegistration} />
+        <ThemedView style={[styles.container, style]}>
+            {isLoggedIn ? (
+                <Button title="Logout" onPress={() => signOut()} />
+            ) : (
+                <Button title="Connect" onPress={handleRegistration} />
+            )}
         </ThemedView>
     );
 }
@@ -37,7 +26,5 @@ const styles = StyleSheet.create({
         borderColor: "#e2e8f0",
         borderWidth: 1,
         borderRadius: 12,
-        width: "80%",
-        marginHorizontal: "auto",
     },
 });

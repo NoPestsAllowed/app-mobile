@@ -1,5 +1,4 @@
-// import { authReducer, AuthAction, AuthState } from "@/reducers/auth";
-import { createContext, PropsWithChildren, ReducerAction, useEffect, useMemo, useReducer, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import {
     AuthSessionResult,
@@ -14,10 +13,10 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { Alert } from "react-native";
 import * as WebBrowser from "expo-web-browser";
+import { Redirect, router } from "expo-router";
 
 interface AuthContextType {
     authenticate: () => Promise<void>;
-    // signUp: () => Promise<AuthSessionResult | void>;
     signOut: () => void;
     isLoggedIn: boolean;
     user: any;
@@ -25,7 +24,6 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType>({
     authenticate: async () => {},
-    // signUp: async () => {},
     signOut: () => {},
     isLoggedIn: false,
     user: false,
@@ -52,11 +50,6 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         },
         discovery
     );
-    // const [state, dispatch] = useReducer(authReducer, {
-    //     isLoading: true,
-    //     isSignout: false,
-    //     userToken: null,
-    // });
 
     const readTokenFromStorage = async () => {
         const tokenString = await getCachedToken("jwtToken");
@@ -80,11 +73,8 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 } catch (error) {
                     console.error("error", error);
                 }
-                // tokenResponse = await exchangeCodeAsync(refreshConfig, userConnection.discovery);
-                // console.log("tokenResponse.refreshAsync()", tokenResponse);
             }
             setToken("jwtToken", JSON.stringify(tokenResponse.getRequestConfig()));
-            // console.log("tokenResponse.getRequestConfig()", JSON.stringify(tokenResponse.getRequestConfig(), null, 2));
 
             const decoded = jwtDecode(tokenResponse.accessToken);
             setUser({ jwtToken: tokenResponse.accessToken, decoded });
@@ -119,26 +109,18 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                             },
                             discovery
                         );
-                        // console.log("codeRes", codeRes);
 
                         const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
                         const jwtToken = tokenConfig.accessToken;
                         setToken("jwtToken", JSON.stringify(tokenConfig));
                         const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
                         setUser({ jwtToken, decoded });
-                        console.log("before dispatch");
-                        // dispatch({ type: "SIGN_IN", token: jwtToken });
-                        console.log("after dispatch");
                     };
                     getToken();
                 }
             }
         }
     }, [result]);
-
-    ////////////////////////////////////////////////////////////////////////////
-    // console.log("USER FROM CONTEXT", user);
-    // console.log("loggedIn cases :  ", "!!user", !!user, "!user", !user, "user", user);
 
     const authContext = {
         authenticate: async () => {
@@ -154,48 +136,11 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
             alert("sign out");
             SecureStore.deleteItemAsync("jwtToken");
             setUser(false);
+            router.replace("/");
         },
         isLoggedIn: !!user,
         user: user,
-        // signUp: async (data: any) => {
-        //     // In a production app, we need to send user data to server and get a token
-        //     // We will also need to handle errors if sign up failed
-        //     // After getting token, we need to persist the token using `SecureStore`
-        //     // In the example, we'll use a dummy token
-
-        //     dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-        // },
     };
 
-    // const authContext = useMemo(
-    //     () => ({
-    //         signIn: async () => {
-    //             // In a production app, we need to send some data (usually username, password) to server and get a token
-    //             // We will also need to handle errors if sign in failed
-    //             // After getting token, we need to persist the token using `SecureStore`
-    //             // In the example, we'll use a dummy token
-    //             try {
-    //                 const token = await promptAsync();
-    //                 console.log("after prompt async", token);
-    //             } catch (error) {
-    //                 console.log("error error error error error error error");
-
-    //                 console.error(error);
-    //             }
-
-    //             dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-    //         },
-    //         signOut: () => dispatch({ type: "SIGN_OUT" }),
-    //         // signUp: async (data: any) => {
-    //         //     // In a production app, we need to send user data to server and get a token
-    //         //     // We will also need to handle errors if sign up failed
-    //         //     // After getting token, we need to persist the token using `SecureStore`
-    //         //     // In the example, we'll use a dummy token
-
-    //         //     dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
-    //         // },
-    //     }),
-    //     []
-    // );
     return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>;
 };

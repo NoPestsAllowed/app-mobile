@@ -1,6 +1,6 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Redirect, router, Stack } from "expo-router";
+import { Redirect, router, Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useReducer, useState } from "react";
 import "react-native-reanimated";
@@ -72,13 +72,11 @@ export default function RootLayout() {
             {discovery !== null ? (
                 <>
                     <AuhtProvider discovery={discovery}>
-                        {/* <Stack>{stakc()}</Stack> */}
                         <Stack>
-                            {isLoggedIn ? (
-                                <Stack.Screen key="(tabs)/private" name="(tabs)/private" />
-                            ) : (
-                                <Stack.Screen key="register" name="register" />
-                            )}
+                            <Stack.Screen key="index" name="index" />
+                            <Stack.Screen key="login" name="login" />
+                            <Stack.Screen key="register" name="register" />
+                            <Stack.Screen key="+not-found" name="+not-found" />
                         </Stack>
                     </AuhtProvider>
                 </>
