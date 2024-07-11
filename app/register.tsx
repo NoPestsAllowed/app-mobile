@@ -12,32 +12,29 @@ import {
     useAuthRequest,
     useAutoDiscovery,
 } from "expo-auth-session";
-import { jwtDecode } from "jwt-decode";
 import ConnectButton from "@/components/ConnectButton";
-
-const ISSUER_ENDPOINT = "http://192.168.1.17:3000/oidc";
-const CLIENT_ID = "oidc_client";
-
-const clientId = CLIENT_ID;
+import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 
 export default function Register() {
     // const [user, setUser] = useState({});
     // const { getItemAsync: getCachedToken, setItemAsync: setToken } = SecureStore;
+    // setToken("jwtToken", "");
     // // const discoveryResponse = useAutoDiscovery(ISSUER_ENDPOINT);
     // const redirectUri = makeRedirectUri({
     //     scheme: "com.anonymous.no-pests-allowed",
     // });
+    const { user } = useOIDCAuth();
 
-    const [discovery, setDiscovery] = useState<DiscoveryDocument | null>(null);
+    // const [discovery, setDiscovery] = useState<DiscoveryDocument | null>(null);
     // fetchDiscoveryAsync(ISSUER_ENDPOINT).then((discovery) => {
 
     // });
-    useEffect(() => {
-        (async () => {
-            const discoveryResponse = await fetchDiscoveryAsync(ISSUER_ENDPOINT);
-            setDiscovery(discoveryResponse);
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const discoveryResponse = await fetchDiscoveryAsync(ISSUER_ENDPOINT);
+    //         setDiscovery(discoveryResponse);
+    //     })();
+    // }, []);
 
     // const [request, result, promptAsync] = useAuthRequest(
     //     {
@@ -131,9 +128,10 @@ export default function Register() {
     // };
     return (
         <View>
-            <Text>Register</Text>
+            <Text>RegisterPage</Text>
             {/* <Button title="Register" onPress={handleRegistration} /> */}
-            {discovery && <ConnectButton discovery={discovery} />}
+            <ConnectButton />
+            {user && <Text>{JSON.stringify(user, null, 4)}</Text>}
             {/* {user && <Text>{JSON.stringify(user, null, 12)}</Text>} */}
         </View>
     );

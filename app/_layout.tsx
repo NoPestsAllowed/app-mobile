@@ -10,9 +10,12 @@ import { AuhtProvider } from "@/contexts/auth";
 import { authReducer } from "@/reducers/auth";
 import * as SecureStore from "expo-secure-store";
 import { Text, View } from "react-native";
+import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+const ISSUER_ENDPOINT = "http://192.168.1.17:3000/oidc";
 
 export default function RootLayout() {
     const colorScheme = useColorScheme();
@@ -66,19 +69,36 @@ export default function RootLayout() {
         setStack((stack) => stakc());
     }, []);
 
+    const [discovery, setDiscovery] = useState<DiscoveryDocument | null>(null);
+    useEffect(() => {
+        if (discovery === null) {
+            (async () => {
+                const discoveryResponse = await fetchDiscoveryAsync(ISSUER_ENDPOINT);
+                setDiscovery(discoveryResponse);
+            })();
+        }
+    }, []);
+
     if (!loaded) {
         return null;
     }
 
-    console.log("h", !state.userToken, state.userToken === null);
-
     return (
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <AuhtProvider>
-                <Stack>
-                    <Stack.Screen key="login" name="login" />
-                </Stack>
-            </AuhtProvider>
+            {discovery !== null ? (
+                <>
+                    {/* <Text>{JSON.stringify(discovery)}</Text> */}
+                    <AuhtProvider discovery={discovery}>
+                        <Stack>
+                            <Stack.Screen key="login" name="login" />
+                        </Stack>
+                    </AuhtProvider>
+                </>
+            ) : (
+                <View>
+                    <Text>Loading</Text>
+                </View>
+            )}
         </ThemeProvider>
     );
 }
