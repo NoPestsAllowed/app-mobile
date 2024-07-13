@@ -109,7 +109,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                                     code,
                                     redirectUri,
                                     clientId,
-                                    clientSecret: "a_different_secret",
+                                    // clientSecret: "a_different_secret",
                                     scopes: ["openid", "offline_access", "email"],
                                     extraParams: {
                                         code_verifier: request?.codeVerifier ?? "",
