@@ -8,7 +8,7 @@ import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuhtProvider } from "@/contexts/auth";
 import * as SecureStore from "expo-secure-store";
-import { Text, View } from "react-native";
+import { SafeAreaView, Text, View } from "react-native";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 
@@ -69,22 +69,24 @@ export default function RootLayout() {
 
     return (
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            {discovery !== null ? (
-                <>
-                    <AuhtProvider discovery={discovery}>
-                        <Stack>
-                            <Stack.Screen key="index" name="index" />
-                            <Stack.Screen key="login" name="login" />
-                            <Stack.Screen key="register" name="register" />
-                            <Stack.Screen key="+not-found" name="+not-found" />
-                        </Stack>
-                    </AuhtProvider>
-                </>
-            ) : (
-                <View>
-                    <Text>Loading</Text>
-                </View>
-            )}
+            <SafeAreaView style={{ flex: 1 }}>
+                {discovery !== null ? (
+                    <>
+                        <AuhtProvider discovery={discovery}>
+                            <Stack>
+                                <Stack.Screen key="index" name="index" />
+                                <Stack.Screen key="login" name="login" />
+                                <Stack.Screen key="register" name="register" />
+                                <Stack.Screen key="+not-found" name="+not-found" />
+                            </Stack>
+                        </AuhtProvider>
+                    </>
+                ) : (
+                    <View>
+                        <Text>Loading</Text>
+                    </View>
+                )}
+            </SafeAreaView>
         </ThemeProvider>
     );
 }
