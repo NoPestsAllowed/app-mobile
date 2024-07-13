@@ -91,30 +91,43 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 return;
             }
             if (result.type === "success") {
+                console.log("SUCCESS RESULT", result);
+
                 const code = result.params.code;
                 if (code) {
                     if (!discovery) {
                         throw new Error("No discovery");
                     }
                     const getToken = async () => {
-                        const codeRes: TokenResponse = await exchangeCodeAsync(
-                            {
-                                code,
-                                redirectUri,
-                                clientId,
-                                scopes: ["openid", "offline_access", "email"],
-                                extraParams: {
-                                    code_verifier: request?.codeVerifier ?? "",
-                                },
-                            },
-                            discovery
-                        );
+                        console.log("getting token for code : ", code);
 
-                        const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
-                        const jwtToken = tokenConfig.accessToken;
-                        setToken("jwtToken", JSON.stringify(tokenConfig));
-                        const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
-                        setUser({ jwtToken, decoded });
+                        try {
+                            console.log("before exchangeCodeAsync", code, redirectUri, clientId);
+
+                            const codeRes: TokenResponse = await exchangeCodeAsync(
+                                {
+                                    code,
+                                    redirectUri,
+                                    clientId,
+                                    clientSecret: "a_different_secret",
+                                    scopes: ["openid", "offline_access", "email"],
+                                    extraParams: {
+                                        code_verifier: request?.codeVerifier ?? "",
+                                    },
+                                },
+                                discovery
+                            );
+                            console.log("after exchangeCodeAsync");
+                            console.log("code res", codeRes);
+                            const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
+                            const jwtToken = tokenConfig.accessToken;
+                            setToken("jwtToken", JSON.stringify(tokenConfig));
+                            const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+                            setUser({ jwtToken, decoded });
+                        } catch (error) {
+                            console.error("HERE IS THE error", error);
+                            throw error;
+                        }
                     };
                     getToken();
                 }
