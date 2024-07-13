@@ -5,10 +5,7 @@ import { ThemedView } from "./ThemedView";
 export default function ConnectButton({ style }: { style?: ViewStyle }) {
     const { authenticate, signOut, isLoggedIn } = useOIDCAuth();
     const handleRegistration = async () => {
-        console.log("ready to connect");
-        const result = await authenticate();
-        // router.replace("/");
-        console.log(result);
+        await authenticate();
     };
     return (
         <ThemedView style={[styles.container, style]}>

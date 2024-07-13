@@ -13,7 +13,7 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { Alert } from "react-native";
 import * as WebBrowser from "expo-web-browser";
-import { Redirect, router } from "expo-router";
+import { router } from "expo-router";
 
 interface AuthContextType {
     authenticate: () => Promise<void>;
@@ -92,24 +92,18 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
             }
             if (result.type === "success") {
                 console.log("SUCCESS RESULT", result);
-
                 const code = result.params.code;
                 if (code) {
                     if (!discovery) {
                         throw new Error("No discovery");
                     }
                     const getToken = async () => {
-                        console.log("getting token for code : ", code);
-
                         try {
-                            console.log("before exchangeCodeAsync", code, redirectUri, clientId);
-
                             const codeRes: TokenResponse = await exchangeCodeAsync(
                                 {
                                     code,
                                     redirectUri,
                                     clientId,
-                                    // clientSecret: "a_different_secret",
                                     scopes: ["openid", "offline_access", "email"],
                                     extraParams: {
                                         code_verifier: request?.codeVerifier ?? "",
@@ -117,12 +111,11 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                                 },
                                 discovery
                             );
-                            console.log("after exchangeCodeAsync");
-                            console.log("code res", codeRes);
                             const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
                             const jwtToken = tokenConfig.accessToken;
-                            setToken("jwtToken", JSON.stringify(tokenConfig));
                             const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+
+                            setToken("jwtToken", JSON.stringify(tokenConfig));
                             setUser({ jwtToken, decoded });
                         } catch (error) {
                             console.error("HERE IS THE error", error);
@@ -135,6 +128,13 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         }
     }, [result]);
 
+    useEffect(() => {
+        if (user) {
+            router.push("(app)");
+            // router.replace("(app)");
+        }
+    }, [user]);
+
     const authContext = {
         authenticate: async () => {
             try {
@@ -142,7 +142,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
             } catch (error) {
                 console.log("error error error error error error error");
                 console.error(error);
-                throw error;
+                // throw error;
             }
         },
         signOut: () => {

@@ -67,9 +67,9 @@ export default function Page() {
                             code_verifier: request?.codeVerifier ? request.codeVerifier : "",
                         },
                     });
-                    console.log("accessToken", JSON.stringify(accessToken.getRequestConfig(), null, 4));
+                    // console.log("accessToken", JSON.stringify(accessToken.getRequestConfig(), null, 4));
                     const response = await exchangeCodeAsync(accessToken.getRequestConfig(), userConnection.discovery);
-                    console.log("accessToken response", JSON.stringify(response, null, 4));
+                    // console.log("accessToken response", JSON.stringify(response, null, 4));
                     setTokens(response);
                 } catch (error) {
                     console.error(error);
@@ -87,7 +87,7 @@ export default function Page() {
                 },
                 userConnection.discovery
             );
-            console.log(newRefreshToken);
+            // console.log(newRefreshToken);
             setTokens(newRefreshToken);
         } else {
             alert("no discovery");

@@ -1,4 +1,4 @@
-import { Button, Image, SafeAreaView, StyleSheet, Text } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import React, { useCallback, useState } from "react";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedView } from "@/components/ThemedView";
@@ -7,21 +7,18 @@ import { Link, useFocusEffect } from "expo-router";
 import Map from "@/components/Map";
 import { Marker } from "react-native-maps";
 import { ApiDepositionResponse, Deposition } from "@/types";
-import * as SecureStore from "expo-secure-store";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import ConnectButton from "@/components/ConnectButton";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function IndexPage() {
-    const { setItemAsync: setToken } = SecureStore;
-    // setToken("jwtToken", "");
     const [depositions, setDepositions] = useState<Deposition[]>();
     const [lastDepositionCount, setLastDepositionCount] = useState(0);
 
     useFocusEffect(
         useCallback(() => {
-            getDepositions();
+            // getDepositions();
             return () => {
                 console.log("This route is now unfocused.");
             };
@@ -36,7 +33,7 @@ export default function IndexPage() {
             },
         });
         const { depositions }: ApiDepositionResponse = await depositionsResponse.json();
-        // console.log("depositions", depositions);
+        console.log("depositions", depositions);
 
         setDepositions(depositions);
 
@@ -48,6 +45,7 @@ export default function IndexPage() {
         });
 
         const { depositions: depositionsLastDay }: ApiDepositionResponse = await depositionsLastDayResponse.json();
+        console.log("depositionsLastDayResponse", depositionsLastDay);
         setLastDepositionCount(depositionsLastDay ? depositionsLastDay.length : 0);
     };
 
@@ -87,7 +85,6 @@ export default function IndexPage() {
                     <ThemedText style={styles.appName} type="title">
                         NoPestsAllowed
                     </ThemedText>
-                    {/* <Text>{JSON.stringify(user)}</Text> */}
                     <ThemedText style={styles.subtitle} type="subtitle">
                         The application to make deposition against location infested by pests.
                     </ThemedText>
@@ -110,7 +107,7 @@ export default function IndexPage() {
                     ajoutés au cours des dernières 24 heures !
                 </ThemedText>
                 <ThemedView style={{ backgroundColor: "transparent", paddingVertical: 8 }}>
-                    <Link href="mentions">
+                    <Link href="/legal-notice">
                         <ThemedText type="link">Mentions legales</ThemedText>
                     </Link>
                 </ThemedView>
@@ -125,7 +122,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    reactLogo: {},
     applicationHeadline: {
         backgroundColor: "transparent",
         alignItems: "center",
@@ -133,12 +129,6 @@ const styles = StyleSheet.create({
     appName: {
         fontFamily: "Boogaloo",
     },
-    // main: {
-    //     flex: 1,
-    //     justifyContent: "center",
-    //     maxWidth: 960,
-    //     marginHorizontal: "auto",
-    // },
     subtitle: {
         // fontSize: 36,
         color: "#38434D",

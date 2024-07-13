@@ -4,7 +4,7 @@ import { useContext } from "react";
 export function useOIDCAuth() {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error("useOIDCAuth must bi used inside AuthContext");
+        throw new Error("useOIDCAuth must be used inside AuthContext");
 
     }
     return context;

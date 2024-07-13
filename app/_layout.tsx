@@ -1,16 +1,14 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Redirect, router, Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useReducer, useState } from "react";
-import "react-native-reanimated";
-
+import { useEffect, useState } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuhtProvider } from "@/contexts/auth";
-import * as SecureStore from "expo-secure-store";
-import { SafeAreaView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
-import { useOIDCAuth } from "@/hooks/useOIDCAuth";
+import { ThemedView } from "@/components/ThemedView";
+import { ThemedText } from "@/components/ThemedText";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -27,31 +25,6 @@ export default function RootLayout() {
         Boogaloo: require("../assets/fonts/Boogaloo-Regular.ttf"),
         Carme: require("../assets/fonts/Carme-Regular.ttf"),
     });
-    const [stack, setStack] = useState([<Stack.Screen name="login" />]);
-    // console.log("state", state);
-    // console.log(state.userToken === null);
-    const { isLoggedIn } = useOIDCAuth();
-    // console.log("my OIDC user is : ", user);
-
-    useEffect(() => {
-        if (loaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [loaded]);
-
-    const stakc = () => {
-        if (isLoggedIn) {
-            return [
-                <Stack.Screen key="(tabs)" name="(tabs)" options={{ headerShown: false }} />,
-                <Stack.Screen key="+not-found" name="+not-found" />,
-            ];
-        }
-        return [<Stack.Screen key="login" name="login" />];
-    };
-
-    useEffect(() => {
-        setStack((stack) => stakc());
-    }, []);
 
     const [discovery, setDiscovery] = useState<DiscoveryDocument | null>(null);
     useEffect(() => {
@@ -63,6 +36,12 @@ export default function RootLayout() {
         }
     }, []);
 
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
+
     if (!loaded) {
         return null;
     }
@@ -71,20 +50,17 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <SafeAreaView style={{ flex: 1 }}>
                 {discovery !== null ? (
-                    <>
-                        <AuhtProvider discovery={discovery}>
-                            <Stack>
-                                <Stack.Screen key="index" name="index" />
-                                <Stack.Screen key="login" name="login" />
-                                <Stack.Screen key="register" name="register" />
-                                <Stack.Screen key="+not-found" name="+not-found" />
-                            </Stack>
-                        </AuhtProvider>
-                    </>
+                    <AuhtProvider discovery={discovery}>
+                        <Stack screenOptions={{ headerShown: true }}>
+                            <Stack.Screen key="index" name="index" />
+                            <Stack.Screen key="legals" name="legal-notice" />
+                            <Stack.Screen key="+not-found" name="+not-found" />
+                        </Stack>
+                    </AuhtProvider>
                 ) : (
-                    <View>
-                        <Text>Loading</Text>
-                    </View>
+                    <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                        <ThemedText>Loading</ThemedText>
+                    </ThemedView>
                 )}
             </SafeAreaView>
         </ThemeProvider>
