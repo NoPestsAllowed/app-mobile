@@ -24,3 +24,14 @@ interface ApiDepositionResponse {
     error?: string | string[];
     depositions?: Deposition[];
 }
+
+interface Coordinates {
+    latitude: number;
+    longitude: number;
+    latitudeDelta: number;
+    longitudeDelta: number;
+}
+
+interface VisualProof {
+    uri: string;
+}

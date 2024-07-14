@@ -45,7 +45,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
     const [request, result, promptAsync] = useAuthRequest(
         {
             clientId,
-            scopes: ["openid", "offline_access", "email"],
+            scopes: ["openid", "offline_access", "email", "userid"],
             redirectUri,
         },
         discovery
@@ -69,13 +69,16 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 }
 
                 try {
+                    console.log("refreshing Token Async");
                     tokenResponse = await tokenResponse.refreshAsync(refreshConfig, discovery);
                 } catch (error) {
-                    console.error("error", error);
+                    console.error("error refreshing token async", error);
+                    setToken("jwtToken", "");
+                    console.log("CLEARED TOKEN");
                 }
             }
-            setToken("jwtToken", JSON.stringify(tokenResponse.getRequestConfig()));
 
+            setToken("jwtToken", JSON.stringify(tokenResponse.getRequestConfig()));
             const decoded = jwtDecode(tokenResponse.accessToken);
             setUser({ jwtToken: tokenResponse.accessToken, decoded });
         }
@@ -99,24 +102,36 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                     }
                     const getToken = async () => {
                         try {
-                            const codeRes: TokenResponse = await exchangeCodeAsync(
-                                {
-                                    code,
-                                    redirectUri,
-                                    clientId,
-                                    scopes: ["openid", "offline_access", "email"],
-                                    extraParams: {
-                                        code_verifier: request?.codeVerifier ?? "",
-                                    },
-                                },
-                                discovery
-                            );
-                            const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
-                            const jwtToken = tokenConfig.accessToken;
-                            const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+                            console.log("Ready to exchangeCodeAsync");
 
-                            setToken("jwtToken", JSON.stringify(tokenConfig));
-                            setUser({ jwtToken, decoded });
+                            try {
+                                const codeRes: TokenResponse = await exchangeCodeAsync(
+                                    {
+                                        code,
+                                        redirectUri,
+                                        clientId,
+                                        scopes: ["openid", "email", "userid", "offline_access"],
+                                        extraParams: {
+                                            code_verifier: request?.codeVerifier ?? "",
+                                        },
+                                    },
+                                    discovery
+                                );
+                                console.log("exchangeCodeAsync done!");
+                                console.log("codeRes is ", codeRes);
+
+                                const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
+                                const jwtToken = tokenConfig.accessToken;
+                                const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+                                console.log("jwtToken & decoded user : ", { jwtToken, decoded });
+
+                                setToken("jwtToken", JSON.stringify(tokenConfig));
+                                setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+                            } catch (error) {
+                                console.log("EXCHANGE CODE ASYNC FAILURE");
+
+                                console.log(error);
+                            }
                         } catch (error) {
                             console.error("HERE IS THE error", error);
                             throw error;

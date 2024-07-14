@@ -30,8 +30,13 @@ export default function RootLayout() {
     useEffect(() => {
         if (discovery === null) {
             (async () => {
-                const discoveryResponse = await fetchDiscoveryAsync(ISSUER_ENDPOINT);
-                setDiscovery(discoveryResponse);
+                try {
+                    const discoveryResponse = await fetchDiscoveryAsync(ISSUER_ENDPOINT);
+                    setDiscovery(discoveryResponse);
+                    console.log("discovery is set");
+                } catch (error) {
+                    console.error(error);
+                }
             })();
         }
     }, []);

@@ -32,6 +32,15 @@ export default function TabsLayout() {
                         ),
                     }}
                 />
+                <Tabs.Screen
+                    name="depositions/index"
+                    options={{
+                        title: "Depositions",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "folder" : "folder-outline"} color={color} />
+                        ),
+                    }}
+                />
             </Tabs>
         </View>
     );

@@ -15,6 +15,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.no-pests-allowed"
+    //   "infoPlist": {
+    //     // "UIBackgroundModes": [
+    //     //   "location",
+    //     //   "fetch",
+    //     //   "remote-notification"
+    //     // ],
+    //     "NSLocationWhenInUseUsageDescription": "This app requires access to your location when open.",
+    //     "NSLocationAlwaysAndWhenInUseUsageDescription": "This app requires access to your location even when closed.",
+    //     "NSLocationAlwaysUsageDescription":  "This app requires access to your location when open."
+    //   }
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +39,17 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "locationAlwaysPermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "locationWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
