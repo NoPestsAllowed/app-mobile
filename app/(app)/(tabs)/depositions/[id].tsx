@@ -130,7 +130,12 @@ export default function DepositionDetail() {
                         </ThemedText>
                         {/* <ThemedView style={styles.detailBlock}> */}
                         <ThemedText>
-                            <ThemedText style={{ color: deposition.status === "rejected" ? "red" : "green" }}>
+                            <ThemedText
+                                style={{
+                                    fontWeight: "bold",
+                                    color: deposition.status === "rejected" ? "red" : "green",
+                                }}
+                            >
                                 {deposition.status}
                             </ThemedText>
                         </ThemedText>

@@ -39,6 +39,7 @@ export default function DepositionOverview({
                             </ThemedText>
                         )}
                         <ThemedText style={[styles.line2, styles.pestType]}> {deposition.type}</ThemedText>
+
                         <ThemedView style={[styles.line2, styles.date]}>
                             <ThemedText style={styles.dateText}>
                                 {moment(deposition.createdAt).format("DD MMMM YYYY")}
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#64748b",
         marginLeft: -5,
-        // marginTop: 2,
+        marginTop: -5,
     },
     address: {
         //
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     },
     date: {
         backgroundColor: "white",
-        marginTop: 15,
+        // marginTop: 15,
         paddingTop: 0,
         // alignItems: "flex-end",
         // marginTop: 20,
