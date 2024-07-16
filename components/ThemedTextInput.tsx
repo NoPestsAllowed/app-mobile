@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, TextInputProps, useColorScheme, ViewStyle } from "react-native";
+import { StyleSheet, TextInput, TextInputProps, useColorScheme, View, ViewStyle } from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 
@@ -12,12 +12,8 @@ export type ThemedTextProps = TextInputProps & {
 export function ThemedTextInput({ style, lightColor, darkColor, label = false, ...rest }: ThemedTextProps) {
     const theme = useColorScheme();
     return (
-        <>
-            {label && (
-                <ThemedView style={styles.bgTransparent}>
-                    <ThemedText>{label}</ThemedText>
-                </ThemedView>
-            )}
+        <View>
+            {label && <ThemedText style={styles.label}>{label}</ThemedText>}
             <TextInput
                 style={[
                     theme === "light" ? styles.light : undefined,
@@ -27,7 +23,7 @@ export function ThemedTextInput({ style, lightColor, darkColor, label = false, .
                 ]}
                 {...rest}
             />
-        </>
+        </View>
     );
 }
 
@@ -46,9 +42,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        marginVertical: 2,
     },
-    bgTransparent: {
-        backgroundColor: "transparent",
+    label: {
+        marginVertical: 0,
+        paddingVertical: 0,
     },
 });

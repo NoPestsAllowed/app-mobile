@@ -15,7 +15,7 @@ import CameraComponent from "@/components/CameraComponent";
 // import { useDispatch, useSelector } from "react-redux";
 // import * as ImagePicker from "expo-image-picker";
 import { useFocusEffect, useRouter } from "expo-router";
-import { Coordinates, VisualProof } from "@/types";
+import { Coordinates, DevicePicture, VisualProof } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 // import {
 //     addVisualProofToNewDeposition,
@@ -43,6 +43,19 @@ type PlaceLocation = {
     lon: number;
     name?: string;
 };
+type Place = {
+    label: string;
+    value: string;
+    key: string;
+    data: {
+        id: number;
+        lat: number;
+        lon: number;
+        center?: { lat: number; lon: number };
+        tags: { amenity?: string; name?: string; opening_hours: Date | string };
+        type: "node" | "relation" | "way";
+    };
+};
 
 export default function CreateDepositionTab() {
     const [depositionName, setDepositionName] = useState("");
@@ -52,7 +65,7 @@ export default function CreateDepositionTab() {
     const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
 
     const [depoLocation, setDepoLocation] = useState<Location.LocationObject | null>(null); // where the pictures are taken.
-    const [depoPlace, setDepoPlace] = useState<DepoPlace | null>(null); // nwr from overpass
+    const [depoPlace, setDepoPlace] = useState<Place | null>(null); // nwr from overpass
     const [depoPlaceLocation, setDepoPlaceLocation] = useState<PlaceLocation | null>(null);
 
     const [depoByPicture, setDepoByPicture] = useState(true);
@@ -62,10 +75,12 @@ export default function CreateDepositionTab() {
     console.log("camera open ?", cameraOpen);
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [visualProofs, setVisualProofs] = useState<VisualProof[]>([]);
+    const [visualProofs, setVisualProofs] = useState<DevicePicture[]>([]);
     const [pestType, setPestType] = useState("");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [places, setPlaces] = useState<Place[]>();
 
     const { user } = useOIDCAuth();
     // const pictures = useSelector((state) => state.depositions.value.newDeposition.visualProofs);
@@ -141,7 +156,7 @@ export default function CreateDepositionTab() {
         setCameraOpen(true);
     };
 
-    const handlePictureTaken = (picture: VisualProof) => {
+    const handlePictureTaken = (picture: DevicePicture) => {
         if (picture) {
             setDepoLocation(userLocation);
             setVisualProofs((vproofs) => [...(vproofs ?? []), picture]);
@@ -149,24 +164,70 @@ export default function CreateDepositionTab() {
         }
     };
 
-    const itemSelected = (item: DepoPlace) => {
-        if (item) {
-            if (item.tags["contact:email"]) {
-                setOwnerEmail((email) => item.tags["contact:email"]);
-            } else if (item.tags["email"]) {
-                setOwnerEmail(item.tags["email"]);
+    useEffect(() => {
+        if (depoLocation) {
+            console.log(depoLocation);
+
+            (async () => {
+                const fecthPlace = await fetch(`${backendUrl}/geocoder`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        // Authorization: `Bearer ${user.jwtToken}`,
+                    },
+                    body: JSON.stringify(depoLocation),
+                });
+                const fetchedPlace = await fecthPlace.json();
+
+                console.log("—————— FETCHED PLACES ——————");
+                console.log(fetchedPlace);
+
+                setPlaces((pla) =>
+                    fetchedPlace.data.map(
+                        (item: { label: string; value: any; key: string; data: any; inputLabel?: string }) => {
+                            item.inputLabel = item.label;
+                            return item;
+                        }
+                    )
+                );
+            })();
+        }
+    }, [depoLocation]);
+
+    const itemSelected = (item: string) => {
+        console.log("item is ", item);
+        if (places) {
+            const placeObject = places.find((place) => {
+                return place.key === item;
+            });
+            // const place = placeObject.data;
+            // console.log("place is", placeObject.data);
+            console.log("placeObject is", placeObject);
+
+            if (placeObject && placeObject.data) {
+                // @ts-ignore
+                if (placeObject.data.tags && placeObject.data.tags["contact:email"]) {
+                    // @ts-ignore
+                    setOwnerEmail((email) => placeObject.data.tags["contact:email"]);
+                    // @ts-ignore
+                } else if (placeObject.data.tags && placeObject.data.tags["email"]) {
+                    // @ts-ignore
+                    setOwnerEmail(placeObject.data.tags["email"]);
+                }
+                setDepoPlace(placeObject);
+                console.log(
+                    "place.center",
+                    placeObject.data.center,
+                    placeObject.data.center
+                        ? { lat: placeObject.data.center.lat, lon: placeObject.data.center.lon }
+                        : { lat: placeObject.data.lat, lon: placeObject.data.lon }
+                );
+                setDepoPlaceLocation(
+                    placeObject.data.center && placeObject.data.center.lat && placeObject.data.center.lon
+                        ? { lat: placeObject.data.center.lat, lon: placeObject.data.center.lon }
+                        : { lat: placeObject.data.lat, lon: placeObject.data.lon }
+                );
             }
-            setDepoPlace(item);
-            console.log(
-                "item.center",
-                item.center,
-                item.center ? { lat: item.center.lat, lon: item.center.lon } : { lat: item.lat, lon: item.lon }
-            );
-            setDepoPlaceLocation(
-                item.center && item.center.lat && item.center.lon
-                    ? { lat: item.center.lat, lon: item.center.lon }
-                    : { lat: item.lat, lon: item.lon }
-            );
         }
     };
 
@@ -280,6 +341,8 @@ export default function CreateDepositionTab() {
         setVisualProofs((vproofs) => {
             return vproofs ? vproofs.filter((proof) => proof.uri !== picture.uri ?? []) : [];
         });
+        setDepoPlace(null);
+        setDepoLocation(null);
         // dispatch(removeVisualProof(picture));
     };
 
@@ -310,19 +373,6 @@ export default function CreateDepositionTab() {
                             pinColor={"teal"}
                         />
                     )}
-
-                    {depoPlaceLocation && depoPlace && (
-                        <Marker
-                            key="depoPlaceLocation"
-                            coordinate={{
-                                latitude: depoPlaceLocation.lat,
-                                longitude: depoPlaceLocation.lon,
-                            }}
-                            //@ts-ignore
-                            title={`${depoPlace.tags["name"]}`}
-                            pinColor={"tomato"}
-                        />
-                    )}
                 </MapView>
             }
         >
@@ -341,8 +391,8 @@ export default function CreateDepositionTab() {
                 style={[styles.global, styles.input]}
             />
 
-            {/* <ThemedView style={styles.btnContainer}> */}
-            {/* <ThemedButton
+            {/* <ThemedView style={styles.btnContainer}>
+                <ThemedButton
                     colored={false}
                     elevated={false}
                     onPress={() => {
@@ -352,9 +402,9 @@ export default function CreateDepositionTab() {
                     style={[styles.proofBtn, depoByPicture ? styles.optionSelected : "", { color: "yellow" }]}
                 >
                     <ThemedText style={{ fontWeight: "bold" }}>J'ai une preuve</ThemedText>
-                </ThemedButton> */}
+                </ThemedButton>
 
-            {/* <ThemedButton
+                <ThemedButton
                     colored={false}
                     elevated={false}
                     onPress={() => {
@@ -364,8 +414,8 @@ export default function CreateDepositionTab() {
                     style={[styles.proofBtn, depoByHonnor ? styles.optionSelected : ""]}
                 >
                     <ThemedText style={{ fontWeight: "bold" }}>Je veux déclarer sur l'honneur</ThemedText>
-                </ThemedButton> */}
-            {/* </ThemedView> */}
+                </ThemedButton>
+            </ThemedView> */}
 
             <ThemedView style={styles.inputBlock}>
                 <ThemedText>Selectionner le type de nuisible</ThemedText>
@@ -400,8 +450,19 @@ export default function CreateDepositionTab() {
 
             {/* {depoByHonnor && <ThemedCheckbox label=" Je déclare sur l'honneur la véracité de ma déposition" />} */}
 
-            {depoLocation && (
-                <ThemedText>Next step</ThemedText>
+            {places && (
+                <ThemedView style={styles.inputBlock}>
+                    <ThemedText>Next step</ThemedText>
+                    <ThemedView style={[styles.selectInput, styles.global]}>
+                        <RNPickerSelect
+                            style={pickerSelectStyles}
+                            // value={location}
+                            onValueChange={(itemValue) => itemSelected(itemValue)}
+                            items={places}
+                            itemKey="label"
+                        />
+                    </ThemedView>
+                </ThemedView>
                 // <SelectList
                 //     userLocation={userLocation}
                 //     depoLocation={depoLocation}
@@ -475,7 +536,7 @@ const styles = StyleSheet.create({
         // height: 125,
     },
     inputBlock: {
-        marginTop: 25,
+        marginBottom: 25,
     },
     titleContainer: {
         padding: 16,
@@ -491,13 +552,12 @@ const styles = StyleSheet.create({
         borderColor: "#0a7ea4",
         borderRadius: 5,
         paddingHorizontal: 10,
-        paddingVertical: 8,
+        // paddingVertical: 8,
         backgroundColor: "transparent",
     },
     input: {
-        marginVertical: 2,
-        // paddingHorizontal: 10,
-        // paddingVertical: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 12,
     },
     // snapContainer: {
     //     flex: 1,

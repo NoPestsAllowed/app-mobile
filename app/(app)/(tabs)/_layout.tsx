@@ -41,6 +41,22 @@ export default function TabsLayout() {
                         ),
                     }}
                 />
+
+                <Tabs.Screen
+                    name="depositions/create"
+                    options={{
+                        title: "Depositions Create",
+                        href: null,
+                    }}
+                />
+
+                <Tabs.Screen
+                    name="depositions/[id]"
+                    options={{
+                        title: "Depositions Edit",
+                        href: null,
+                    }}
+                />
             </Tabs>
         </View>
     );

@@ -37,7 +37,7 @@ const clientId = process.env.EXPO_PUBLIC_OIDC_CLIENT;
 WebBrowser.maybeCompleteAuthSession();
 
 export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocument } & PropsWithChildren) => {
-    const [user, setUser] = useState<object | false>(false);
+    const [user, setUser] = useState<{ jwtToken: string; idToken?: string; decoded: object } | false>(false);
     const { getItemAsync: getCachedToken, setItemAsync: setToken } = SecureStore;
     const redirectUri = makeRedirectUri({
         scheme: "com.anonymous.no-pests-allowed",
@@ -145,7 +145,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
 
     useEffect(() => {
         if (user) {
-            router.push("(app)");
+            router.replace("(app)");
             // router.replace("(app)");
         }
     }, [user]);

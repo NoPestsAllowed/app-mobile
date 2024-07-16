@@ -2,12 +2,17 @@ import { GeoJsonObject, GeoJsonTypes, Geometry, LineString, Point } from "geojso
 
 interface Deposition {
     _id: string;
+    id?: string;
     name: string;
     description: string;
     placeId: Place;
     status: "pending" | "accepted" | "rejected" | "resolved";
     type: string;
     createdAt: Date;
+}
+
+type DepositionWithVisualProofs = Deposition & {
+    visualProofs: VisualProof[];
 }
 
 interface Place {
@@ -33,5 +38,9 @@ interface Coordinates {
 }
 
 interface VisualProof {
+    url: string;
+}
+
+interface DevicePicture {
     uri: string;
 }

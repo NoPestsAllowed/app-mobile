@@ -8,8 +8,9 @@ import Map from "@/components/Map";
 import { Marker } from "react-native-maps";
 import { Link, router, useFocusEffect } from "expo-router";
 import moment from "moment";
-import { Deposition } from "@/types";
+import { Deposition, DepositionWithVisualProofs } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
+import DepositionOverview from "@/components/deposition/DepositionOverview";
 
 moment.locale("fr");
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -17,7 +18,7 @@ const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 export default function Depositions() {
     const [depositions, setDepositions] = useState([]);
     const { user } = useOIDCAuth();
-    console.log(user);
+    // console.log(user);
 
     useFocusEffect(
         useCallback(() => {
@@ -131,69 +132,19 @@ export default function Depositions() {
 
             <ThemedView>
                 {depositions.length > 0 &&
-                    depositions.map((deposition: Deposition, index) => {
+                    depositions.map((deposition: DepositionWithVisualProofs, index) => {
                         return (
-                            <ThemedView style={styles.rowContainer} key={deposition._id}>
-                                <Link
-                                    style={{ marginVertical: 5 }}
-                                    key={deposition._id}
-                                    href={{
-                                        pathname: "/deposition/[id]",
-                                        params: { id: deposition._id },
-                                    }}
-                                >
-                                    <ThemedView key={deposition._id} style={{ width: 250 }}>
-                                        <ThemedView style={styles.rowContent}>
-                                            <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}>Déposition: </ThemedText>
-                                                <ThemedText style={styles.line2}>{deposition.name}</ThemedText>
-                                            </ThemedView>
-                                            <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}> Adresse: </ThemedText>
-                                                <ThemedText style={styles.line2}>
-                                                    {deposition.placeId.address}
-                                                </ThemedText>
-                                            </ThemedView>
-                                            <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}>Description: </ThemedText>
-                                                <ThemedText style={styles.line2}> {deposition.description}</ThemedText>
-                                            </ThemedView>
-                                            <ThemedView style={styles.rowTextContainer}>
-                                                <ThemedText style={styles.line1}>Status: </ThemedText>
-                                                <ThemedText
-                                                    style={[
-                                                        styles.line2,
-                                                        {
-                                                            fontWeight: "bold",
-                                                            color: deposition.status === "accepted" ? "green" : "red",
-                                                        },
-                                                    ]}
-                                                >
-                                                    {deposition.status}
-                                                </ThemedText>
-                                            </ThemedView>
-                                        </ThemedView>
-                                        <ThemedView style={styles.date}>
-                                            <ThemedText>
-                                                Déposition faite le :{" "}
-                                                {moment(deposition.createdAt).format("DD MMMM YYYY")}
-                                            </ThemedText>
-                                        </ThemedView>
-                                    </ThemedView>
-                                </Link>
-                                <ThemedView style={styles.actionButtonsContainer}>
-                                    {/* <ThemedButtonEdit>Modifier</ThemedButtonEdit> */}
-                                    <ThemedButton onPress={() => handleDeleteDeposition(deposition)}>
-                                        Supprimer
-                                    </ThemedButton>
-                                </ThemedView>
-                            </ThemedView>
+                            <DepositionOverview
+                                key={deposition._id}
+                                deposition={deposition}
+                                deleteDeposition={handleDeleteDeposition}
+                            />
                         );
                     })}
             </ThemedView>
 
             <ThemedText style={styles.profileInfo}>Vous avez {depositions.length} déposition(s)</ThemedText>
-            <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("deposition/create")}>
+            <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("depositions/create")}>
                 Create deposition
             </ThemedButton>
         </ParallaxScrollView>
@@ -201,18 +152,6 @@ export default function Depositions() {
 }
 
 const styles = StyleSheet.create({
-    rowContainer: {
-        backgroundColor: "transparent",
-        alignItems: "center",
-        padding: 10,
-        marginBottom: 10,
-        borderRadius: 5,
-        shadowColor: "#7a2307",
-        shadowOffset: { width: 7, height: 7 },
-        shadowOpacity: 0.8,
-        elevation: 3,
-        marginTop: 10,
-    },
     rowContainerTitle: {
         backgroundColor: " #ca8035",
         flexDirection: "row",
@@ -243,52 +182,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowColor: "#7a2307",
     },
-    rowContent: {
-        flexDirection: "column",
-        flex: 1,
-        borderRadius: 25,
-        shadowColor: "#7a2307",
-        shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.5,
-        shadowRadius: 35,
-        marginTop: 10,
-        backgroundColor: "transparent",
-    },
-    rowTextContainer: {
-        // marginLeft: 5,
-        // marginRight: 10,
-        marginHorizontal: 5,
-        flex: 1,
-        // backgroundColor: "white",
-        gap: 10,
-    },
-    actionButtonsContainer: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 10,
-    },
-    line1: {
-        fontSize: 18,
-        marginRight: 10,
-        fontWeight: 500,
-        flexWrap: "wrap",
-        // marginBottom: 5,
-        // fontWeight: "bold",
-    },
-    line2: {
-        fontSize: 18,
-        // marginLeft: 25,
-        // marginRight: 10,
-        // color: "black",
-        paddingHorizontal: 5,
-        paddingVertical: 10,
-        flexWrap: "wrap",
-        borderWidth: 1,
-        borderRadius: 7,
-        marginBottom: 5,
-
-        borderColor: "#A53939",
-    },
     titleContainer: {
         backgroundColor: " #ca8035",
     },
@@ -298,10 +191,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 10,
         textAlign: "center",
-    },
-    date: {
-        alignItems: "flex-end",
-        marginTop: 20,
     },
     profileInfo: {
         textAlign: "center",

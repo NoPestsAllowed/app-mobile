@@ -6,6 +6,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { Deposition } from "@/types";
 import { Marker } from "react-native-maps";
+import ConnectButton from "@/components/ConnectButton";
 
 export default function index() {
     const [depositions, setDepositions] = useState<Deposition[]>();
@@ -53,6 +54,9 @@ export default function index() {
                     <ThemedText type="defaultSemiBold">{lastDepositionCount}</ThemedText> rapports d'insectes ont été
                     ajoutés au cours des dernières 24 heures !
                 </ThemedText>
+                <ThemedView style={styles.btnContainer}>
+                    <ConnectButton style={styles.btn} />
+                </ThemedView>
             </ParallaxScrollView>
         </SafeAreaView>
     );
@@ -75,5 +79,19 @@ const styles = StyleSheet.create({
         width: "80%",
         marginBottom: 24,
         marginHorizontal: "auto",
+    },
+    btnContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        backgroundColor: "transparent",
+        marginTop: 50,
+    },
+    btn: {
+        borderColor: "#cbd5e1",
+        borderWidth: 1,
+        borderRadius: 12,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
     },
 });

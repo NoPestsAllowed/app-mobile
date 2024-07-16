@@ -5,10 +5,10 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AuhtProvider } from "@/contexts/auth";
-import { SafeAreaView } from "react-native";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -53,7 +53,7 @@ export default function RootLayout() {
 
     return (
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaProvider style={{ flex: 1 }}>
                 {discovery !== null ? (
                     <AuhtProvider discovery={discovery}>
                         <Stack screenOptions={{ headerShown: true }}>
@@ -67,7 +67,7 @@ export default function RootLayout() {
                         <ThemedText>Loading</ThemedText>
                     </ThemedView>
                 )}
-            </SafeAreaView>
+            </SafeAreaProvider>
         </ThemeProvider>
     );
 }
