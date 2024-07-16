@@ -308,7 +308,7 @@ export default function CreateDepositionTab() {
                     setIsSubmitting(false);
                     // dispatch(clearNewDeposition());
                     clearInputs();
-                    router.replace("/deposition");
+                    router.replace("/depositions");
                 } else {
                     setIsSubmitting(false);
                     console.error(createDepositionResponse.error);

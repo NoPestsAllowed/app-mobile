@@ -47,7 +47,7 @@ export default function DepositionDetail() {
                             .then((response) => response.json())
                             .then((data) => {
                                 if (data.result) {
-                                    router.navigate("deposition/mydepositions");
+                                    router.navigate("depositions/index");
                                     // Optionally navigate or update state here
                                     console.log("Deposition supprimée");
                                 } else {
@@ -137,6 +137,13 @@ export default function DepositionDetail() {
                         {/* </ThemedView> */}
                     </ThemedView>
 
+                    <ThemedView style={styles.detailBlock}>
+                        {deposition.placeId.address && (
+                            <ThemedText numberOfLines={1} style={styles.detailContent}>
+                                {deposition.placeId.address}
+                            </ThemedText>
+                        )}
+                    </ThemedView>
                     <ThemedView style={styles.separator}></ThemedView>
                     <ThemedView style={styles.detailBlock}>
                         <ThemedText style={styles.detailTitle}>Description: </ThemedText>

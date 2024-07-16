@@ -34,7 +34,9 @@ export default function DepositionOverview({
                             {deposition.name}
                         </ThemedText>
                         {deposition.placeId.address && (
-                            <ThemedText style={styles.line2}>{deposition.placeId.address}</ThemedText>
+                            <ThemedText numberOfLines={1} style={[styles.line2, styles.address]}>
+                                {deposition.placeId.address}
+                            </ThemedText>
                         )}
                         <ThemedText style={[styles.line2, styles.pestType]}> {deposition.type}</ThemedText>
                         <ThemedView style={[styles.line2, styles.date]}>
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
         // textAlign: "flex",
         alignItems: "flex-start",
         // justifyContent: "flex-end",
-        flexGrow: 1,
+        flexShrink: 1,
         paddingHorizontal: 15,
         paddingVertical: 0,
         // paddingVertical: 5,
@@ -186,6 +188,9 @@ const styles = StyleSheet.create({
         color: "#64748b",
         marginLeft: -5,
         // marginTop: 2,
+    },
+    address: {
+        //
     },
     line2: {
         // marginTop: -5,

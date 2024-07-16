@@ -164,7 +164,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
             alert("sign out");
             SecureStore.deleteItemAsync("jwtToken");
             setUser(false);
-            router.replace("/");
+            router.push("/"); // Must be replace but app crash when logging out from modal...
         },
         isLoggedIn: !!user,
         user: user,

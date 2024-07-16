@@ -143,10 +143,10 @@ export default function Depositions() {
                     })}
             </ThemedView>
 
-            <ThemedText style={styles.profileInfo}>Vous avez {depositions.length} déposition(s)</ThemedText>
-            <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("depositions/create")}>
+            <ThemedText style={styles.depositionCount}>Vous avez {depositions.length} déposition(s)</ThemedText>
+            {/* <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("depositions/create")}>
                 Create deposition
-            </ThemedButton>
+            </ThemedButton> */}
         </ParallaxScrollView>
     );
 }
@@ -191,8 +191,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 10,
         textAlign: "center",
+        marginVertical: 15,
     },
-    profileInfo: {
+    depositionCount: {
+        marginTop: 25,
         textAlign: "center",
     },
     buttonCreate: {

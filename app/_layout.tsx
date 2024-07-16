@@ -1,4 +1,11 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
+import {
+    DarkTheme,
+    DefaultTheme,
+    getFocusedRouteNameFromRoute,
+    ParamListBase,
+    RouteProp,
+    ThemeProvider,
+} from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -8,7 +15,7 @@ import { AuhtProvider } from "@/contexts/auth";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Button } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -51,23 +58,42 @@ export default function RootLayout() {
         return null;
     }
 
+    const headerMustBeShown = (route: RouteProp<ParamListBase, string>) => {
+        console.log(route);
+        return route.name !== "(app)";
+    };
+
     return (
         <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-            <SafeAreaProvider style={{ flex: 1 }}>
-                {discovery !== null ? (
-                    <AuhtProvider discovery={discovery}>
-                        <Stack screenOptions={{ headerShown: true }}>
-                            <Stack.Screen key="index" name="index" />
-                            <Stack.Screen key="legals" name="legal-notice" />
-                            <Stack.Screen key="+not-found" name="+not-found" />
-                        </Stack>
-                    </AuhtProvider>
-                ) : (
-                    <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                        <ThemedText>Loading</ThemedText>
-                    </ThemedView>
-                )}
-            </SafeAreaProvider>
+            {discovery !== null ? (
+                <AuhtProvider discovery={discovery}>
+                    <Stack
+                        screenOptions={({ route }) => ({
+                            headerShown: headerMustBeShown(route),
+                            headerStyle: {
+                                backgroundColor: "#f4511e",
+                            },
+                            headerTintColor: "#fff",
+                            headerTitleStyle: {
+                                fontWeight: "bold",
+                            },
+                            title: "Home",
+                            // headerTitle: (props) => <ThemedText>{props.children}</ThemedText>,
+                            // headerRight: () => (
+                            //     <Button onPress={() => alert("This is a button!")} title="Info" color="red" />
+                            // ),
+                        })}
+                    >
+                        <Stack.Screen key="index" name="index" options={{ title: "NoPestsAllowed" }} />
+                        <Stack.Screen key="legals" name="legal-notice" options={{ title: "Mentions légale" }} />
+                        <Stack.Screen key="+not-found" name="+not-found" options={{ title: "Page Not Found" }} />
+                    </Stack>
+                </AuhtProvider>
+            ) : (
+                <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ThemedText>Loading</ThemedText>
+                </ThemedView>
+            )}
         </ThemeProvider>
     );
 }
