@@ -52,3 +52,9 @@ interface User {
     email: string;
     dateOfBirth: string;
 }
+
+interface ApiUpdateUserResponse {
+    result: boolean;
+    error?: string | string[];
+    message?: string;
+}

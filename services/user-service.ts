@@ -1,3 +1,5 @@
+import { ApiUpdateUserResponse, User } from "@/types";
+
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export const fetchAuthenticatedUser = async (token: string) => {
@@ -13,6 +15,22 @@ export const fetchAuthenticatedUser = async (token: string) => {
         throw new Error("Profile not found");
     }
     return profile;
+}
+
+export const updateAuthenticatedUser = async (token: string, user: {firstName: string; lastName: string; dateOfBirth?: Date}) => {
+    const updateUserQuery = await fetch(`${backendUrl}/users/update`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+            firstname: user.firstName,
+            lastname: user.lastName,
+        }),
+    });
+    const updateResponse = await updateUserQuery.json();
+    if (updateResponse.result === true) {
+        return true;
+    }
+    return false;
 }
 
 export const deleteAuthenticatedUser = async (token: string) => {

@@ -1,10 +1,10 @@
 import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { User } from "@/types";
 import { deleteAuthenticatedUser, fetchAuthenticatedUser } from "@/services/user-service";
 
@@ -12,12 +12,14 @@ export default function Profile() {
     const [user, setUser] = useState<User>();
     const { user: userFromToken, signOut } = useOIDCAuth();
 
-    useEffect(() => {
-        (async () => {
-            const fetchedUser = await fetchAuthenticatedUser(userFromToken.jwtToken);
-            setUser(fetchedUser);
-        })();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                const fetchedUser = await fetchAuthenticatedUser(userFromToken.jwtToken);
+                setUser(fetchedUser);
+            })();
+        }, [])
+    );
 
     const handleDeleteAccount = () => {
         Alert.alert(

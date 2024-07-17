@@ -1,10 +1,10 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { ThemedButton } from "@/components/ThemedButton";
-import { fetchAuthenticatedUser } from "@/services/user-service";
+import { fetchAuthenticatedUser, updateAuthenticatedUser } from "@/services/user-service";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { ThemedView } from "@/components/ThemedView";
 
@@ -19,12 +19,12 @@ export default function EditProfile() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [birthDate, setBirthDate] = useState("");
-    const [update, setUpdate] = useState(false);
+    const [update, setUpdate] = useState<string | boolean>(false);
 
     useEffect(() => {
         (async () => {
             const user = await fetchAuthenticatedUser(userToken.jwtToken);
-            console.log(user);
+            // console.log(user);
 
             if (user) {
                 setFirstName(user.firstname);
@@ -37,9 +37,18 @@ export default function EditProfile() {
     }, []);
 
     const handleModification = async () => {
-        // const userId = user.id;
+        const UpdateSuccess = await updateAuthenticatedUser(userToken.jwtToken, {
+            firstName,
+            lastName,
+        });
+
+        if (UpdateSuccess) {
+            router.navigate("/profile");
+        } else {
+            setUpdate("Erreur de modification");
+        }
         // try {
-        //     const response = await fetch(`${backendUrl}/users/update/${userId}`, {
+        //     const response = await fetch(`${backendUrl}/users/update/${id}`, {
         //         method: "PUT",
         //         headers: { "Content-Type": "application/json", Authorization: `Bearer ${user.token}` },
         //         body: JSON.stringify({
@@ -53,10 +62,9 @@ export default function EditProfile() {
         //     const data = await response.json();
         //     console.log(data); // Pour déboguer la réponse
         //     if (data.result) {
-        //         dispatch(updateAccount({ firstname: firstName, lastname: lastName }));
         //         console.log("Mise à jour réussie");
         //         setUpdate("Mise à jour réussie");
-        //         navigation.navigate("profile/index");
+        //         router.push("/profile");
         //     } else {
         //         console.error("Erreur lors de la mise à jour:", data);
         //         setUpdate("Erreur lors de la mise à jour");
