@@ -1,16 +1,56 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import Map from "@/components/Map";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { Deposition } from "@/types";
+import { ApiDepositionResponse, Deposition } from "@/types";
 import { Marker } from "react-native-maps";
 import ConnectButton from "@/components/ConnectButton";
+import { useFocusEffect } from "expo-router";
+import { useOIDCAuth } from "@/hooks/useOIDCAuth";
+
+const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function index() {
     const [depositions, setDepositions] = useState<Deposition[]>();
     const [lastDepositionCount, setLastDepositionCount] = useState(0);
+    const { user } = useOIDCAuth();
+
+    useFocusEffect(
+        useCallback(() => {
+            getDepositions();
+            return () => {
+                console.log("This route is now unfocused.");
+            };
+        }, [])
+    );
+
+    const getDepositions = async () => {
+        const depositionsResponse = await fetch(`${backendUrl}/users/depositions`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.idToken ?? user.jwtToken}`,
+            },
+        });
+        const { depositions }: ApiDepositionResponse = await depositionsResponse.json();
+        console.log("depositions", depositions);
+
+        setDepositions(depositions);
+
+        const depositionsLastDayResponse = await fetch(`${backendUrl}/depositions/last-day`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const { depositions: depositionsLastDay }: ApiDepositionResponse = await depositionsLastDayResponse.json();
+        console.log("depositionsLastDayResponse", depositionsLastDay);
+        setLastDepositionCount(depositionsLastDay ? depositionsLastDay.length : 0);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ParallaxScrollView
@@ -54,9 +94,6 @@ export default function index() {
                     <ThemedText type="defaultSemiBold">{lastDepositionCount}</ThemedText> rapports d'insectes ont été
                     ajoutés au cours des dernières 24 heures !
                 </ThemedText>
-                <ThemedView style={styles.btnContainer}>
-                    <ConnectButton style={styles.btn} />
-                </ThemedView>
             </ParallaxScrollView>
         </SafeAreaView>
     );
