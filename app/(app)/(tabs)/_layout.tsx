@@ -69,8 +69,9 @@ export default function TabsLayout() {
                     options={{
                         title: "Private",
                         tabBarIcon: ({ color, focused }) => (
-                            <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
+                            <TabBarIcon name={focused ? "git-pull-request" : "git-branch"} color={color} />
                         ),
+                        href: null,
                     }}
                 />
                 <Tabs.Screen
@@ -95,6 +96,24 @@ export default function TabsLayout() {
                     name="depositions/[id]"
                     options={{
                         title: "Depositions Edit",
+                        href: null,
+                    }}
+                />
+
+                <Tabs.Screen
+                    name="profile/index"
+                    options={{
+                        title: "Profile",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />
+                        ),
+                    }}
+                />
+
+                <Tabs.Screen
+                    name="profile/[id]"
+                    options={{
+                        title: "Edit Profile",
                         href: null,
                     }}
                 />

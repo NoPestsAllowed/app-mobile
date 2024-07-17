@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import React, { useCallback, useState } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
@@ -11,6 +11,7 @@ import moment from "moment";
 import { Deposition, DepositionWithVisualProofs } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import DepositionOverview from "@/components/deposition/DepositionOverview";
+import EmptyState from "@/components/deposition/EmptyState";
 
 moment.locale("fr");
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -143,10 +144,24 @@ export default function Depositions() {
                     })}
             </ThemedView>
 
-            <ThemedText style={styles.depositionCount}>Vous avez {depositions.length} déposition(s)</ThemedText>
-            {/* <ThemedButton style={styles.buttonCreate} onPress={() => router.navigate("depositions/create")}>
-                Create deposition
-            </ThemedButton> */}
+            {depositions.length === 0 ? (
+                <View style={styles.shadow}>
+                    <EmptyState
+                        headline="Vous n'avez pas encore de dépositions"
+                        desc="Contribuez & protégez vos proches."
+                    >
+                        <ThemedButton
+                            style={styles.buttonCreate}
+                            textStyle={styles.buttonCreateText}
+                            onPress={() => router.navigate("depositions/create")}
+                        >
+                            Créez votre première deposition
+                        </ThemedButton>
+                    </EmptyState>
+                </View>
+            ) : (
+                <ThemedText style={styles.depositionCount}>Vous avez {depositions.length} déposition(s)</ThemedText>
+            )}
         </ParallaxScrollView>
     );
 }
@@ -198,6 +213,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     buttonCreate: {
-        marginLeft: 40,
+        marginTop: 25,
+    },
+    buttonCreateText: {
+        textAlign: "center",
+    },
+    shadow: {
+        shadowColor: "#7a2307",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
     },
 });

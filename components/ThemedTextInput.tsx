@@ -1,19 +1,30 @@
-import { StyleSheet, TextInput, TextInputProps, useColorScheme, View, ViewStyle } from "react-native";
+import {
+    StyleSheet,
+    StyleSheetProperties,
+    TextInput,
+    TextInputProps,
+    TextStyle,
+    useColorScheme,
+    View,
+    ViewStyle,
+} from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
+import { CSSProperties } from "react";
 
 export type ThemedTextProps = TextInputProps & {
     style: ViewStyle;
     lightColor?: string;
     darkColor?: string;
     label: string | false;
+    labelStyle?: TextStyle;
 };
 
-export function ThemedTextInput({ style, lightColor, darkColor, label = false, ...rest }: ThemedTextProps) {
+export function ThemedTextInput({ style, lightColor, darkColor, label = false, labelStyle, ...rest }: ThemedTextProps) {
     const theme = useColorScheme();
     return (
         <View>
-            {label && <ThemedText style={styles.label}>{label}</ThemedText>}
+            {label && <ThemedText style={[styles.label, labelStyle]}>{label}</ThemedText>}
             <TextInput
                 style={[
                     theme === "light" ? styles.light : undefined,

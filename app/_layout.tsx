@@ -59,7 +59,7 @@ export default function RootLayout() {
     }
 
     const headerMustBeShown = (route: RouteProp<ParamListBase, string>) => {
-        console.log(route);
+        // console.log(route);
         return route.name !== "(app)";
     };
 

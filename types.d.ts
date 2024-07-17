@@ -44,3 +44,11 @@ interface VisualProof {
 interface DevicePicture {
     uri: string;
 }
+
+interface User {
+    _id: string;
+    firstname: string,
+    lastname: string;
+    email: string;
+    dateOfBirth: string;
+}
