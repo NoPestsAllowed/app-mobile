@@ -106,9 +106,13 @@ export default function IndexPage() {
                     <ThemedText type="defaultSemiBold">{lastDepositionCount}</ThemedText> rapports d'insectes ont été
                     ajoutés au cours des dernières 24 heures !
                 </ThemedText>
-                <ThemedView style={{ backgroundColor: "transparent", paddingVertical: 8 }}>
+
+                <ThemedView style={styles.footerLink}>
                     <Link href="/legal-notice">
                         <ThemedText type="link">Mentions legales</ThemedText>
+                    </Link>
+                    <Link href="/contact-us">
+                        <ThemedText type="link">Contact</ThemedText>
                     </Link>
                 </ThemedView>
             </ParallaxScrollView>
@@ -149,8 +153,15 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
     },
     paragraph: {
-        width: "80%",
+        // width: "80%",
         marginBottom: 24,
         marginHorizontal: "auto",
+    },
+    footerLink: {
+        backgroundColor: "transparent",
+        paddingVertical: 8,
+        marginTop: 15,
+        flexDirection: "row",
+        justifyContent: "space-between",
     },
 });

@@ -1,5 +1,5 @@
 import { Button, Modal, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TabBarIcon } from "./TabBarIcon";
 import { ThemedView } from "../ThemedView";
 import ConnectButton from "../ConnectButton";
@@ -14,6 +14,7 @@ export default function Menu() {
         setOpen(false);
         signOut();
     };
+
     return (
         <>
             <Modal
@@ -39,7 +40,14 @@ export default function Menu() {
                         <View style={styles.menuItem}>
                             <Link href="/legal-notice">
                                 <ThemedText type="link" style={styles.uppercase}>
-                                    Mentions legales
+                                    Mentions légales
+                                </ThemedText>
+                            </Link>
+                        </View>
+                        <View style={styles.menuItem}>
+                            <Link href="/contact-us">
+                                <ThemedText type="link" style={styles.uppercase}>
+                                    Contact
                                 </ThemedText>
                             </Link>
                         </View>
@@ -91,6 +99,7 @@ const styles = StyleSheet.create({
         // width: "25%",
     },
     menuItem: {
+        minWidth: "100%",
         borderBottomWidth: 1,
         borderBottomColor: "#cbd5e1",
         paddingVertical: 5,
