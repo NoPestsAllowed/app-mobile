@@ -104,10 +104,10 @@ export default function Profile() {
                     textStyle={styles.buttonText}
                     onPress={() => router.navigate(`profile/${user._id}`)}
                 >
-                    Modifier mon compte
+                    Modifier
                 </ThemedButton>
                 <ThemedButton style={styles.button} textStyle={styles.buttonText} onPress={() => handleDeleteAccount()}>
-                    Supprimer mon compte
+                    Supprimer
                 </ThemedButton>
             </ThemedView>
         </ThemedView>

@@ -109,19 +109,20 @@ export default function Depositions() {
                     }}
                     style={{ flex: 1 }}
                 >
-                    {depositions.map((deposition: Deposition) => {
-                        return (
-                            <Marker
-                                key={deposition._id}
-                                coordinate={{
-                                    latitude: deposition.placeId.geojson.coordinates[0],
-                                    longitude: deposition.placeId.geojson.coordinates[1],
-                                }}
-                                title={deposition.name}
-                                description={deposition.description}
-                            />
-                        );
-                    })}
+                    {depositions.length > 0 &&
+                        depositions.map((deposition: Deposition) => {
+                            return (
+                                <Marker
+                                    key={deposition._id}
+                                    coordinate={{
+                                        latitude: deposition.placeId.geojson.coordinates[0],
+                                        longitude: deposition.placeId.geojson.coordinates[1],
+                                    }}
+                                    title={deposition.name}
+                                    description={deposition.description}
+                                />
+                            );
+                        })}
                 </Map>
             }
         >

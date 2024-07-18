@@ -65,6 +65,7 @@ export default function IndexPage() {
                         }}
                     >
                         {depositions &&
+                            depositions.length > 0 &&
                             depositions.map((deposition) => {
                                 return (
                                     <Marker

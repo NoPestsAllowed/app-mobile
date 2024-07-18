@@ -26,6 +26,7 @@ import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 // } from "@/reducers/depositions";
 // import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from "react-native-picker-select";
+import Map from "@/components/Map";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -361,7 +362,7 @@ export default function CreateDepositionTab() {
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
             headerImage={
-                <MapView region={mapLocation} style={{ flex: 1 }}>
+                <Map region={mapLocation} style={{ flex: 1 }}>
                     {userLocation && (
                         <Marker
                             key="userLocation"
@@ -373,7 +374,7 @@ export default function CreateDepositionTab() {
                             pinColor={"teal"}
                         />
                     )}
-                </MapView>
+                </Map>
             }
         >
             <ThemedView style={styles.titleContainer}>
