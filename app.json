@@ -26,8 +26,7 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION"
-      ],
-      "package": "com.anonymous.nopestsallowed"
+      ]
     },
     "web": {
       "bundler": "metro",
