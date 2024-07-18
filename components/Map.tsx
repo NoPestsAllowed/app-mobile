@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import MapView, { MapViewProps } from "react-native-maps";
+import MapView, { MapViewProps, PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function Map(props: MapViewProps) {
+    // console.log(PROVIDER_GOOGLE);
+
     return (
         <View style={styles.container}>
-            <MapView style={styles.map} {...props} />
+            <MapView provider={PROVIDER_GOOGLE} style={styles.map} {...props} />
         </View>
     );
 }

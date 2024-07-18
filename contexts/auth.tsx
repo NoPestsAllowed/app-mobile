@@ -40,7 +40,7 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
     const [user, setUser] = useState<{ jwtToken: string; idToken?: string; decoded: object } | false>(false);
     const { getItemAsync: getCachedToken, setItemAsync: setToken } = SecureStore;
     const redirectUri = makeRedirectUri({
-        scheme: "com.anonymous.no-pests-allowed",
+        scheme: "com.anonymous.nopestsallowed",
     });
     const [request, result, promptAsync] = useAuthRequest(
         {
