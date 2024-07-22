@@ -1,4 +1,4 @@
-import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -48,8 +48,9 @@ export default function Profile() {
     };
     if (!user) {
         return (
-            <ThemedView>
-                <ThemedText>An error as occured fetching user profile!</ThemedText>
+            <ThemedView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                {/* <ThemedText>Fetching user...</ThemedText> */}
+                <ActivityIndicator size="large" />
             </ThemedView>
         );
     }

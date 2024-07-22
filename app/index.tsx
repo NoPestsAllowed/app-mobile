@@ -16,7 +16,6 @@ const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 export default function IndexPage() {
     const [depositions, setDepositions] = useState<Deposition[]>();
     const [lastDepositionCount, setLastDepositionCount] = useState(0);
-    const [totokeken, setTotokeken] = useState<string | null>();
     useFocusEffect(
         useCallback(() => {
             getDepositions();
@@ -50,7 +49,7 @@ export default function IndexPage() {
         setLastDepositionCount(depositionsLastDay ? depositionsLastDay.length : 0);
     };
 
-    const { isLoggedIn, user } = useOIDCAuth();
+    const { isLoggedIn } = useOIDCAuth();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     appName: {
-        fontFamily: "Boogaloo",
+        // fontFamily: "Boogaloo",
     },
     subtitle: {
         // fontSize: 36,
@@ -148,11 +147,11 @@ const styles = StyleSheet.create({
         marginTop: 50,
     },
     btn: {
-        borderColor: "#cbd5e1",
-        borderWidth: 1,
-        borderRadius: 12,
-        paddingHorizontal: 15,
-        paddingVertical: 5,
+        // borderColor: "#cbd5e1",
+        // borderWidth: 1,
+        // borderRadius: 12,
+        // paddingHorizontal: 15,
+        // paddingVertical: 5,
     },
     paragraph: {
         // width: "80%",

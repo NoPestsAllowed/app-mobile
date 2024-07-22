@@ -57,10 +57,6 @@ export default function RootLayout() {
         return null;
     }
 
-    if (error) {
-        alert(typeof error === "string" ? error : JSON.stringify(error));
-    }
-
     const headerMustBeShown = (route: RouteProp<ParamListBase, string>) => {
         // console.log(route);
         return route.name !== "(app)";

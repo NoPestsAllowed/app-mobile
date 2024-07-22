@@ -45,6 +45,12 @@
           "isIosBackgroundLocationEnabled": false,
           "isAndroidForegroundServiceEnabled": true
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/Boogaloo-Regular.ttf", "./assets/fonts/Carme-Regular.ttf", "./assets/fonts/SpaceMono-Regular.ttf"]
+        }
       ]
     ],
     "experiments": {

@@ -32,7 +32,7 @@ export default function Depositions() {
             })
                 .then((res) => res.json())
                 .then((depositionsResponse) => {
-                    console.log(depositionsResponse.depositions.length);
+                    // console.log(depositionsResponse.depositions.length);
                     setDepositions(depositionsResponse.depositions);
                 });
             return () => {
@@ -91,7 +91,7 @@ export default function Depositions() {
         })
             .then((res) => res.json())
             .then((depositionsResponse) => {
-                console.log(depositionsResponse.depositions.length);
+                // console.log(depositionsResponse.depositions.length);
                 setDepositions(depositionsResponse.depositions);
             });
     };
@@ -132,7 +132,7 @@ export default function Depositions() {
                 </ThemedText>
             </ThemedView>
 
-            <ThemedView>
+            <ThemedView style={styles.list}>
                 {depositions.length > 0 &&
                     depositions.map((deposition: DepositionWithVisualProofs, index) => {
                         return (
@@ -180,24 +180,28 @@ const styles = StyleSheet.create({
         elevation: 3,
         marginBottom: 10,
     },
-    lineTitle1: {
-        backgroundColor: " #ca8035",
-        fontSize: 20,
-        color: "#470a07",
-        marginTop: 10,
+    list: {
+        flex: 1,
+        rowGap: 12,
     },
-    lineTitle2: {
-        backgroundColor: " #ca8035",
-        fontSize: 20,
-        color: "#470a07",
-    },
-    lineTitle3: {
-        backgroundColor: " #ca8035",
-        fontSize: 20,
-        color: "#470a07",
-        shadowOpacity: 0.5,
-        shadowColor: "#7a2307",
-    },
+    // lineTitle1: {
+    //     backgroundColor: " #ca8035",
+    //     fontSize: 20,
+    //     color: "#470a07",
+    //     marginTop: 10,
+    // },
+    // lineTitle2: {
+    //     backgroundColor: " #ca8035",
+    //     fontSize: 20,
+    //     color: "#470a07",
+    // },
+    // lineTitle3: {
+    //     backgroundColor: " #ca8035",
+    //     fontSize: 20,
+    //     color: "#470a07",
+    //     shadowOpacity: 0.5,
+    //     shadowColor: "#7a2307",
+    // },
     titleContainer: {
         backgroundColor: " #ca8035",
     },
