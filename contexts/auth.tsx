@@ -1,11 +1,11 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
-import * as SecureStore from "expo-secure-store";
 import {
     AuthSessionResult,
     DiscoveryDocument,
     exchangeCodeAsync,
     makeRedirectUri,
     RefreshTokenRequestConfig,
+    TokenRequestConfig,
     TokenResponse,
     TokenResponseConfig,
     useAuthRequest,
@@ -14,6 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import { Alert } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { router } from "expo-router";
+import { clearToken, getToken, setToken } from "@/services/token-service";
 
 interface AuthContextType {
     authenticate: () => Promise<void>;
@@ -38,10 +39,10 @@ WebBrowser.maybeCompleteAuthSession();
 
 export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocument } & PropsWithChildren) => {
     const [user, setUser] = useState<{ jwtToken: string; idToken?: string; decoded: object } | false>(false);
-    const { getItemAsync: getCachedToken, setItemAsync: setToken } = SecureStore;
     const redirectUri = makeRedirectUri({
         scheme: "com.anonymous.nopestsallowed",
     });
+
     const [request, result, promptAsync] = useAuthRequest(
         {
             clientId,
@@ -50,37 +51,92 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
         },
         discovery
     );
+    // alert("Req is : \n" + JSON.stringify(request, null, 2));
+
+    const requestFreshToken = async (tokenResponse: TokenResponse) => {
+        const refreshConfig: RefreshTokenRequestConfig = {
+            clientId,
+            refreshToken: tokenResponse.refreshToken,
+        };
+
+        try {
+            return await tokenResponse.refreshAsync(refreshConfig, discovery);
+        } catch (error) {
+            await clearToken();
+        }
+    };
 
     const readTokenFromStorage = async () => {
-        const tokenString = await getCachedToken("jwtToken");
+        const tokenString = await getToken();
         const tokenConfig: TokenResponseConfig = tokenString ? JSON.parse(tokenString) : null;
-
         if (tokenConfig) {
             let tokenResponse = new TokenResponse(tokenConfig);
             if (tokenResponse.shouldRefresh()) {
-                const refreshConfig: RefreshTokenRequestConfig = {
-                    clientId,
-                    refreshToken: tokenConfig.refreshToken,
-                };
-
-                if (!discovery) {
-                    console.log("No discovery");
-                    // throw new Error("No discovery");
-                }
-
                 try {
-                    console.log("refreshing Token Async");
-                    tokenResponse = await tokenResponse.refreshAsync(refreshConfig, discovery);
+                    requestFreshToken(tokenResponse).then((response) => {
+                        if (response) {
+                            tokenResponse = response;
+                        }
+                    });
                 } catch (error) {
-                    console.error("error refreshing token async", error);
-                    setToken("jwtToken", "");
-                    console.log("CLEARED TOKEN");
+                    await clearToken();
                 }
             }
+        }
+    };
 
-            setToken("jwtToken", JSON.stringify(tokenResponse.getRequestConfig()));
-            const decoded = jwtDecode(tokenResponse.accessToken);
-            setUser({ jwtToken: tokenResponse.accessToken, decoded });
+    const getTokenForCode = async (code: string) => {
+        try {
+            const codeRes = await exchangeCodeAsync(
+                {
+                    code,
+                    redirectUri,
+                    clientId,
+                    scopes: ["openid", "email", "userid", "offline_access"],
+                    extraParams: {
+                        code_verifier:
+                            request?.codeVerifier && request?.codeVerifier !== null ? request?.codeVerifier : "",
+                    },
+                },
+                discovery
+            );
+            const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
+            const jwtToken = tokenConfig.accessToken;
+            try {
+                const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+                console.log("jwtToken & decoded user : ", { jwtToken, decoded });
+
+                // Alert.alert("It works", JSON.stringify(decoded, null, 2), [
+                //     {
+                //         text: "Set token",
+                //         onPress: () => {
+                //             setToken(JSON.stringify(tokenConfig)).then((res) => {
+                //                 setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+                //             });
+                //         },
+                //     },
+                // ]);
+                setToken(JSON.stringify(tokenConfig)).then((res) => {
+                    setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+                });
+            } catch (error) {
+                alert("Failed to decode token with error : \n" + JSON.stringify(error, null, 2));
+            }
+            // console.log("exchangeCodeAsync done!");
+            // console.log("codeRes is ", codeRes);
+            // alert("trying to getToken (after) : codeRes is" + JSON.stringify(codeRes));
+            // const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
+            // const jwtToken = tokenConfig.accessToken;
+            // const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
+            // console.log("jwtToken & decoded user : ", { jwtToken, decoded });
+
+            // await setToken(JSON.stringify(tokenConfig));
+            // setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+        } catch (error) {
+            console.log("EXCHANGE CODE ASYNC FAILURE");
+            alert("error: " + error);
+            // throw error;
+            await clearToken();
         }
     };
 
@@ -94,50 +150,22 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 return;
             }
             if (result.type === "success") {
-                console.log("SUCCESS RESULT", result);
+                // alert("Result success " + JSON.stringify(result));
+                console.log("SUCCESS RESULT", JSON.stringify(result));
                 const code = result.params.code;
                 if (code) {
                     if (!discovery) {
                         throw new Error("No discovery");
                     }
-                    const getToken = async () => {
-                        try {
-                            console.log("Ready to exchangeCodeAsync");
-
-                            try {
-                                const codeRes: TokenResponse = await exchangeCodeAsync(
-                                    {
-                                        code,
-                                        redirectUri,
-                                        clientId,
-                                        scopes: ["openid", "email", "userid", "offline_access"],
-                                        extraParams: {
-                                            code_verifier: request?.codeVerifier ?? "",
-                                        },
-                                    },
-                                    discovery
-                                );
-                                console.log("exchangeCodeAsync done!");
-                                console.log("codeRes is ", codeRes);
-
-                                const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
-                                const jwtToken = tokenConfig.accessToken;
-                                const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
-                                console.log("jwtToken & decoded user : ", { jwtToken, decoded });
-
-                                setToken("jwtToken", JSON.stringify(tokenConfig));
-                                setUser({ jwtToken, idToken: codeRes.idToken, decoded });
-                            } catch (error) {
-                                console.log("EXCHANGE CODE ASYNC FAILURE");
-
-                                console.log(error);
-                            }
-                        } catch (error) {
-                            console.error("HERE IS THE error", error);
-                            throw error;
-                        }
-                    };
-                    getToken();
+                    // Alert.alert("ready", "go", [
+                    //     {
+                    //         text: "Go",
+                    //         onPress: () => {
+                    //             getTokenForCode(code);
+                    //         },
+                    //     },
+                    // ]);
+                    getTokenForCode(code);
                 }
             }
         }
@@ -152,17 +180,19 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
 
     const authContext = {
         authenticate: async () => {
+            console.log("authenticating");
             try {
                 promptAsync();
             } catch (error) {
                 console.log("error error error error error error error");
                 console.error(error);
-                // throw error;
+                // alert("authenticate error " + JSON.stringify(error));
+                throw error;
             }
         },
-        signOut: () => {
-            alert("sign out");
-            SecureStore.deleteItemAsync("jwtToken");
+        signOut: async () => {
+            // alert("sign out");
+            await clearToken();
             setUser(false);
             router.push("/"); // Must be replace but app crash when logging out from modal...
         },

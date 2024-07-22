@@ -15,7 +15,6 @@ import { AuhtProvider } from "@/contexts/auth";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
-import { Button } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -49,13 +48,17 @@ export default function RootLayout() {
     }, []);
 
     useEffect(() => {
-        if (loaded) {
+        if (loaded && discovery !== null) {
             SplashScreen.hideAsync();
         }
-    }, [loaded]);
+    }, [loaded, discovery]);
 
     if (!loaded) {
         return null;
+    }
+
+    if (error) {
+        alert(typeof error === "string" ? error : JSON.stringify(error));
     }
 
     const headerMustBeShown = (route: RouteProp<ParamListBase, string>) => {
@@ -91,7 +94,7 @@ export default function RootLayout() {
                 </AuhtProvider>
             ) : (
                 <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ThemedText>Loading</ThemedText>
+                    <ThemedText>Loading discovery endpoints</ThemedText>
                 </ThemedView>
             )}
         </ThemeProvider>

@@ -9,16 +9,17 @@ import { Marker } from "react-native-maps";
 import { ApiDepositionResponse, Deposition } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import ConnectButton from "@/components/ConnectButton";
+import * as SecureStore from "expo-secure-store";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function IndexPage() {
     const [depositions, setDepositions] = useState<Deposition[]>();
     const [lastDepositionCount, setLastDepositionCount] = useState(0);
-
+    const [totokeken, setTotokeken] = useState<string | null>();
     useFocusEffect(
         useCallback(() => {
-            // getDepositions();
+            getDepositions();
             return () => {
                 console.log("This route is now unfocused.");
             };
@@ -49,7 +50,7 @@ export default function IndexPage() {
         setLastDepositionCount(depositionsLastDay ? depositionsLastDay.length : 0);
     };
 
-    const { isLoggedIn } = useOIDCAuth();
+    const { isLoggedIn, user } = useOIDCAuth();
 
     return (
         <SafeAreaView style={styles.container}>

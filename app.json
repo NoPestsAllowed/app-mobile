@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": "nopestsallowed",
+    "scheme": "com.anonymous.nopestsallowed",
     "name": "NoPestsAllowed",
     "slug": "no-pests-allowed",
     "version": "1.0.0",
