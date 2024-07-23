@@ -69,8 +69,11 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
     const readTokenFromStorage = async () => {
         const tokenString = await getToken();
         const tokenConfig: TokenResponseConfig = tokenString ? JSON.parse(tokenString) : null;
+        // console.log("tokenConfig", JSON.stringify(tokenConfig, null, 2));
+
         if (tokenConfig) {
             let tokenResponse = new TokenResponse(tokenConfig);
+
             if (tokenResponse.shouldRefresh()) {
                 try {
                     requestFreshToken(tokenResponse).then((response) => {
@@ -81,6 +84,8 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 } catch (error) {
                     await clearToken();
                 }
+            } else {
+                setUserFromToken(tokenConfig);
             }
         }
     };
@@ -101,42 +106,34 @@ export const AuhtProvider = ({ discovery, children }: { discovery: DiscoveryDocu
                 discovery
             );
             const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
-            const jwtToken = tokenConfig.accessToken;
-            try {
-                const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
-                console.log("jwtToken & decoded user : ", { jwtToken, decoded });
-
-                // Alert.alert("It works", JSON.stringify(decoded, null, 2), [
-                //     {
-                //         text: "Set token",
-                //         onPress: () => {
-                //             setToken(JSON.stringify(tokenConfig)).then((res) => {
-                //                 setUser({ jwtToken, idToken: codeRes.idToken, decoded });
-                //             });
-                //         },
-                //     },
-                // ]);
-                setToken(JSON.stringify(tokenConfig)).then((res) => {
-                    setUser({ jwtToken, idToken: codeRes.idToken, decoded });
-                });
-            } catch (error) {
-                alert("Failed to decode token with error : \n" + JSON.stringify(error, null, 2));
-            }
-            // console.log("exchangeCodeAsync done!");
-            // console.log("codeRes is ", codeRes);
-            // alert("trying to getToken (after) : codeRes is" + JSON.stringify(codeRes));
-            // const tokenConfig: TokenResponseConfig = codeRes?.getRequestConfig();
-            // const jwtToken = tokenConfig.accessToken;
-            // const decoded = jwtDecode(codeRes.idToken ? codeRes.idToken : jwtToken);
-            // console.log("jwtToken & decoded user : ", { jwtToken, decoded });
-
-            // await setToken(JSON.stringify(tokenConfig));
-            // setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+            await setToken(JSON.stringify(tokenConfig));
+            setUserFromToken(tokenConfig);
         } catch (error) {
             console.log("EXCHANGE CODE ASYNC FAILURE");
             alert("error: " + error);
             // throw error;
             await clearToken();
+        }
+    };
+
+    const setUserFromToken = async (tokenConfig: TokenResponseConfig) => {
+        try {
+            const decoded = jwtDecode(tokenConfig?.idToken ? tokenConfig.idToken : tokenConfig.accessToken);
+            // console.log("jwtToken & decoded user : ", { tokenConfig, decoded });
+
+            // Alert.alert("It works", JSON.stringify(decoded, null, 2), [
+            //     {
+            //         text: "Set token",
+            //         onPress: () => {
+            //             setToken(JSON.stringify(tokenConfig)).then((res) => {
+            //                 setUser({ jwtToken, idToken: codeRes.idToken, decoded });
+            //             });
+            //         },
+            //     },
+            // ]);
+            setUser({ jwtToken: tokenConfig.accessToken, idToken: tokenConfig.idToken, decoded });
+        } catch (error) {
+            alert("Failed to decode token with error : \n" + JSON.stringify(error, null, 2));
         }
     };
 
