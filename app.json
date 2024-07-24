@@ -16,7 +16,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.nopestsallowed",
       "infoPlist": {
-        "UIBackgroundModes": ["location", "fetch", "remote-notification"]
+        "UIBackgroundModes": ["location", "fetch", "remote-notification", "processing"]
       }
     },
     "android": {
@@ -29,7 +29,9 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION",
-        "android.permission.ACCESS_BACKGROUND_LOCATION"
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SCHEDULE_EXACT_ALARM"
       ]
     },
     "web": {
@@ -55,6 +57,18 @@
         "expo-font",
         {
           "fonts": ["./assets/fonts/Boogaloo-Regular.ttf", "./assets/fonts/Carme-Regular.ttf", "./assets/fonts/SpaceMono-Regular.ttf"]
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+        //   "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "defaultChannel": "default"
+        //   "sounds": [
+        //     "./local/assets/notification-sound.wav",
+        //     "./local/assets/notification-sound-other.wav"
+        //   ]
         }
       ]
     ],

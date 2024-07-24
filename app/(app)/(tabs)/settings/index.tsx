@@ -6,12 +6,13 @@ import * as Location from "expo-location";
 import * as TaskManager from "expo-task-manager";
 import { useFocusEffect } from "expo-router";
 import { fetchDepositions } from "@/services/deposition-service";
+import * as Notifications from "expo-notifications";
 
 const LOCATION_TASK_NAME = "background-location-task";
 const GEOFENCING_TASK_NAME = "geofencing-task";
 
 var setMyPositionFn = (locations: Location) => {
-    console.log("No state defined");
+    console.log("No state [myPosition] defined");
 };
 var setMessageFn = (string: string) => {
     console.log("No state [message] defined");
@@ -20,6 +21,9 @@ var setMessageFn = (string: string) => {
 export default function index() {
     const [trackingEnabled, setTrackingEnabled] = useState(false);
     const [geofencingEnabled, setGeofencingEnabled] = useState(false);
+    // const [notificationPermissions, setNotificationPermissions] = useState<Notifications.PermissionStatus>(
+    //     Notifications.PermissionStatus.UNDETERMINED
+    // );
     const [message, setMessage] = useState("");
     const [myPosition, setMyPosition] = useState<Location | null>(null);
     setMyPositionFn = setMyPosition;
@@ -63,9 +67,16 @@ export default function index() {
             stopGeofencing();
             setGeofencingEnabled(false);
         } else {
+            requestNotificationPermissions();
             startGeofencing();
             setGeofencingEnabled(true);
         }
+    };
+
+    const requestNotificationPermissions = async () => {
+        const { status } = await Notifications.requestPermissionsAsync();
+        // setNotificationPermissions(status);
+        return status;
     };
 
     const geofenceRegions = async () => {
@@ -195,9 +206,16 @@ TaskManager.defineTask(
         console.log(JSON.stringify(data, null, 2));
 
         if (data.eventType === Location.LocationGeofencingEventType.Enter) {
+            scheduleLocaleNotification("Infested Place !", "Be carefull this place is infested by pests.");
             setMessageFn("You enter an infested zone\n" + JSON.stringify(data.region));
         }
         if (data.eventType === Location.LocationGeofencingEventType.Exit) {
+            scheduleLocaleNotification(
+                "Leaving Infested Place !",
+                "You are now safe! Enjoy...",
+                "We hope your are happy with NoPestsAllowed.",
+                false
+            );
             setMessageFn("Leaving\n" + JSON.stringify(data.region));
         }
         if (error) {
@@ -209,3 +227,20 @@ TaskManager.defineTask(
         }
     }
 );
+
+const scheduleLocaleNotification = (title: string, body?: string, subtitle?: string, sound = true, delay = 2) => {
+    Notifications.scheduleNotificationAsync({
+        content: {
+            title,
+            subtitle,
+            body,
+            sound,
+            data: {
+                url: "/depositions",
+            },
+        },
+        trigger: {
+            seconds: delay,
+        },
+    });
+};
