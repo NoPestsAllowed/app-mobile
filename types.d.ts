@@ -27,7 +27,7 @@ interface Place {
 interface ApiDepositionResponse {
     result: boolean;
     error?: string | string[];
-    depositions?: Deposition[];
+    depositions?: DepositionWithVisualProofs[];
 }
 
 interface Coordinates {
@@ -39,6 +39,14 @@ interface Coordinates {
 
 interface VisualProof {
     url: string;
+    latitude: number;
+    longitude: number;
+    altitude: number;
+    takenAt: Date;
+    verificationRapport: {
+        score: number;
+        label: string;
+    }[]
 }
 
 interface DevicePicture {

@@ -58,6 +58,10 @@ type Place = {
     };
 };
 
+type LocalVisualProof = {
+    coords: Location.LocationObjectCoords | undefined;
+} & DevicePicture;
+
 export default function CreateDepositionTab() {
     const [depositionName, setDepositionName] = useState("");
     // const [localisation, setLocalisation] = useState("");
@@ -73,10 +77,10 @@ export default function CreateDepositionTab() {
     // const [depoByHonnor, setDepoByHonnor] = useState(false);
     // const [hasCameraPermission, setHasCameraPermission] = useState(false);
     const [cameraOpen, setCameraOpen] = useState(false);
-    console.log("camera open ?", cameraOpen);
+    // console.log("camera open ?", cameraOpen);
 
     const [selectedImage, setSelectedImage] = useState(null);
-    const [visualProofs, setVisualProofs] = useState<DevicePicture[]>([]);
+    const [visualProofs, setVisualProofs] = useState<LocalVisualProof[]>();
     const [pestType, setPestType] = useState("");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -122,10 +126,19 @@ export default function CreateDepositionTab() {
         useCallback(() => {
             (async () => {
                 const { status } = await Location.requestForegroundPermissionsAsync();
+                // console.log("status is ", status);
                 if (status === "granted") {
-                    let location = await Location.getCurrentPositionAsync({});
-                    setUserLocation(location);
-                    console.log("LOCATION", location);
+                    // console.log("awaiting location");
+
+                    try {
+                        let location = await Location.getCurrentPositionAsync({});
+                        console.log(location);
+
+                        setUserLocation(location);
+                        // console.log("LOCATION", location);
+                    } catch (error) {
+                        alert(error);
+                    }
                 }
             })();
             // let lat = 48.887553;
@@ -141,7 +154,7 @@ export default function CreateDepositionTab() {
 
     useEffect(() => {
         if (userLocation) {
-            console.log("userLocation", userLocation);
+            // console.log("userLocation", userLocation);
             setMapLocation({
                 latitude: userLocation.coords.latitude,
                 longitude: userLocation.coords.longitude,
@@ -152,23 +165,31 @@ export default function CreateDepositionTab() {
     }, [userLocation]);
 
     const openCamera = () => {
-        console.log("opening camera");
-
         setCameraOpen(true);
     };
 
-    const handlePictureTaken = (picture: DevicePicture) => {
+    const handlePictureTaken = (picture: LocalVisualProof) => {
         if (picture) {
             setDepoLocation(userLocation);
-            setVisualProofs((vproofs) => [...(vproofs ?? []), picture]);
+            // console.log(userLocation);
+            if (!userLocation?.coords) {
+                throw new Error("Pictures must be geolocalized");
+            }
+            // picture as Partial<VisualProof>;
+            Object.defineProperty(picture, "coords", { value: userLocation.coords });
+            // picture.coords = userLocation.coords;
+            // picture;
+            // console.log("_________", JSON.stringify(picture, null, 2));
+
+            setVisualProofs((vproofs) => {
+                return vproofs ? [...vproofs, picture] : [picture];
+            });
             // dispatch(addVisualProofToNewDeposition(picture));
         }
     };
 
     useEffect(() => {
         if (depoLocation) {
-            console.log(depoLocation);
-
             (async () => {
                 const fecthPlace = await fetch(`${backendUrl}/geocoder`, {
                     method: "POST",
@@ -180,8 +201,8 @@ export default function CreateDepositionTab() {
                 });
                 const fetchedPlace = await fecthPlace.json();
 
-                console.log("—————— FETCHED PLACES ——————");
-                console.log(fetchedPlace);
+                // console.log("—————— FETCHED PLACES ——————");
+                // console.log(fetchedPlace);
 
                 setPlaces((pla) =>
                     fetchedPlace.data.map(
@@ -283,16 +304,28 @@ export default function CreateDepositionTab() {
         }
         depositionFormData.append("depo", JSON.stringify(deposition));
 
-        visualProofs.map((proof, index) => {
-            const photoName = proof.uri?.substring(proof.uri?.lastIndexOf("/") + 1, proof.uri?.length);
-            // console.log(proof.uri);
-            // @ts-ignore
-            depositionFormData.append(`visualProofs`, {
-                uri: proof.uri,
-                name: photoName,
-                type: "image/jpeg",
+        if (visualProofs) {
+            visualProofs.map((proof, index) => {
+                const photoName = proof.uri?.substring(proof.uri?.lastIndexOf("/") + 1, proof.uri?.length);
+                console.log("proof.coords", proof.coords);
+                // @ts-ignore
+                depositionFormData.append(`visualProofs`, {
+                    uri: proof.uri,
+                    name: photoName,
+                    type: "image/jpeg",
+                    // coords: proof.coords,
+                });
+
+                depositionFormData.append(
+                    `visualProofsMeta`,
+                    JSON.stringify({
+                        name: photoName,
+                        coords: proof.coords,
+                    })
+                );
             });
-        });
+        }
+
         console.log(user);
 
         // console.log("depositionFormData", depositionFormData);
@@ -347,17 +380,19 @@ export default function CreateDepositionTab() {
         // dispatch(removeVisualProof(picture));
     };
 
-    const photos = visualProofs.map((picture, i: number) => {
-        return (
-            <View key={i} style={styles.photoContainer}>
-                <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
-                    <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
-                </TouchableOpacity>
+    const photos = visualProofs
+        ? visualProofs.map((picture, i: number) => {
+              return (
+                  <View key={i} style={styles.photoContainer}>
+                      <TouchableOpacity onPress={() => handlePictureRemoval(picture)}>
+                          <FontAwesome name="trash" size={20} color="#A53939" style={styles.deleteIcon} />
+                      </TouchableOpacity>
 
-                <Image source={{ uri: picture.uri }} style={styles.photo} />
-            </View>
-        );
-    });
+                      <Image source={{ uri: picture.uri }} style={styles.photo} />
+                  </View>
+              );
+          })
+        : [];
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}

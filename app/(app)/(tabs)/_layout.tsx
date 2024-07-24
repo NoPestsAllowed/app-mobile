@@ -117,6 +117,16 @@ export default function TabsLayout() {
                         href: null,
                     }}
                 />
+
+                <Tabs.Screen
+                    name="settings/index"
+                    options={{
+                        title: "Settings",
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabBarIcon name={focused ? "cog" : "cog-outline"} color={color} />
+                        ),
+                    }}
+                />
             </Tabs>
         </View>
     );

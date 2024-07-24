@@ -31,7 +31,7 @@ export default function DepositionOverview({
                     </View>
 
                     <View style={styles.detailsContainer}>
-                        <ThemedText type="subtitle" style={styles.line1}>
+                        <ThemedText type="subtitle" style={styles.line1} ellipsizeMode="tail" numberOfLines={1}>
                             {deposition.name}
                         </ThemedText>
                         {deposition.placeId.address && (

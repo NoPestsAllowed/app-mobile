@@ -4,7 +4,7 @@ import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useLocalSearchParams, useGlobalSearchParams, Link } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 // import { useSelector } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import moment from "moment";
@@ -22,7 +22,7 @@ export default function DepositionDetail() {
     const { user } = useOIDCAuth();
     // console.log("here", id);
     const [deposition, setDeposition] = useState<DepositionWithVisualProofs | null>(null);
-    console.log("dep", deposition);
+    // console.log("dep", deposition);
 
     const handleDeleteDeposition = (deposition: Deposition) => {
         Alert.alert(
@@ -47,9 +47,9 @@ export default function DepositionDetail() {
                             .then((response) => response.json())
                             .then((data) => {
                                 if (data.result) {
-                                    router.navigate("depositions/index");
-                                    // Optionally navigate or update state here
                                     console.log("Deposition supprimée");
+                                    // Optionally navigate or update state here
+                                    router.replace("/depositions");
                                 } else {
                                     console.error(data.error);
                                 }
@@ -97,8 +97,8 @@ export default function DepositionDetail() {
             headerImage={
                 <MapView
                     initialRegion={{
-                        latitude: deposition.placeId.geojson.coordinates[0],
-                        longitude: deposition.placeId.geojson.coordinates[1],
+                        latitude: deposition.visualProofs[0].latitude,
+                        longitude: deposition.visualProofs[0].longitude,
                         latitudeDelta: 0.000922,
                         longitudeDelta: 0.000421,
                     }}
@@ -107,18 +107,20 @@ export default function DepositionDetail() {
                     <Marker
                         key={deposition.id}
                         coordinate={{
-                            latitude: deposition.placeId.geojson.coordinates[0],
-                            longitude: deposition.placeId.geojson.coordinates[1],
+                            latitude: deposition.visualProofs[0].latitude,
+                            longitude: deposition.visualProofs[0].longitude,
                         }}
                         title={deposition.name}
-                        description={deposition.description}
+                        description={`${deposition.description}`}
                     />
                 </MapView>
             }
         >
             <ThemedView style={styles.card}>
                 <ThemedView style={styles.headerContainer}>
-                    <ThemedText type="title">{deposition.name}</ThemedText>
+                    <ThemedText type="title" numberOfLines={1} ellipsizeMode="tail" style={styles.depositionName}>
+                        {deposition.name}
+                    </ThemedText>
                     <ThemedText> {deposition.type}</ThemedText>
                 </ThemedView>
 
@@ -163,8 +165,15 @@ export default function DepositionDetail() {
                                 {deposition.visualProofs.map((visualProof, index) => {
                                     console.log(visualProof);
                                     return (
-                                        <ThemedView key={index}>
+                                        <ThemedView style={[styles.imageCard, styles.shadow]} key={index}>
                                             <Image source={{ uri: visualProof.url }} style={styles.photo} />
+                                            <ThemedText style={styles.imgText}>
+                                                Analysed as: {deposition.visualProofs[0].verificationRapport[0].label}
+                                            </ThemedText>
+                                            <ThemedText style={styles.imgText}>
+                                                probability:{" "}
+                                                {deposition.visualProofs[0].verificationRapport[0].score.toFixed(2)}
+                                            </ThemedText>
                                         </ThemedView>
                                     );
                                 })}
@@ -200,6 +209,9 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         // gap: 8,
         marginBottom: 0,
+    },
+    depositionName: {
+        maxWidth: "60%",
     },
     content: {
         // alignItems: "flex-start",
@@ -242,6 +254,22 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         flexDirection: "row",
         // justifyContent: "center",
+    },
+    imageCard: {
+        backgroundColor: "white",
+        padding: 5,
+        borderRadius: 5,
+        alignItems: "center",
+    },
+    imgText: {
+        fontSize: 12,
+    },
+    shadow: {
+        shadowColor: "#171717",
+        shadowOffset: { width: -1, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 2,
+        elevation: 3,
     },
     actionContainer: {
         flexDirection: "row",

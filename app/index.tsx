@@ -33,7 +33,7 @@ export default function IndexPage() {
             },
         });
         const { depositions }: ApiDepositionResponse = await depositionsResponse.json();
-        console.log("depositions", depositions);
+        // console.log("depositions", depositions);
 
         setDepositions(depositions);
 
@@ -45,7 +45,7 @@ export default function IndexPage() {
         });
 
         const { depositions: depositionsLastDay }: ApiDepositionResponse = await depositionsLastDayResponse.json();
-        console.log("depositionsLastDayResponse", depositionsLastDay);
+        // console.log("depositionsLastDayResponse", depositionsLastDay);
         setLastDepositionCount(depositionsLastDay ? depositionsLastDay.length : 0);
     };
 
