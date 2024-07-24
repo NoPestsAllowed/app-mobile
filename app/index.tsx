@@ -10,6 +10,7 @@ import { ApiDepositionResponse, Deposition } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import ConnectButton from "@/components/ConnectButton";
 import * as SecureStore from "expo-secure-store";
+import { $t } from "@/lang";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -87,33 +88,24 @@ export default function IndexPage() {
                         NoPestsAllowed
                     </ThemedText>
                     <ThemedText style={styles.subtitle} type="subtitle">
-                        The application to make deposition against location infested by pests.
+                        {$t("strings.noPestsDescription")}
                     </ThemedText>
                 </ThemedView>
-
-                {isLoggedIn && (
-                    <ThemedView style={styles.btnContainer}>
-                        <Link href="(tabs)/private" style={styles.btn}>
-                            <ThemedText type="link">Private</ThemedText>
-                        </Link>
-                    </ThemedView>
-                )}
 
                 <ThemedView style={styles.btnContainer}>
                     <ConnectButton style={styles.btn} />
                 </ThemedView>
 
                 <ThemedText style={styles.paragraph}>
-                    <ThemedText type="defaultSemiBold">{lastDepositionCount}</ThemedText> rapports d'insectes ont été
-                    ajoutés au cours des dernières 24 heures !
+                    {$t("strings.depoLast24", { count: lastDepositionCount })}
                 </ThemedText>
 
                 <ThemedView style={styles.footerLink}>
                     <Link href="/legal-notice">
-                        <ThemedText type="link">Mentions legales</ThemedText>
+                        <ThemedText type="link">{$t("strings.legal")}</ThemedText>
                     </Link>
                     <Link href="/contact-us">
-                        <ThemedText type="link">Contact</ThemedText>
+                        <ThemedText type="link">{$t("strings.contact")}</ThemedText>
                     </Link>
                 </ThemedView>
             </ParallaxScrollView>

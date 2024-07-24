@@ -2,6 +2,7 @@ import { Button, Pressable, StyleSheet, ViewStyle } from "react-native";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
+import { $t } from "@/lang";
 
 export default function ConnectButton({ style }: { style?: ViewStyle }) {
     const { authenticate, signOut, isLoggedIn } = useOIDCAuth();
@@ -12,11 +13,11 @@ export default function ConnectButton({ style }: { style?: ViewStyle }) {
         <>
             {isLoggedIn ? (
                 <Pressable style={[styles.container, style]} onPress={() => signOut()}>
-                    <ThemedText style={styles.text}>LogOut</ThemedText>
+                    <ThemedText style={styles.text}>{$t("ui.logOut")}</ThemedText>
                 </Pressable>
             ) : (
                 <Pressable style={[styles.container, style]} onPress={handleRegistration}>
-                    <ThemedText style={styles.text}>LogIn</ThemedText>
+                    <ThemedText style={styles.text}>{$t("ui.logIn")}</ThemedText>
                 </Pressable>
             )}
         </>
