@@ -14,3 +14,11 @@ i18n.enableFallback = true;
 export const $t = (stringToTranslate: string, rest?: object) => {
     return i18n.t(stringToTranslate, {...rest})
 }
+
+export const translationAsObject = (path: string) => {
+    const translation = i18n.get(path);
+    const translationObject = translation as { [key: string]: string };
+    // console.log("translationObject", translationObject, JSON.parse(translationObject));
+
+    return translationObject;
+}

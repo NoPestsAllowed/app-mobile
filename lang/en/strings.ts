@@ -43,4 +43,10 @@ export const strings = {
         }
     },
     loadingDiscovery: "Loading discovery endpoints",
+    confirmDeleteDeposition: "Are you sure you want to delete this deposition?\n This action is irreversible",
+    status: {
+        pending: "pending",
+        accepted: "Accepted",
+        rejected: "Rejected",
+    }
 }

@@ -6,6 +6,7 @@ import { ThemedText } from "../ThemedText";
 import moment from "moment";
 import { ThemedButton } from "../ThemedButton";
 import { Link } from "expo-router";
+import { $t } from "@/lang";
 
 export default function DepositionOverview({
     deposition,
@@ -39,7 +40,9 @@ export default function DepositionOverview({
                                 {deposition.placeId.address}
                             </ThemedText>
                         )}
-                        <ThemedText style={[styles.detail, styles.pestType]}> {deposition.type}</ThemedText>
+                        <ThemedText style={[styles.detail, styles.pestType]}>
+                            {$t(`pests.${deposition.type}`)}
+                        </ThemedText>
 
                         <View style={[styles.date]}>
                             <ThemedText style={styles.dateText} type="monospaced">
@@ -56,7 +59,7 @@ export default function DepositionOverview({
                             },
                         ]}
                     >
-                        {deposition.status}
+                        {$t(`strings.status.${deposition.status}`)}
                     </ThemedText>
                 </Pressable>
             </Link>

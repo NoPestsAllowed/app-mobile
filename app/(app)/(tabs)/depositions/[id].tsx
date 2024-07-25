@@ -27,15 +27,15 @@ export default function DepositionDetail() {
 
     const handleDeleteDeposition = (deposition: Deposition) => {
         Alert.alert(
-            "Confirmation",
-            "Êtes-vous sûr de vouloir supprimer votre déposition ?",
+            $t("strings.confirm"),
+            $t("strings.confirmDeleteDeposition"),
             [
                 {
-                    text: "Annuler",
+                    text: $t("strings.cancel"),
                     style: "cancel",
                 },
                 {
-                    text: "Supprimer",
+                    text: $t("strings.delete"),
                     onPress: () => {
                         fetch(`${backendUrl}/depositions/delete`, {
                             method: "DELETE",
@@ -122,26 +122,28 @@ export default function DepositionDetail() {
                     <ThemedText type="title" numberOfLines={1} ellipsizeMode="tail" style={styles.depositionName}>
                         {deposition.name}
                     </ThemedText>
-                    <ThemedText> {deposition.type}</ThemedText>
                 </ThemedView>
 
                 <ThemedView style={styles.content}>
                     <ThemedView style={styles.subHeader}>
-                        <ThemedText>
-                            {$t("strings.at")}{" "}
-                            <ThemedText style={styles.bold}>{moment(deposition.createdAt).format("L")}</ThemedText>
-                        </ThemedText>
+                        <View>
+                            <ThemedText style={styles.bold}>{$t(`pests.${deposition.type}`)}</ThemedText>
+                            <ThemedText>
+                                {$t("strings.at")}{" "}
+                                <ThemedText style={styles.bold}>{moment(deposition.createdAt).format("L")}</ThemedText>
+                            </ThemedText>
+                        </View>
                         {/* <ThemedView style={styles.detailBlock}> */}
-                        <ThemedText>
+                        <View>
                             <ThemedText
                                 style={{
                                     fontWeight: "bold",
                                     color: deposition.status === "rejected" ? "red" : "green",
                                 }}
                             >
-                                {deposition.status}
+                                {$t(`strings.status.${deposition.status}`)}
                             </ThemedText>
-                        </ThemedText>
+                        </View>
                         {/* </ThemedView> */}
                     </ThemedView>
 
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
     },
     depositionName: {
-        maxWidth: "60%",
+        // maxWidth: "60%",
     },
     content: {
         // alignItems: "flex-start",
@@ -226,9 +228,9 @@ const styles = StyleSheet.create({
     subHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center",
+        // alignItems: "center",
         width: "100%",
-        // marginTop: -10,
+        marginTop: 10,
         marginBottom: 15,
     },
     separator: {

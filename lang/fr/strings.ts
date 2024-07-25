@@ -6,7 +6,7 @@ export const strings = {
         one: "%{count} déposition au cours des dernières 24h.",
         other: "%{count} dépositions au cours des dernières 24h.",
     },
-    legal: "Mentions légale",
+    legal: "Mentions légales",
     contact_us: "Contactez-nous",
     msgSent: "Message envoyé.",
     sendMsg: "Envoyer le message",
@@ -42,4 +42,10 @@ export const strings = {
         }
     },
     loadingDiscovery: "Chargement des points de terminaisons de l'authentification",
+    confirmDeleteDeposition: "Êtes-vous sûr de vouloir supprimer cette déposition ?\n Cette action est irréversible",
+    status: {
+        pending: "En attente",
+        accepted: "Acceptée",
+        rejected: "Rejetée",
+    }
 }

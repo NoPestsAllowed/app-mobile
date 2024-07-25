@@ -28,6 +28,7 @@ import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import RNPickerSelect from "react-native-picker-select";
 import Map from "@/components/Map";
 import { $t } from "@/lang";
+import { displayablePests } from "@/services/pests-service";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -394,6 +395,7 @@ export default function CreateDepositionTab() {
               );
           })
         : [];
+
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "grey", dark: "#1D3D47" }}
@@ -461,13 +463,7 @@ export default function CreateDepositionTab() {
                         style={pickerSelectStyles}
                         value={pestType}
                         onValueChange={(itemValue) => setPestType(itemValue)}
-                        items={[
-                            { label: "Cafards", value: "cockroach" },
-                            { label: "Punaises de lit", value: "bedbugs" },
-                            { label: "Puce", value: "ticks" },
-                            { label: "Rats", value: "rats" },
-                            { label: "Termites", value: "termites" },
-                        ]}
+                        items={displayablePests()}
                         placeholder={$t("forms.fields.selectPestType.placeholder")}
                     />
                 </ThemedView>
