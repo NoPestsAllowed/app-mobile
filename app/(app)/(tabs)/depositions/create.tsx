@@ -27,6 +27,7 @@ import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 // import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from "react-native-picker-select";
 import Map from "@/components/Map";
+import { $t } from "@/lang";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -373,7 +374,7 @@ export default function CreateDepositionTab() {
     const handlePictureRemoval = (picture: { uri: string }) => {
         // console.log("removing", picture);
         setVisualProofs((vproofs) => {
-            return vproofs ? vproofs.filter((proof) => proof.uri !== picture.uri ?? []) : [];
+            return vproofs ? vproofs.filter((proof) => proof.uri !== picture.uri) : [];
         });
         setDepoPlace(null);
         setDepoLocation(null);
@@ -413,14 +414,14 @@ export default function CreateDepositionTab() {
             }
         >
             <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Créer une déposition</ThemedText>
+                <ThemedText type="title">{$t("strings.createDeposition")}</ThemedText>
             </ThemedView>
 
             <ThemedTextInput
                 onChangeText={setDepositionName}
                 value={depositionName}
-                placeholder="Donner un nom à votre déposition"
-                label="Titre"
+                placeholder={$t("forms.fields.title.placeholder")}
+                label={$t("forms.fields.title.label")}
                 // keyboardType="default"
                 // inputMode="text"
                 // autoCorrect={false}
@@ -454,7 +455,7 @@ export default function CreateDepositionTab() {
             </ThemedView> */}
 
             <ThemedView style={styles.inputBlock}>
-                <ThemedText>Selectionner le type de nuisible</ThemedText>
+                <ThemedText>{$t("forms.fields.selectPestType.label")}</ThemedText>
                 <ThemedView style={[styles.selectInput, styles.global]}>
                     <RNPickerSelect
                         style={pickerSelectStyles}
@@ -467,6 +468,7 @@ export default function CreateDepositionTab() {
                             { label: "Rats", value: "rats" },
                             { label: "Termites", value: "termites" },
                         ]}
+                        placeholder={$t("forms.fields.selectPestType.placeholder")}
                     />
                 </ThemedView>
             </ThemedView>
@@ -474,7 +476,7 @@ export default function CreateDepositionTab() {
             {depoByPicture && (
                 <ThemedView style={styles.pictureBtn}>
                     <ThemedButton onPress={openCamera} style={styles.button}>
-                        <ThemedText style={styles.buttonText}>Ajouter une preuve</ThemedText>
+                        <ThemedText style={styles.buttonText}>{$t("forms.fields.addProof.label")}</ThemedText>
                     </ThemedButton>
 
                     {/* <ThemedButton style={styles.button} onPress={pickImage}>
@@ -488,7 +490,7 @@ export default function CreateDepositionTab() {
 
             {places && (
                 <ThemedView style={styles.inputBlock}>
-                    <ThemedText>Next step</ThemedText>
+                    <ThemedText>{$t("forms.fields.selectPlace.label")}</ThemedText>
                     <ThemedView style={[styles.selectInput, styles.global]}>
                         <RNPickerSelect
                             style={pickerSelectStyles}
@@ -496,6 +498,7 @@ export default function CreateDepositionTab() {
                             onValueChange={(itemValue) => itemSelected(itemValue)}
                             items={places}
                             itemKey="label"
+                            placeholder={$t("forms.fields.selectPlace.placeholder")}
                         />
                     </ThemedView>
                 </ThemedView>
@@ -513,8 +516,8 @@ export default function CreateDepositionTab() {
             <ThemedTextInput
                 onChangeText={(value) => setOwnerEmail(value)}
                 value={ownerEmail}
-                placeholder="Email du propriétaire"
-                label="Email du propriétaire"
+                placeholder={$t("forms.fields.ownerEmail.placeholder")}
+                label={$t("forms.fields.ownerEmail.label")}
                 keyboardType="email-address"
                 inputMode="email"
                 // textContentType="emailAddress"
@@ -524,8 +527,8 @@ export default function CreateDepositionTab() {
             <ThemedTextInput
                 onChangeText={(value) => setDescription(value)}
                 value={description}
-                placeholder="Description"
-                label="Description"
+                placeholder={$t("forms.fields.desc.label")}
+                label={$t("forms.fields.desc.label")}
                 multiline={true}
                 numberOfLines={4}
                 style={[styles.global, styles.input]}
@@ -534,9 +537,9 @@ export default function CreateDepositionTab() {
             <ThemedView style={styles.photosContainer}>{photos}</ThemedView>
             <ThemedView style={{ alignItems: "center" }}>
                 {isSubmitting === false ? (
-                    <ThemedButton onPress={submitDeposition}>Envoyer</ThemedButton>
+                    <ThemedButton onPress={submitDeposition}>{$t("forms.buttons.send")}</ThemedButton>
                 ) : (
-                    <ThemedText>Déposition en cours de traitement.</ThemedText>
+                    <ThemedText>{$t("forms.waitingState.sendingDeposition")}</ThemedText>
                 )}
             </ThemedView>
         </ParallaxScrollView>

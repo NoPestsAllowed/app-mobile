@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -7,6 +7,7 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { fetchAuthenticatedUser, updateAuthenticatedUser } from "@/services/user-service";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { ThemedView } from "@/components/ThemedView";
+import { $t } from "@/lang";
 
 export default function EditProfile() {
     const { id } = useLocalSearchParams();
@@ -45,7 +46,7 @@ export default function EditProfile() {
         if (UpdateSuccess) {
             router.navigate("/profile");
         } else {
-            setUpdate("Erreur de modification");
+            setUpdate($t("strings.updateError"));
         }
         // try {
         //     const response = await fetch(`${backendUrl}/users/update/${id}`, {
@@ -77,9 +78,9 @@ export default function EditProfile() {
 
     if (!profileLoaded) {
         return (
-            <View>
-                <Text>Loading profile...</Text>
-            </View>
+            <ThemedView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <ActivityIndicator size="large" />
+            </ThemedView>
         );
     }
 
@@ -94,35 +95,35 @@ export default function EditProfile() {
                         style={styles.avatar}
                     />
                     <View style={styles.notificationContainer}>
-                        {update && <Text style={styles.message}>Vos modifications on bien été prise en compte!!!</Text>}
+                        {update && <Text style={styles.message}>{$t("strings.updateSuccess")}</Text>}
                     </View>
                 </ThemedView>
 
                 <View style={styles.content}>
                     <ThemedTextInput
-                        label="Prénom"
+                        label={$t("forms.fields.firstName.label")}
                         labelStyle={styles.label}
                         onChangeText={(value) => setFirstName(value)}
                         value={firstName}
-                        placeholder="First Name"
+                        placeholder={$t("forms.fields.firstName.placeholder")}
                         style={styles.input}
                     />
 
                     <ThemedTextInput
-                        label="Nom"
+                        label={$t("forms.fields.lastName.label")}
                         labelStyle={styles.label}
                         onChangeText={(value) => setLastName(value)}
                         value={lastName}
-                        placeholder="Last Name"
+                        placeholder={$t("forms.fields.lastName.placeholder")}
                         style={styles.input}
                     />
 
                     <ThemedTextInput
-                        label="Email"
+                        label={$t("forms.fields.email.label")}
                         labelStyle={styles.label}
                         onChangeText={(value) => setEmail(value)}
                         value={email}
-                        placeholder="Email"
+                        placeholder={$t("forms.fields.email.label")}
                         style={styles.input}
                     />
                     {/* <ThemedText style={styles.label}>Birth Date</ThemedText>
@@ -155,7 +156,7 @@ export default function EditProfile() {
             </View>
 
             <View style={styles.buttonContainer}>
-                <ThemedButton onPress={() => handleModification()}>Enregistrer les modifications</ThemedButton>
+                <ThemedButton onPress={() => handleModification()}>{$t("forms.buttons.save")}</ThemedButton>
             </View>
         </ThemedView>
     );

@@ -6,6 +6,7 @@ import ConnectButton from "../ConnectButton";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { Link } from "expo-router";
 import { ThemedText } from "../ThemedText";
+import { $t } from "@/lang";
 
 export default function Menu() {
     const [open, setOpen] = useState(false);
@@ -33,26 +34,26 @@ export default function Menu() {
                         <View style={styles.menuItem}>
                             <Link href="/depositions/create">
                                 <ThemedText type="link" style={styles.uppercase}>
-                                    Create deposition
+                                    {$t("strings.createDeposition")}
                                 </ThemedText>
                             </Link>
                         </View>
                         <View style={styles.menuItem}>
                             <Link href="/legal-notice">
                                 <ThemedText type="link" style={styles.uppercase}>
-                                    Mentions légales
+                                    {$t("strings.legal")}
                                 </ThemedText>
                             </Link>
                         </View>
                         <View style={styles.menuItem}>
                             <Link href="/contact-us">
                                 <ThemedText type="link" style={styles.uppercase}>
-                                    Contact
+                                    {$t("strings.contact")}
                                 </ThemedText>
                             </Link>
                         </View>
                         <View style={styles.logoutBtn}>
-                            <Button title="LOGOUT" onPress={() => handleLogout()} />
+                            <Button title={$t("ui.logOut").toUpperCase()} onPress={() => handleLogout()} />
                         </View>
                         {/* <ConnectButton style={styles.logoutBtn} /> */}
                     </ThemedView>

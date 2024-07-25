@@ -7,6 +7,7 @@ import * as TaskManager from "expo-task-manager";
 import { useFocusEffect } from "expo-router";
 import { fetchDepositions } from "@/services/deposition-service";
 import * as Notifications from "expo-notifications";
+import { $t } from "@/lang";
 
 const LOCATION_TASK_NAME = "background-location-task";
 const GEOFENCING_TASK_NAME = "geofencing-task";
@@ -132,10 +133,10 @@ export default function index() {
         <ThemedView style={styles.container}>
             <ScrollView>
                 <ThemedText style={styles.title} type="title">
-                    Settings
+                    {$t("strings.settings")}
                 </ThemedText>
                 <View style={styles.inputGroup}>
-                    <ThemedText>Track Me !</ThemedText>
+                    <ThemedText>{$t("forms.fields.trackMe.label")} !</ThemedText>
                     <Switch
                         style={styles.toggle}
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -148,7 +149,7 @@ export default function index() {
                 {myPosition && <ThemedText>{JSON.stringify(myPosition, null, 8)}</ThemedText>}
                 {message && message !== "" && <ThemedText>{message}</ThemedText>}
                 <View style={styles.inputGroup}>
-                    <ThemedText>Use geofence !</ThemedText>
+                    <ThemedText>{$t("forms.fields.geofence.label")} !</ThemedText>
                     <Switch
                         style={styles.toggle}
                         trackColor={{ false: "#767577", true: "#81b0ff" }}
@@ -174,7 +175,10 @@ const styles = StyleSheet.create({
     },
     inputGroup: {
         paddingHorizontal: 15,
+        paddingVertical: 15,
         flexDirection: "row",
+        justifyContent: "space-between",
+        width: 250,
     },
     toggle: {
         marginLeft: 15,

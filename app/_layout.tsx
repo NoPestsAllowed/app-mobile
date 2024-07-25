@@ -15,6 +15,7 @@ import { AuhtProvider } from "@/contexts/auth";
 import { DiscoveryDocument, fetchDiscoveryAsync } from "expo-auth-session";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
+import { $t } from "@/lang";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -76,21 +77,34 @@ export default function RootLayout() {
                             headerTitleStyle: {
                                 fontWeight: "bold",
                             },
-                            title: "Home",
+                            title: $t("navigation.screens.home"),
                             // headerTitle: (props) => <ThemedText>{props.children}</ThemedText>,
                             // headerRight: () => (
                             //     <Button onPress={() => alert("This is a button!")} title="Info" color="red" />
                             // ),
                         })}
                     >
-                        <Stack.Screen key="index" name="index" options={{ title: "NoPestsAllowed" }} />
-                        <Stack.Screen key="legals" name="legal-notice" options={{ title: "Mentions légale" }} />
-                        <Stack.Screen key="+not-found" name="+not-found" options={{ title: "Page Not Found" }} />
+                        <Stack.Screen key="index" name="index" options={{ title: $t("navigation.screens.index") }} />
+                        <Stack.Screen
+                            key="legals"
+                            name="legal-notice"
+                            options={{ title: $t("navigation.screens.legals") }}
+                        />
+                        <Stack.Screen
+                            key="contact"
+                            name="contact-us"
+                            options={{ title: $t("navigation.screens.contactUs") }}
+                        />
+                        <Stack.Screen
+                            key="+not-found"
+                            name="+not-found"
+                            options={{ title: $t("navigation.screens.notFound") }}
+                        />
                     </Stack>
                 </AuhtProvider>
             ) : (
                 <ThemedView style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                    <ThemedText>Loading discovery endpoints</ThemedText>
+                    <ThemedText>{$t("strings.loadingDiscovery")}</ThemedText>
                 </ThemedView>
             )}
         </ThemeProvider>

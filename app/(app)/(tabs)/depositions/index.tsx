@@ -12,6 +12,7 @@ import { Deposition, DepositionWithVisualProofs } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import DepositionOverview from "@/components/deposition/DepositionOverview";
 import EmptyState from "@/components/deposition/EmptyState";
+import { $t } from "@/lang";
 
 moment.locale("fr");
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -128,7 +129,7 @@ export default function Depositions() {
         >
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title" style={styles.title}>
-                    Mes dépositions
+                    {$t("strings.myDepositions")}
                 </ThemedText>
             </ThemedView>
 
@@ -148,20 +149,22 @@ export default function Depositions() {
             {depositions.length === 0 ? (
                 <View style={styles.shadow}>
                     <EmptyState
-                        headline="Vous n'avez pas encore de dépositions"
-                        desc="Contribuez & protégez vos proches."
+                        headline={$t("strings.emptyState.noDeposition.headline")}
+                        desc={$t("strings.emptyState.noDeposition.desc")}
                     >
                         <ThemedButton
                             style={styles.buttonCreate}
                             textStyle={styles.buttonCreateText}
                             onPress={() => router.navigate("depositions/create")}
                         >
-                            Créez votre première deposition
+                            {$t("strings.emptyState.noDeposition.btn")}
                         </ThemedButton>
                     </EmptyState>
                 </View>
             ) : (
-                <ThemedText style={styles.depositionCount}>Vous avez {depositions.length} déposition(s)</ThemedText>
+                <ThemedText style={styles.depositionCount}>
+                    {$t("strings.myDepositionsCount", { count: depositions.length })}
+                </ThemedText>
             )}
         </ParallaxScrollView>
     );

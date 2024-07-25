@@ -5,11 +5,13 @@ import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { $t } from "@/lang";
 
 export default function CameraComponent(props: { handlePictureTaken: (arg0: any) => void; closeCamera: () => void }) {
     const [facing, setFacing] = useState("back");
     const [permission, requestPermission] = useCameraPermissions();
     const cameraRef = useRef<CameraView | null>(null);
+    console.log(permission);
 
     if (!permission) {
         // Camera permissions are still loading.
@@ -17,13 +19,23 @@ export default function CameraComponent(props: { handlePictureTaken: (arg0: any)
     }
 
     if (!permission.granted) {
+        // Camera permission are definitively denied by user from device settings.
+        if (permission.canAskAgain === false && permission.expires === "never") {
+            return (
+                <ThemedView style={styles.container}>
+                    <ThemedText style={{ textAlign: "center", paddingHorizontal: 25 }}>
+                        {$t("ui.permissions.cameraAccess.definitivelyDenied")}
+                    </ThemedText>
+                </ThemedView>
+            );
+        }
         // Camera permissions are not granted yet.
         return (
             <ThemedView style={styles.container}>
-                <ThemedText style={{ textAlign: "center" }}>NoPestsAllowed need access to your camera.</ThemedText>
+                <ThemedText style={{ textAlign: "center" }}>{$t("ui.permissions.cameraAccess.text")}</ThemedText>
                 <ThemedButton
                     onPress={requestPermission}
-                    title="Allow camera access"
+                    title={$t("ui.permissions.cameraAccess.btn")}
                     style={{ marginHorizontal: "auto", marginTop: 25 }}
                 />
             </ThemedView>

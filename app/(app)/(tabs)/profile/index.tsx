@@ -7,6 +7,7 @@ import { useOIDCAuth } from "@/hooks/useOIDCAuth";
 import { router, useFocusEffect } from "expo-router";
 import { User } from "@/types";
 import { deleteAuthenticatedUser, fetchAuthenticatedUser } from "@/services/user-service";
+import { $t } from "@/lang";
 
 export default function Profile() {
     const [user, setUser] = useState<User>();
@@ -23,15 +24,15 @@ export default function Profile() {
 
     const handleDeleteAccount = () => {
         Alert.alert(
-            "Confirmation",
-            "Êtes-vous sûr de vouloir supprimer votre compte ?",
+            $t("strings.confirm"),
+            $t("strings.confirmDeleteAccount"),
             [
                 {
-                    text: "Annuler",
+                    text: $t("strings.cancel"),
                     style: "cancel",
                 },
                 {
-                    text: "Supprimer",
+                    text: $t("strings.delete"),
                     onPress: async () => {
                         const deletionSuccess = await deleteAuthenticatedUser(userFromToken.jwtToken);
                         if (deletionSuccess) {
@@ -49,7 +50,6 @@ export default function Profile() {
     if (!user) {
         return (
             <ThemedView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-                {/* <ThemedText>Fetching user...</ThemedText> */}
                 <ActivityIndicator size="large" />
             </ThemedView>
         );
@@ -72,15 +72,15 @@ export default function Profile() {
 
                 <ThemedView style={styles.content}>
                     <View style={styles.userInfos}>
-                        <ThemedText style={styles.label}>Prenom: </ThemedText>
+                        <ThemedText style={styles.label}>{$t("strings.firstName")}: </ThemedText>
                         <ThemedText style={styles.input}>{user.firstname}</ThemedText>
 
-                        <ThemedText style={styles.label}>Nom: </ThemedText>
+                        <ThemedText style={styles.label}>{$t("strings.lastName")}: </ThemedText>
                         <ThemedText style={styles.input}>{user.lastname}</ThemedText>
 
                         {user.dateOfBirth && (
                             <>
-                                <ThemedText style={styles.label}>Date de naissance: </ThemedText>
+                                <ThemedText style={styles.label}>{$t("strings.dateOfBirth")}: </ThemedText>
                                 <ThemedText style={styles.input}>{user.dateOfBirth}</ThemedText>
                             </>
                         )}
@@ -105,10 +105,10 @@ export default function Profile() {
                     textStyle={styles.buttonText}
                     onPress={() => router.navigate(`profile/${user._id}`)}
                 >
-                    Modifier
+                    {$t("forms.buttons.update")}
                 </ThemedButton>
                 <ThemedButton style={styles.button} textStyle={styles.buttonText} onPress={() => handleDeleteAccount()}>
-                    Supprimer
+                    {$t("forms.buttons.delete")}
                 </ThemedButton>
             </ThemedView>
         </ThemedView>

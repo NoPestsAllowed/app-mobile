@@ -3,13 +3,14 @@ import React from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
+import { $t } from "@/lang";
 
 export default function LegalNotice() {
     return (
         <ThemedView>
             <ScrollView>
                 <View style={styles.main}>
-                    <ThemedText type="title">Mentions Legales</ThemedText>
+                    <ThemedText type="title">{$t("strings.legal")}</ThemedText>
                     <View style={styles.section}>
                         <ThemedText style={styles.subheading}>Informations sur l'Éditeur</ThemedText>
                         <ThemedText style={styles.text}>

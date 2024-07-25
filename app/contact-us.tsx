@@ -6,6 +6,7 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedTextInput } from "@/components/ThemedTextInput";
 import { router, useFocusEffect } from "expo-router";
+import { $t } from "@/lang";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -69,12 +70,12 @@ export default function ContactTab() {
         <ThemedView style={styles.container}>
             <ScrollView>
                 <ThemedView style={styles.header}>
-                    <ThemedText type="title">Nous contacter</ThemedText>
+                    <ThemedText type="title">{$t("strings.contact_us")}</ThemedText>
                 </ThemedView>
 
                 {msgSend ? (
                     <ThemedView>
-                        <ThemedText>Votre message à bien été envoyé.</ThemedText>
+                        <ThemedText>{$t("strings.msgSent")}</ThemedText>
                     </ThemedView>
                 ) : (
                     <>
@@ -82,45 +83,45 @@ export default function ContactTab() {
                             <ThemedTextInput
                                 onChangeText={(value) => setFirstName(value)}
                                 value={firstName}
-                                placeholder="Prénom"
-                                label="Votre prénom"
+                                placeholder={$t("forms.fields.firstName.label")}
+                                label={$t("forms.fields.firstName.placeholder")}
                                 style={styles.input}
                             />
 
                             <ThemedTextInput
                                 onChangeText={(value) => setLastName(value)}
                                 value={lastName}
-                                placeholder="Nom"
-                                label="Votre nom"
+                                placeholder={$t("forms.fields.lastName.label")}
+                                label={$t("forms.fields.lastName.placeholder")}
                                 style={styles.input}
                             />
 
                             <ThemedTextInput
                                 onChangeText={(value) => setEmail(value)}
                                 value={email}
-                                placeholder="Adresse email valide"
-                                label="Votre email"
+                                placeholder={$t("forms.fields.email.label")}
+                                label={$t("forms.fields.email.placeholder")}
                                 style={styles.input}
                             />
 
                             <ThemedTextInput
                                 onChangeText={(value) => setMessageTitle(value)}
                                 value={messageTitle}
-                                placeholder="Titre de votre message"
-                                label="Titre de votre message"
+                                placeholder={$t("forms.fields.msgTitle.label")}
+                                label={$t("forms.fields.msgTitle.placeholder")}
                                 style={styles.input}
                             />
                             <ThemedTextInput
                                 onChangeText={(value) => setMessage(value)}
                                 value={message}
-                                placeholder="Message"
-                                label="Votre message"
+                                placeholder={$t("forms.fields.contactUsBody.label")}
+                                label={$t("forms.fields.contactUsBody.placeholder")}
                                 style={[styles.message, styles.input]}
                                 multiline
                             />
                         </ThemedView>
                         <ThemedView style={styles.buttonContainer}>
-                            <ThemedButton onPress={handleSendMessage}>Envoyer un message</ThemedButton>
+                            <ThemedButton onPress={handleSendMessage}>{$t("strings.sendMsg")}</ThemedButton>
                         </ThemedView>
                     </>
                 )}

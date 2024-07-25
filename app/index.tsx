@@ -105,7 +105,7 @@ export default function IndexPage() {
                         <ThemedText type="link">{$t("strings.legal")}</ThemedText>
                     </Link>
                     <Link href="/contact-us">
-                        <ThemedText type="link">{$t("strings.contact")}</ThemedText>
+                        <ThemedText type="link">{$t("strings.contact_us")}</ThemedText>
                     </Link>
                 </ThemedView>
             </ParallaxScrollView>

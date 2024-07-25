@@ -9,6 +9,7 @@ import { Marker } from "react-native-maps";
 import ConnectButton from "@/components/ConnectButton";
 import { useFocusEffect } from "expo-router";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
+import { $t } from "@/lang";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
 
@@ -87,13 +88,12 @@ export default function index() {
                         NoPestsAllowed
                     </ThemedText>
                     <ThemedText style={styles.subtitle} type="subtitle">
-                        The application to make deposition against location infested by pests.
+                        {$t("strings.noPestsDescription")}
                     </ThemedText>
                 </ThemedView>
 
                 <ThemedText style={styles.paragraph}>
-                    <ThemedText type="defaultSemiBold">{lastDepositionCount}</ThemedText> rapports d'insectes ont été
-                    ajoutés au cours des dernières 24 heures !
+                    {$t("strings.depoLast24", { count: lastDepositionCount })}
                 </ThemedText>
             </ParallaxScrollView>
         </SafeAreaView>

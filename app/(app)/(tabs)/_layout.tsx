@@ -11,6 +11,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import { $t } from "@/lang";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -108,7 +109,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="index"
                     options={{
-                        title: "Accueil",
+                        title: $t("navigation.tabs.home"),
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "home" : "home-outline"} color={color} />
                         ),
@@ -117,7 +118,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="private"
                     options={{
-                        title: "Private",
+                        title: $t("navigation.tabs.private"),
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "git-pull-request" : "git-branch"} color={color} />
                         ),
@@ -127,7 +128,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="depositions/index"
                     options={{
-                        title: "Depositions",
+                        title: $t("navigation.tabs.deposition.index"),
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "bug" : "bug-outline"} color={color} />
                         ),
@@ -137,7 +138,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="depositions/create"
                     options={{
-                        title: "Depositions Create",
+                        title: $t("navigation.tabs.deposition.create"),
                         href: null,
                     }}
                 />
@@ -145,7 +146,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="depositions/[id]"
                     options={{
-                        title: "Depositions Edit",
+                        title: $t("navigation.tabs.deposition.show"),
                         href: null,
                     }}
                 />
@@ -153,7 +154,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="profile/index"
                     options={{
-                        title: "Profile",
+                        title: $t("navigation.tabs.profile.index"),
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "person" : "person-outline"} color={color} />
                         ),
@@ -163,7 +164,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="profile/[id]"
                     options={{
-                        title: "Edit Profile",
+                        title: $t("navigation.tabs.profile.edit"),
                         href: null,
                     }}
                 />
@@ -171,7 +172,7 @@ export default function TabsLayout() {
                 <Tabs.Screen
                     name="settings/index"
                     options={{
-                        title: "Settings",
+                        title: $t("navigation.tabs.settings.index"),
                         tabBarIcon: ({ color, focused }) => (
                             <TabBarIcon name={focused ? "cog" : "cog-outline"} color={color} />
                         ),

@@ -12,6 +12,7 @@ import { router } from "expo-router";
 import { ThemedButton } from "@/components/ThemedButton";
 import { Deposition, DepositionWithVisualProofs } from "@/types";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
+import { $t } from "@/lang";
 // import { ThemedButtonEdit } from "@/components/ThemedButtonEdit";
 
 const backendUrl = process.env.EXPO_PUBLIC_API_URL;
@@ -127,7 +128,7 @@ export default function DepositionDetail() {
                 <ThemedView style={styles.content}>
                     <ThemedView style={styles.subHeader}>
                         <ThemedText>
-                            Créée le:{" "}
+                            {$t("strings.at")}{" "}
                             <ThemedText style={styles.bold}>{moment(deposition.createdAt).format("L")}</ThemedText>
                         </ThemedText>
                         {/* <ThemedView style={styles.detailBlock}> */}
@@ -153,13 +154,15 @@ export default function DepositionDetail() {
                     </ThemedView>
                     <ThemedView style={styles.separator}></ThemedView>
                     <ThemedView style={styles.detailBlock}>
-                        <ThemedText style={styles.detailTitle}>Description: </ThemedText>
+                        <ThemedText style={styles.detailTitle}>{$t("strings.desc")}: </ThemedText>
                         <ThemedText style={styles.detailContent}>{deposition.description}</ThemedText>
                     </ThemedView>
 
                     <ThemedView style={styles.separator}></ThemedView>
                     <ThemedView style={styles.detailBlock}>
-                        <ThemedText style={styles.detailTitle}>Preuves: </ThemedText>
+                        <ThemedText style={styles.detailTitle}>
+                            {$t("strings.proof", { count: deposition.visualProofs.length })}:{" "}
+                        </ThemedText>
                         {deposition.visualProofs.length > 0 && (
                             <ThemedView style={[styles.photosContainer, styles.detailContent]}>
                                 {deposition.visualProofs.map((visualProof, index) => {
@@ -168,10 +171,11 @@ export default function DepositionDetail() {
                                         <ThemedView style={[styles.imageCard, styles.shadow]} key={index}>
                                             <Image source={{ uri: visualProof.url }} style={styles.photo} />
                                             <ThemedText style={styles.imgText}>
-                                                Analysed as: {deposition.visualProofs[0].verificationRapport[0].label}
+                                                {$t("strings.analyzedAs")}:{" "}
+                                                {deposition.visualProofs[0].verificationRapport[0].label}
                                             </ThemedText>
                                             <ThemedText style={styles.imgText}>
-                                                probability:{" "}
+                                                {$t("strings.probability")}:{" "}
                                                 {deposition.visualProofs[0].verificationRapport[0].score.toFixed(2)}
                                             </ThemedText>
                                         </ThemedView>
@@ -183,7 +187,7 @@ export default function DepositionDetail() {
                 </ThemedView>
                 <ThemedView style={styles.actionContainer}>
                     <ThemedButton style={styles.actionBtn} onPress={() => handleDeleteDeposition(deposition)}>
-                        Supprimer
+                        {$t("strings.delete")}
                     </ThemedButton>
                     {/* <ThemedButton style={styles.actionBtn} onPress={() => router.navigate("/depositions")}>
                         Retour

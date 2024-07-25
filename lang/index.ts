@@ -12,7 +12,5 @@ i18n.locale = getLocales()[0].languageCode ?? "en";
 i18n.enableFallback = true;
 
 export const $t = (stringToTranslate: string, rest?: object) => {
-    console.log(rest);
-
     return i18n.t(stringToTranslate, {...rest})
 }
