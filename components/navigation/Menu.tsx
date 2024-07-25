@@ -4,13 +4,19 @@ import { TabBarIcon } from "./TabBarIcon";
 import { ThemedView } from "../ThemedView";
 import ConnectButton from "../ConnectButton";
 import { useOIDCAuth } from "@/hooks/useOIDCAuth";
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
 import { ThemedText } from "../ThemedText";
 import { $t } from "@/lang";
 
 export default function Menu() {
+    const pathname = usePathname();
     const [open, setOpen] = useState(false);
     const { signOut } = useOIDCAuth();
+
+    useEffect(() => {
+        setOpen(false);
+    }, [pathname]);
+
     const handleLogout = () => {
         setOpen(false);
         signOut();
@@ -55,7 +61,6 @@ export default function Menu() {
                         <View style={styles.logoutBtn}>
                             <Button title={$t("ui.logOut").toUpperCase()} onPress={() => handleLogout()} />
                         </View>
-                        {/* <ConnectButton style={styles.logoutBtn} /> */}
                     </ThemedView>
                 </Pressable>
             </Modal>
