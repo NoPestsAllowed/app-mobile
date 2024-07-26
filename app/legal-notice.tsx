@@ -3,224 +3,304 @@ import React from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import { ThemedView } from "@/components/ThemedView";
-import { $t } from "@/lang";
+import { $t, translationAsObject } from "@/lang";
 
 export default function LegalNotice() {
+    const legalNotiveAndTos = translationAsObject("legals");
+    const { legalNotices, tos } = legalNotiveAndTos;
+    // console.log(Object.entries(legalNotiveAndTos).map((item) => console.log(item)));
+
+    // const buildCGURecursively = (translationObject: {
+    //     [key: string]: string | { [key: string]: string | { [key: string]: string | { [key: string]: string } } };
+    // }) => {
+    //     let items = Object.values(translationObject);
+    //     // console.log(items );
+    //     console.clear();
+    //     const result: { title: string; content?: string | { title: string; content: string }[] }[] = [];
+    //     items.map((item) => {
+    //         if (typeof item === "string") {
+    //             result.push({ title: item });
+    //         }
+    //         if (typeof item !== "string" && item.content && item.title) {
+    //             if (typeof item.content === "string" && typeof item.title === "string") {
+    //                 result.push({
+    //                     title: item.title,
+    //                     content: item.content,
+    //                 });
+    //             }
+    //         }
+    //         if (typeof item !== "string" && item.title) {
+    //             return Object.values(item).map((property) => {
+    //                 if (typeof property === "string") {
+    //                     result.push({ title: property });
+    //                 } else if (
+    //                     typeof property === "object" &&
+    //                     property.title &&
+    //                     property.content &&
+    //                     typeof property.content === "string"
+    //                 ) {
+    //                     result.push({
+    //                         title: property.title as string,
+    //                         content: property.content as string,
+    //                     });
+    //                 } else {
+    //                     let section: { title: string; content: string }[] = [];
+    //                     let sectionTitle = "";
+    //                     Object.values(property).map((prprty) => {
+    //                         console.log("prprty", prprty);
+
+    //                         if (typeof prprty !== "string" && prprty?.content !== null && prprty.title) {
+    //                             section.push({
+    //                                 title: prprty.title,
+    //                                 content: prprty.content,
+    //                             });
+    //                         } else {
+    //                             if (typeof prprty === "string") {
+    //                                 sectionTitle = prprty;
+    //                             }
+    //                         }
+    //                     });
+    //                     result.push({
+    //                         content: section,
+    //                         title: sectionTitle,
+    //                     });
+    //                 }
+    //             });
+    //         }
+    //     });
+
+    //     return result;
+    // };
+
+    // console.log("LegalNotices :", JSON.stringify(buildCGURecursively(legalNotices), null, 2));
+    // // console.log("tos ", tos);
+
     return (
         <ThemedView>
             <ScrollView>
                 <View style={styles.main}>
-                    <ThemedText type="title">{$t("strings.legal")}</ThemedText>
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Informations sur l'Éditeur</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nom de l'application : NoPestsAllowed{"\n"}
-                            Nom de l'éditeur : [Nom de l'éditeur]{"\n"}
-                            Adresse du siège social : [Adresse complète]{"\n"}
-                            Numéro de téléphone : [Numéro de téléphone]{"\n"}
-                            Adresse email de contact : [Email de contact]{"\n"}
-                            Numéro d'inscription au registre du commerce et des sociétés (ou équivalent) : [Numéro]
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Hébergeur</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nom de l'hébergeur : [Nom de l'hébergeur]{"\n"}
-                            Adresse du siège social de l'hébergeur : [Adresse complète]{"\n"}
-                            Numéro de téléphone de l'hébergeur : [Numéro de téléphone]{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Directeur de publication</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nom du directeur de publication : [Nom du directeur]{"\n"}
-                        </ThemedText>
-                    </View>
-                    <ThemedText type="title">Politique de Confidentialité</ThemedText>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Collecte de Données</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Données de géolocalisation{"\n"}
-                            Informations de compte utilisateur (nom, email, etc.){"\n"}
-                            Signalements de nuisibles{"\n"}
-                            Finalité de la Collecte des Données{"\n"}
-                            {"\n"}
-                            Les données collectées sont utilisées pour :{"\n"}
-                            {"\n"}
-                            Fournir les services de l'application{"\n"}
-                            Améliorer l'expérience utilisateur{"\n"}
-                            Envoyer des notifications de nuisibles{"\n"}
-                            Utilisation des Données{"\n"}
-                            {"\n"}
-                            Vos données peuvent être utilisées pour :{"\n"}
-                            {"\n"}
-                            Personnaliser les services et le contenu{"\n"}
-                            Partager des informations avec des tiers partenaires, sous réserve de votre consentement
-                            {"\n"}
-                            Analyser les tendances et améliorer nos services{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Droits des Utilisateurs </ThemedText>
-                        <ThemedText style={styles.text}>
-                            Droit d'accès : Vous pouvez demander l'accès à vos données personnelles.{"\n"}
-                            Droit de rectification : Vous pouvez demander la correction de vos données.{"\n"}
-                            Droit de suppression : Vous pouvez demander la suppression de vos données.{"\n"}
-                            Droit de portabilité : Vous pouvez demander à recevoir vos données dans un format structuré.
-                            {"\n"}
-                            Droit d'opposition : Vous pouvez vous opposer au traitement de vos données.{"\n"}
-                            Pour exercer ces droits, veuillez nous contacter à [Email de contact].{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Sécurité des Données</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nous mettons en place des mesures de sécurité appropriées pour protéger vos données contre
-                            tout accès non autorisé.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Sécurité des Données</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nous mettons en place des mesures de sécurité appropriées pour protéger vos données contre
-                            tout accès non autorisé.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <ThemedText type="title" style={styles.title2}>
-                        Conditions Générales d'Utilisation (CGU)
+                    <ThemedText type="title" style={styles.title}>
+                        {$t("legals.legalNotices.title")}
                     </ThemedText>
-
                     <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Description du Service</ThemedText>
-                        <ThemedText style={styles.text}>
-                            NoPestsAllowed permet aux utilisateurs de signaler et de consulter des informations sur la
-                            présence de nuisibles à des emplacements spécifiques. L'application utilise la
-                            géolocalisation pour fournir ces services.{"\n"}
+                        <ThemedText type="subtitle" style={styles.sectionTitle}>
+                            {$t("legals.legalNotices.legalInformation.title")}
                         </ThemedText>
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle">
+                                {$t("legals.legalNotices.legalInformation.publisher.title")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.publisher.name.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.publisher.name.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.publisher.address.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.publisher.address.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.publisher.phone.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.publisher.phone.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.publisher.email.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.publisher.email.content")}
+                            </ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.legalInformation.publicationDirector.title")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.publicationDirector.content")}
+                            </ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.legalInformation.host.title")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.host.name.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.host.name.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.host.address.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.host.address.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.host.phone.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.host.phone.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.host.email.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.host.email.content")}
+                            </ThemedText>
+                            <ThemedText>
+                                {$t("legals.legalNotices.legalInformation.host.siret.title")}:{" "}
+                                {$t("legals.legalNotices.legalInformation.host.siret.content")}
+                            </ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.intellectualProperty.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.legalNotices.intellectualProperty.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.personalDataProtection.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.legalNotices.personalDataProtection.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.liability.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.legalNotices.liability.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.legalNotices.hosting.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.legalNotices.hosting.content")}</ThemedText>
+                        </View>
                     </View>
 
                     <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Responsabilités de l'Utilisateur</ThemedText>
-                        <ThemedText style={styles.text}>
-                            En utilisant NoPestsAllowed, vous vous engagez à :{"\n"}
-                            Fournir des informations véridiques et exactes lors des signalements.{"\n"}
-                            Ne pas utiliser l'application à des fins malveillantes ou illégales.{"\n"}
+                        <ThemedText type="subtitle" style={styles.sectionTitle}>
+                            {$t("legals.tos.title")}
                         </ThemedText>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.purpose.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.purpose.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.acceptance.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.acceptance.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.access.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.access.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.accountCreation.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.accountCreation.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.applicationUse.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.applicationUse.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.geolocationNotifications.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.geolocationNotifications.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.publisherLiability.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.publisherLiability.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.disputesWithOwners.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.disputesWithOwners.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.personalDataProtection.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.personalDataProtection.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.intellectualProperty.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.intellectualProperty.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.donationsFunding.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.donationsFunding.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.modificationTOS.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.modificationTOS.content")}</ThemedText>
+                        </View>
+
+                        <View style={styles.subSection}>
+                            <ThemedText type="subtitle" style={styles.subheading}>
+                                {$t("legals.tos.applicableLaw.title")}
+                            </ThemedText>
+                            <ThemedText>{$t("legals.tos.applicableLaw.content")}</ThemedText>
+                        </View>
                     </View>
 
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Responsabilités de l'Éditeur</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nous nous efforçons de garantir l'exactitude des informations fournies, mais nous ne pouvons
-                            être tenus responsables des erreurs ou omissions. Nous nous réservons le droit de supprimer
-                            tout contenu inapproprié.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Propriété Intellectuelle</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Tous les contenus de l'application, y compris les textes, images, logos et marques, sont
-                            protégés par les lois sur la propriété intellectuelle. Toute reproduction ou utilisation non
-                            autorisée est interdite.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Modifications des CGU</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Nous nous réservons le droit de modifier les présentes CGU à tout moment. Les utilisateurs
-                            seront informés des modifications via l'application.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <ThemedText type="title" style={styles.title2}>
-                        Mentions Relatives à la Géolocalisation
-                    </ThemedText>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Consentement</ThemedText>
-                        <ThemedText style={styles.text}>
-                            L'utilisation de la géolocalisation nécessite votre consentement explicite. Vous pouvez
-                            activer ou désactiver la géolocalisation à tout moment dans les paramètres de votre
-                            appareil.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Utilisation des Données de Géolocalisation</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Les données de géolocalisation sont utilisées pour :{"\n"}
-                            Fournir des informations pertinentes sur les nuisibles à proximité{"\n"}
-                            Améliorer nos services{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <ThemedText type="title" style={styles.title2}>
-                        Mentions Relatives aux Signalements
-                    </ThemedText>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Exactitude des Signalements</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Les signalements sont faits par les utilisateurs et nous ne garantissons pas leur véracité.
-                            Nous nous réservons le droit de vérifier et de supprimer les signalements faux ou
-                            malveillants. {"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Responsabilité en Cas de Fausse Information</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Les utilisateurs sont responsables des informations qu'ils fournissent. En cas de
-                            signalement intentionnellement faux, l'utilisateur peut être tenu responsable et voir son
-                            compte suspendu ou supprimé.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Cookies et Technologies Similaires</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Utilisation des Cookies{"\n"}
-                            Nous utilisons des cookies pour :{"\n"}
-                            Améliorer la performance de l'application{"\n"}
-                            Analyser l'utilisation de nos services{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Gestion des Préférences</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Vous pouvez gérer ou désactiver les cookies dans les paramètres de votre navigateur.{"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <ThemedText type="title" style={styles.title2}>
-                        Droit Applicable et Juridiction Compétente
-                    </ThemedText>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Droit Applicable</ThemedText>
-                        <ThemedText style={styles.text}>
-                            Les présentes mentions légales et CGU sont soumises au droit [indiquez le pays ou la
-                            région].
-                            {"\n"}
-                        </ThemedText>
-                    </View>
-
-                    <View style={styles.section}>
-                        <ThemedText style={styles.subheading}>Juridiction Compétente</ThemedText>
-                        <ThemedText style={styles.text}>
-                            En cas de litige, les tribunaux de [indiquez la ville] seront seuls compétents.{"\n"}
-                        </ThemedText>
-                    </View>
+                    {/* {buildCGURecursively(legalNotices).map((item, index) => {
+                        if (item.content && typeof item.content === "string") {
+                            // return (
+                            //     <View style={styles.section}>
+                            //         <ThemedText type="title">{item.title}</ThemedText>
+                            //         <ThemedText>{item.content}</ThemedText>
+                            //     </View>
+                            // );
+                        } else {
+                            return (
+                                <View style={styles.section}>
+                                    <ThemedText type="subtitle">{item.title}</ThemedText>
+                                    {item.content && typeof item.content !== "string" && (
+                                        <ThemedText>
+                                            {item.content.map((item: { title: string; content: string }) => {
+                                                return (
+                                                    <View>
+                                                        <ThemedText>
+                                                            <ThemedText style={{ fontWeight: 600 }}>
+                                                                {item.title} :{" "}
+                                                            </ThemedText>
+                                                            {item.content}
+                                                        </ThemedText>
+                                                    </View>
+                                                );
+                                            })}
+                                        </ThemedText>
+                                    )}
+                                </View>
+                            );
+                        }
+                    })} */}
                 </View>
                 <View style={styles.footer}>
                     <Link href="/">
@@ -243,6 +323,13 @@ const styles = StyleSheet.create({
         maxWidth: 960,
         marginHorizontal: "auto",
     },
+    sectionTitle: {
+        fontSize: 24,
+    },
+    title: {
+        paddingHorizontal: 25,
+        paddingVertical: 15,
+    },
     title2: {
         fontSize: 32,
         textAlign: "center",
@@ -255,12 +342,16 @@ const styles = StyleSheet.create({
         lineHeight: 36,
     },
     section: {
-        marginBottom: 20,
+        marginVertical: 25,
+        marginHorizontal: 15,
     },
     subheading: {
         fontSize: 18,
         fontWeight: "bold",
         marginBottom: 10,
+    },
+    subSection: {
+        marginVertical: 15,
     },
     text: {
         fontSize: 16,

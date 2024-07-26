@@ -17,7 +17,7 @@ export const $t = (stringToTranslate: string, rest?: object) => {
 
 export const translationAsObject = (path: string) => {
     const translation = i18n.get(path);
-    const translationObject = translation as { [key: string]: string };
+    const translationObject = translation as { [key: string]: { [key: string]: string | {[key: string]: string}} };
     // console.log("translationObject", translationObject, JSON.parse(translationObject));
 
     return translationObject;

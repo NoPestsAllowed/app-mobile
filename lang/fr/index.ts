@@ -1,4 +1,5 @@
 import { forms } from "./forms"
+import { legalNoticesAndTOS } from "./legals"
 import { navigation } from "./navigation"
 import { pests } from "./pests"
 import { strings } from "./strings"
@@ -8,5 +9,6 @@ export const fr = {
     ui,
     forms,
     navigation,
-    pests
+    pests,
+    legals: legalNoticesAndTOS
 }
